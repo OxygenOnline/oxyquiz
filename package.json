@@ -1,0 +1,24 @@
+{
+  "name": "oxyquiz",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OxygenOnline/oxyquiz.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OxygenOnline/oxyquiz/issues"
+  },
+  "homepage": "https://github.com/OxygenOnline/oxyquiz#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
