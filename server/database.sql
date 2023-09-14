@@ -18,26 +18,16 @@ CREATE TABLE IF NOT EXISTS quiz (
     id SERIAL PRIMARY KEY,
     title TEXT NOT NULL,
     description TEXT,
-    category_id INT REFERENCES category(id) NOT NULL,
-    creator_id INT REFERENCES app_user(id) NOT NULL,
+    category_id INT REFERENCES category(id) ON DELETE CASCADE NOT NULL,
+    creator_id INT REFERENCES app_user(id) ON DELETE CASCADE NOT NULL,
     user_count INT NOT NULL DEFAULT 0,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     modified_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS tag (
+CREATE TABLE IF NOT EXISTS question (
     id SERIAL PRIMARY KEY,
-    name TEXT UNIQUE NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS  quiz_tag (
-    quiz_id INT REFERENCES quiz(id) NOT NULL,
-    tag_id INT REFERENCES tag(id) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS  question (
-    id SERIAL PRIMARY KEY,
-    quiz_id INT REFERENCES quiz(id) NOT NULL,
+    quiz_id INT REFERENCES quiz(id) ON DELETE CASCADE NOT NULL,
     content TEXT NOT NULL,
     position INT NOT NULL CHECK (position >= 0),
     single_choice BOOLEAN NOT NULL DEFAULT TRUE
@@ -45,7 +35,7 @@ CREATE TABLE IF NOT EXISTS  question (
 
 CREATE TABLE IF NOT EXISTS result (
     id SERIAL PRIMARY KEY,
-    quiz_id INT REFERENCES quiz(id) NOT NULL,
+    quiz_id INT REFERENCES quiz(id) ON DELETE CASCADE NOT NULL,
     title TEXT NOT NULL,
     description TEXT,
     user_count INT NOT NULL DEFAULT 0
@@ -53,13 +43,13 @@ CREATE TABLE IF NOT EXISTS result (
 
 CREATE TABLE IF NOT EXISTS option (
     id SERIAL PRIMARY KEY,
-    question_id INT REFERENCES question(id) NOT NULL,
+    question_id INT REFERENCES question(id) ON DELETE CASCADE NOT NULL,
     content TEXT NOT NULL,
     position INT NOT NULL CHECK (position >= 0),
-    weight INT NOT NULL DEFAULT 1
+    weight INT NOT NULL DEFAULT 1 CHECK (weight >= 1)
 );
 
 CREATE TABLE IF NOT EXISTS option_result (
-    option_id INT REFERENCES option(id) NOT NULL,
-    result_id INT REFERENCES result(id) NOT NULL
+    option_id INT REFERENCES option(id) ON DELETE CASCADE NOT NULL,
+    result_id INT REFERENCES result(id) ON DELETE CASCADE NOT NULL
 );
