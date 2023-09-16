@@ -1,13 +1,14 @@
 const express = require("express");
-const db = require("../db/index");
-const quizdb = require("../db/quizzes")
 const router = express.Router();
+const createError = require("http-errors")
+
+const quizdb = require("../db/quizzes")
 
 router.route("/")
     .get(async (req, res) => {
         try {
-            const result = await db.query("SELECT * FROM quiz");
-            res.json(result.rows);
+            const result = await quizdb.getAllQuizzes();
+            res.json(result);
         }
         catch (error) {
             console.error(error.message);
@@ -22,14 +23,12 @@ router.get("/new", async (req, res) => {
     // TODO
 });
 
-router.route("/:id")
+router.route("/:id(\\d+)")
     .get(async (req, res) => {
         try {
             const { id } = req.params;
-            const result = await db.query("SELECT * FROM quiz WHERE id = $1", [
-                id
-            ]);
-            res.json(result.rows);
+            const result = await quizdb.getQuizById(id);
+            res.json(result);
         }
         catch (error) {
             console.error(error.message);
@@ -47,9 +46,7 @@ router.route("/:id")
     .delete(async (req, res) => {
         try {
             const { id } = req.params;
-            const result = await db.query("DELETE FROM quiz WHERE id = $1", [
-                id
-            ]);
+            await quizdb.deleteQuizById(id)
             res.json(`Deleted quiz by id ${id}.`);
         }
         catch (error) {
@@ -67,9 +64,10 @@ router.param("id", async (req, res, next, id) => {
             return res.status(404).send(`Quiz with given id ${id} does not exist.`);
         }
         next();
-
-    } catch (error) {
+    }
+    catch (error) {
         console.error(error.message);
+        throw error;
     }
 });
 
