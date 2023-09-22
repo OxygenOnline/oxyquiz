@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS question (
     quiz_id INT REFERENCES quiz(id) ON DELETE CASCADE NOT NULL,
     content TEXT NOT NULL,
     position INT NOT NULL CHECK (position >= 0),
+    weight INT NOT NULL DEFAULT 1 CHECK (weight >= 1),
     single_choice BOOLEAN NOT NULL DEFAULT TRUE
 );
 
@@ -45,8 +46,7 @@ CREATE TABLE IF NOT EXISTS option (
     id SERIAL PRIMARY KEY,
     question_id INT REFERENCES question(id) ON DELETE CASCADE NOT NULL,
     content TEXT NOT NULL,
-    position INT NOT NULL CHECK (position >= 0),
-    weight INT NOT NULL DEFAULT 1 CHECK (weight >= 1)
+    position INT NOT NULL CHECK (position >= 0)
 );
 
 CREATE TABLE IF NOT EXISTS option_result (
