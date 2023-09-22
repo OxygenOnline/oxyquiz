@@ -1,0 +1,71 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "quiz": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "category_id": {
+                    "type": "integer"
+                },
+                "results": {
+                    "type": "array",
+                    "minItems": 2,
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "title": {
+                                "type": "string"
+                            },
+                            "description": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "title"
+                        ]
+                    }
+                },
+                "questions": {
+                    "type": "array",
+                    "minItems": 2,
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "content": {
+                                "type": "string"
+                            },
+                            "position": {
+                                "type": "integer"
+                            },
+                            "weight": {
+                                "type": "number"
+                            },
+                            "single_choice": {
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "content",
+                            "position",
+                            "weight",
+                            "single_choice"
+                        ]
+                    }
+                }
+            },
+            "required": [
+                "title",
+                "category_id",
+                "results",
+                "questions"
+            ]
+        }
+    }
+}
