@@ -8,6 +8,7 @@ const quizdb = require("../db/quizzes")
 const quizSchema = require('../schemas/quiz.json');
 const { validate } = new Validator();
 
+// TODO: user
 router.route("/")
     .get(async (req, res) => {
         try {
@@ -23,12 +24,8 @@ router.route("/")
         try {
             const quiz = req.body.quiz;
             const quizId = await quizdb.createQuiz(quiz, 1001);
-            res.json(quizId);
-            // TODO: options in questions, option-result?
-            // return the quiz appropriately
-            // validate position unique
-            // validate enough options
-            // rollback if sql doesnt finish
+
+            res.status(201).json(quizId);
         }
         catch (error) {
             console.error(error.message);
