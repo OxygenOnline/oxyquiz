@@ -49,8 +49,7 @@ const getQuizById = async (id) => {
                 content: q.content,
                 position: q.position,
                 single_choice: q.single_choice,
-                options: options,
-                results: results
+                options: options
             }
 
             completeQuestions.push(question);
@@ -60,7 +59,8 @@ const getQuizById = async (id) => {
             "quiz": quiz,
             "category": category,
             "creator": user,
-            "questions": completeQuestions
+            "questions": completeQuestions,
+            "results": results
         }
 
         return result;
@@ -149,7 +149,7 @@ const createQuiz = async (quiz, creator_id) => {
 };
 
 // TODO: cleanup
-const updateQuiz = async (id, quiz) => {
+const updateQuizById = async (id, quiz) => {
     try {
 
         // TODO: remove questions, results, options that are select * exist but not in the json
@@ -302,7 +302,7 @@ module.exports = {
     getAllQuizzes,
     getQuizById,
     createQuiz,
-    updateQuiz,
+    updateQuizById,
     deleteQuizById,
     checkQuizExists
 };

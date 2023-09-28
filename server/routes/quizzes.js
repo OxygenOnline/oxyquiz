@@ -54,7 +54,7 @@ router.route("/:id(\\d+)")
         try {
             const { id } = req.params;
             const quiz = req.body.quiz;
-            const quizId = await quizdb.updateQuiz(id, quiz);
+            const quizId = await quizdb.updateQuizById(id, quiz);
             res.json(quizId);
         }
         catch (error) {
