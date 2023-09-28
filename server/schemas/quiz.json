@@ -49,13 +49,42 @@
                             },
                             "single_choice": {
                                 "type": "boolean"
+                            },
+                            "options": {
+                                "type": "array",
+                                "minItems": 2,
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "content": {
+                                            "type": "string"
+                                        },
+                                        "position": {
+                                            "type": "integer"
+                                        },
+                                        "result_ids": {
+                                            "type": "array",
+                                            "minItems": 1,
+                                            "uniqueItems": true,
+                                            "items": {
+                                                "type": "integer"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "content",
+                                        "position",
+                                        "result_ids"
+                                    ]
+                                }
                             }
                         },
                         "required": [
                             "content",
                             "position",
                             "weight",
-                            "single_choice"
+                            "single_choice",
+                            "options"
                         ]
                     }
                 }
