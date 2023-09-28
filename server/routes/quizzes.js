@@ -50,10 +50,14 @@ router.route("/:id(\\d+)")
             res.status(500).send("Internal Server Error");
         }
     })
-    .put(async (req, res) => {
+    .put(validate({ body: quizSchema }), async (req, res) => {
         try {
-            // TODO
-        } catch (error) {
+            const { id } = req.params;
+            const quiz = req.body.quiz;
+            const quizId = await quizdb.updateQuiz(id, quiz);
+            res.json(quizId);
+        }
+        catch (error) {
             console.error(error.message);
             res.status(500).send("Internal Server Error");
         }
@@ -62,7 +66,7 @@ router.route("/:id(\\d+)")
         try {
             const { id } = req.params;
             await quizdb.deleteQuizById(id)
-            res.json(`Deleted quiz by id ${id}.`);
+            res.send(`Deleted quiz by id ${id}.`);
         }
         catch (error) {
             console.error(error.message);
