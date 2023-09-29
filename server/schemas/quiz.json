@@ -28,10 +28,14 @@
                             },
                             "description": {
                                 "type": "string"
+                            },
+                            "position": {
+                                "type": "integer"
                             }
                         },
                         "required": [
-                            "title"
+                            "title",
+                            "position"
                         ]
                     }
                 },

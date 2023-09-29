@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS result (
     quiz_id INT REFERENCES quiz(id) ON DELETE CASCADE NOT NULL,
     title TEXT NOT NULL,
     description TEXT,
+    position INT NOT NULL CHECK (position >= 0),
     user_count INT NOT NULL DEFAULT 0
 );
 

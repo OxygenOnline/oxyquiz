@@ -45,11 +45,12 @@ const getQuizById = async (id) => {
             const options = optionResult.rows;
 
             const question = {
-                id: q.id,
-                content: q.content,
-                position: q.position,
-                single_choice: q.single_choice,
-                options: options
+                "id": q.id,
+                "content": q.content,
+                "position": q.position,
+                "weight": q.weight,
+                "single_choice": q.single_choice,
+                "options": options
             }
 
             completeQuestions.push(question);
@@ -87,21 +88,22 @@ const createQuiz = async (quiz, creator_id) => {
         const quizId = quizResult.rows[0].id;
 
         let resultIdArray = [];
-        const resultInsert = `INSERT INTO result(quiz_id, title, description)
-        VALUES ($1, $2, $3)
+        const resultInsert = `INSERT INTO result(quiz_id, title, description, position)
+        VALUES ($1, $2, $3, $4)
         RETURNING id;`;
         for (const r of results) {
             let resultResult = await pool.query(resultInsert, [
                 quizId,
                 r.title,
-                r.description
+                r.description,
+                r.position
             ]);
             const resultId = resultResult.rows[0].id;
             resultIdArray.push(resultId);
         }
 
         // TODO: validate unique position for:
-        // question, option
+        // question, option, result
         const questionInsert = `INSERT INTO question(quiz_id, content, position, weight, single_choice)
         VALUES ($1, $2, $3, $4, $5)
         RETURNING id;`;
@@ -165,6 +167,7 @@ const updateQuizById = async (id, quiz) => {
         SET title = $1,
         description = $2,
         category_id = $3,
+        modified_at = NOW(),
         WHERE id = $4`;
         await pool.query(quizUpdate, [quiz.title, quizDesc, quiz.category_id, id]);
 
@@ -173,11 +176,9 @@ const updateQuizById = async (id, quiz) => {
         // description = $2
         // WHERE id = $3
         // AND quiz_id = $4;`;
-        
         // const resultQuery = "SELECT id FROM result WHERE question_id = $1";
-        // const resultInsert = `INSERT INTO result(quiz_id, title, description)
-        // VALUES ($1, $2, $3)
-        // RETURNING id;`;
+        // const resultInsert = `INSERT INTO result(quiz_id, title, description, position)
+        // VALUES ($1, $2, $3, $4);`;
         // const resultDelete = "DELETE FROM result WHERE id = $1 AND question_id = $2";
         // const resultResult = await pool.query(resultQuery, [id]);
         // const existingResult = resultResult.rows.map(item => item.id);
@@ -188,7 +189,8 @@ const updateQuizById = async (id, quiz) => {
         //         await pool.query(resultUpdate, [
         //             r.title,
         //             resDesc,
-        //             r.id,
+        //             r.position
+        // r.id,
         //             id
         //         ]);
         //     }
@@ -201,7 +203,7 @@ const updateQuizById = async (id, quiz) => {
         // }
 
         // // TODO: validate unique position for:
-        // // question, option
+        // // question, option, result
         // const questionUpdate = `UPDATE question
         // SET content = $1,
         // position = $2,
@@ -226,36 +228,36 @@ const updateQuizById = async (id, quiz) => {
         //         id
         //     ]);
 
-            for (const o of q.options) {
-                // await pool.query(optionUpdate, [
-                //     o.content,
-                //     o.position,
-                //     o.id,
-                //     q.position
-                // ]);
+        for (const o of q.options) {
+            // await pool.query(optionUpdate, [
+            //     o.content,
+            //     o.position,
+            //     o.id,
+            //     q.position
+            // ]);
 
-                const optionResultInsert = `INSERT INTO option_result(option_id, result_id)
+            const optionResultInsert = `INSERT INTO option_result(option_id, result_id)
                 VALUES ($1, $2);`;
-                const optionResultDelete = `DELETE FROM option_result
+            const optionResultDelete = `DELETE FROM option_result
                 WHERE option_id = $1
                 AND result_id = $2;`;
-                
-                const optionResultQuery = "SELECT result_id FROM option_result WHERE option_id = $1";
-                const optionResultResult = await pool.query(optionResultQuery, [o.id]);
-                const existingResults = optionResultResult.rows.map(item => item.result_id);
-                
-                for (const r of o.result_ids) {
-                    if (!existingResults.includes(r)) {
-                        await pool.query(optionResultInsert, [o.id, r]);
-                    }
-                }
-                
-                for (const r of existingResults) {
-                    if (!o.result_ids.includes(r)) {
-                        await pool.query(optionResultDelete, [o.id, r]);
-                    }
+
+            const optionResultQuery = "SELECT result_id FROM option_result WHERE option_id = $1";
+            const optionResultResult = await pool.query(optionResultQuery, [o.id]);
+            const existingResults = optionResultResult.rows.map(item => item.result_id);
+
+            for (const r of o.result_ids) {
+                if (!existingResults.includes(r)) {
+                    await pool.query(optionResultInsert, [o.id, r]);
                 }
             }
+
+            for (const r of existingResults) {
+                if (!o.result_ids.includes(r)) {
+                    await pool.query(optionResultDelete, [o.id, r]);
+                }
+            }
+        }
         // }
 
         await pool.query('COMMIT');
