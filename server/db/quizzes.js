@@ -99,7 +99,7 @@ const createQuiz = async (quiz, creator_id) => {
                 r.position
             ]);
             const resultId = resultResult.rows[0].id;
-            
+
             resultIdArray.splice(r.position, 0, resultId);
         }
 
@@ -184,8 +184,8 @@ const updateQuizById = async (id, quiz) => {
         const resultResult = await pool.query(resultQuery, [id]);
         const existingResult = resultResult.rows.map(item => item.id);
         const resultIds = results
-        .filter(element => element !== undefined)
-        .map(item => item.id);
+            .filter(element => element !== undefined)
+            .map(item => item.id);
 
         for (const r in existingResult) {
             if (!resultIds.includes(r)) {
@@ -196,11 +196,9 @@ const updateQuizById = async (id, quiz) => {
             }
         }
 
-        
-        let resultIdArray = [];
         for (const r of results) {
             const resDesc = r.description ?? null;
-            let newResultId;
+
             if (r.id !== undefined) {
                 await pool.query(resultUpdate, [
                     r.title,
@@ -211,18 +209,15 @@ const updateQuizById = async (id, quiz) => {
                 ]);
             }
             else {
-                newResultId = await pool.query(resultInsert, [
+                newInsertedResult = await pool.query(resultInsert, [
                     id,
                     r.title,
                     resDesc,
                     r.position
                 ]);
             }
-            
-            const resultId = newResultId ?? r.id
-            resultIdArray.splice(r.position, 0, resultId);
         }
-        
+
 
         // TODO: validate unique position for:
         // question, option, result
@@ -251,8 +246,8 @@ const updateQuizById = async (id, quiz) => {
         const resQuiz = await pool.query(questionQuery, [id]);
         const existingQuestions = resQuiz.rows.map(item => item.id);
         const questionIds = questions
-        .filter(element => element !== undefined)
-        .map(item => item.id);
+            .filter(element => element !== undefined)
+            .map(item => item.id);
 
         for (const q in existingQuestions) {
             if (!questionIds.includes(q)) {
@@ -264,11 +259,11 @@ const updateQuizById = async (id, quiz) => {
         }
 
         for (const q of questions) {
-            
+
             if (q.quiz_id !== id) {
                 continue;
             }
-            
+
             if (r.id !== undefined) {
                 await pool.query(questionUpdate, [
                     q.content,
@@ -290,7 +285,7 @@ const updateQuizById = async (id, quiz) => {
             const resOptions = await pool.query(optionQuery, [q.id]);
             const existingOptions = resOptions.rows.map(item => item.id);
             const optionIds = q.options.rows.map(item => item.id);
-            
+
             for (const o in existingOptions) {
                 if (!optionIds.includes(o)) {
                     await pool.query(optionDelete, [
@@ -299,9 +294,9 @@ const updateQuizById = async (id, quiz) => {
                     ]);
                 }
             }
-            
+
             for (const o of q.options) {
-                
+
                 if (o.id !== undefined) {
                     await pool.query(optionUpdate, [
                         o.content,
@@ -326,26 +321,32 @@ const updateQuizById = async (id, quiz) => {
 
                 const optionResultQuery = "SELECT result_id FROM option_result WHERE option_id = $1";
                 const optionResultResult = await pool.query(optionResultQuery, [o.id]);
-                //result_ids
+                //db resultids
                 const existingResults = optionResultResult.rows.map(item => item.result_id);
-                //resultIdArray has ids, index is position
-                // TODO: fix for loops below?
-                // are they working?
-                
-                const resultIds = o.result_ids.rows;
+                //idaig jo
+
+                const newQuery = "SELECT id from result WHERE quiz_id = $1 and position = $2 RETURNING id;"
+                let newResults = [];
+
+                for (r in o.result_ids.rows) {
+                    const res = await pool.query(newQuery, [id, r]);
+                    newResults.push(res.rows[0]);
+                }
+
+                // TODO: rename in schema, code and test data option.result_ids to result_positions
+                // const resultIds = o.result_ids.rows;
 
                 for (const r of existingResults) {
-                    if (!resultIds.includes(r)) {
+                    if (!newResults.includes(r)) {
                         await pool.query(optionResultDelete, [o.id, r]);
                     }
                 }
-                
-                for (const r of resultIds) {
+
+                for (const r of newResults) {
                     if (!existingResults.includes(r)) {
                         await pool.query(optionResultInsert, [o.id, r]);
                     }
                 }
-
             }
         }
 
