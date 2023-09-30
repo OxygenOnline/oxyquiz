@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { logErrors, handleClientErrors } = require("./utils/error.js")
+const { logErrors, handleClientErrors } = require("./utils/error")
 
 const app = express();
 const port = 3000;
@@ -8,7 +8,7 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 
-const quizRouter = require("./routes/quizzes");
+const quizRouter = require("./routes/quiz");
 
 app.use("/quizzes", quizRouter);
 

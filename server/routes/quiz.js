@@ -3,7 +3,7 @@ const router = express.Router();
 const createError = require("http-errors");
 const { Validator } = require("express-json-validator-middleware");
 
-const quizdb = require("../db/quizzes")
+const quizdb = require("../db/quiz-db")
 
 const quizSchema = require('../schemas/quiz.json');
 const { validate } = new Validator();
