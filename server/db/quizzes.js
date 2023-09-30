@@ -9,7 +9,6 @@ const getAllQuizzes = async (limit = 20, offset = 0) => {
         return result.rows;
     }
     catch (error) {
-        console.error(error.message);
         throw error;
     }
 };
@@ -67,7 +66,6 @@ const getQuizById = async (id) => {
         return result;
     }
     catch (error) {
-        console.error(error.message);
         throw error;
     }
 };
@@ -146,7 +144,6 @@ const createQuiz = async (quiz, creator_id) => {
     }
     catch (error) {
         await pool.query('ROLLBACK');
-        console.error(error.message);
         throw error;
     }
 };
@@ -321,9 +318,7 @@ const updateQuizById = async (id, quiz) => {
 
                 const optionResultQuery = "SELECT result_id FROM option_result WHERE option_id = $1";
                 const optionResultResult = await pool.query(optionResultQuery, [o.id]);
-                //db resultids
                 const existingResults = optionResultResult.rows.map(item => item.result_id);
-                //idaig jo
 
                 const newQuery = "SELECT id from result WHERE quiz_id = $1 and position = $2 RETURNING id;"
                 let newResults = [];
@@ -334,7 +329,7 @@ const updateQuizById = async (id, quiz) => {
                 }
 
                 // TODO: rename in schema, code and test data option.result_ids to result_positions
-                // const resultIds = o.result_ids.rows;
+                // or change result-option mapping
 
                 for (const r of existingResults) {
                     if (!newResults.includes(r)) {
@@ -355,7 +350,6 @@ const updateQuizById = async (id, quiz) => {
     }
     catch (error) {
         await pool.query('ROLLBACK');
-        console.error(error.message);
         throw error;
     }
 }
@@ -367,7 +361,6 @@ const deleteQuizById = async (id) => {
         await pool.query(queryText, [id]);
     }
     catch (error) {
-        console.error(error.message);
         throw error;
     }
 };
@@ -384,7 +377,6 @@ const checkQuizExists = async (id) => {
         return true;
     }
     catch (error) {
-        console.error(error.message);
         throw error;
     }
 };

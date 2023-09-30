@@ -10,47 +10,42 @@ const { validate } = new Validator();
 
 // TODO: user
 router.route("/")
-    .get(async (req, res) => {
+    .get(async (req, res, next) => {
         try {
             const result = await quizdb.getAllQuizzes();
             res.json(result);
         }
         catch (error) {
-            console.error(error.message);
-            res.status(500).send("Internal Server Error");
+            next(error);
         }
     })
-    .post(validate({ body: quizSchema }), async (req, res) => {
+    .post(validate({ body: quizSchema }), async (req, res, next) => {
         try {
             const quiz = req.body.quiz;
             const quizId = await quizdb.createQuiz(quiz, 1001);
-
             res.status(201).json(quizId);
         }
         catch (error) {
-            console.error(error.message);
-            res.status(500).send("Internal Server Error");
+            next(error);
         }
-
     });
 
-router.get("/new", async (req, res) => {
+router.get("/new", async (req, res, next) => {
     // TODO
 });
 
 router.route("/:id(\\d+)")
-    .get(async (req, res) => {
+    .get(async (req, res, next) => {
         try {
             const { id } = req.params;
             const result = await quizdb.getQuizById(id);
             res.json(result);
         }
         catch (error) {
-            console.error(error.message);
-            res.status(500).send("Internal Server Error");
+            next(error);
         }
     })
-    .put(validate({ body: quizSchema }), async (req, res) => {
+    .put(validate({ body: quizSchema }), async (req, res, next) => {
         try {
             const { id } = req.params;
             const quiz = req.body.quiz;
@@ -58,19 +53,17 @@ router.route("/:id(\\d+)")
             res.json(quizId);
         }
         catch (error) {
-            console.error(error.message);
-            res.status(500).send("Internal Server Error");
+            next(createError(500));
         }
     })
-    .delete(async (req, res) => {
+    .delete(async (req, res, next) => {
         try {
             const { id } = req.params;
             await quizdb.deleteQuizById(id)
-            res.send(`Deleted quiz by id ${id}.`);
+            res.sendStatus(204);
         }
         catch (error) {
-            console.error(error.message);
-            res.status(500).send("Internal Server Error");
+            next(error);
         }
     });
 
@@ -80,13 +73,12 @@ router.param("id", async (req, res, next, id) => {
         const isValidQuiz = await quizdb.checkQuizExists(id);
 
         if (!isValidQuiz) {
-            return res.status(404).send(`Quiz with given id ${id} does not exist.`);
+            return next(createError(404, `Quiz with given id ${id} does not exist.`));
         }
         next();
     }
     catch (error) {
-        console.error(error.message);
-        throw error;
+        next(error);
     }
 });
 

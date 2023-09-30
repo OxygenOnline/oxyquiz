@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const { logErrors, handleClientErrors } = require("./utils/error.js")
 
 const app = express();
 const port = 3000;
@@ -19,3 +20,6 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
     console.log(`Server running on port ${port}.`);
 });
+
+app.use(logErrors);
+app.use(handleClientErrors);
