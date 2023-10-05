@@ -20,7 +20,6 @@ CREATE TABLE IF NOT EXISTS quiz (
     description TEXT,
     category_id INT REFERENCES category(id) ON DELETE CASCADE NOT NULL,
     creator_id INT REFERENCES app_user(id) ON DELETE CASCADE NOT NULL,
-    user_count INT NOT NULL DEFAULT 0,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     modified_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
@@ -39,8 +38,7 @@ CREATE TABLE IF NOT EXISTS result (
     quiz_id INT REFERENCES quiz(id) ON DELETE CASCADE NOT NULL,
     title TEXT NOT NULL,
     description TEXT,
-    position INT NOT NULL CHECK (position >= 0),
-    user_count INT NOT NULL DEFAULT 0
+    position INT NOT NULL CHECK (position >= 0)
 );
 
 CREATE TABLE IF NOT EXISTS option (
