@@ -1,73 +1,60 @@
 const pool = require("./index");
 
-// TODO: refactor
-const getAllQuizzes = async (limit = 20, offset = 0) => {
 
+const selectAllRowsById = async (table, idValue, selectFields = ["*"], idColumnName = "id") => {
     try {
-        const queryText = "SELECT * FROM quiz LIMIT $1 OFFSET $2";
-        const result = await pool.query(queryText, [limit, offset]);
+        const fields = selectFields.join(', ');
+        const query = `SELECT ${fields} FROM ${table} WHERE ${idColumnName} = $1`;
+        const result = await pool.query(query, [idValue]);
         return result.rows;
-    }
-    catch (error) {
-        throw error;
+    } catch (error) {
+        const selectError = new Error(`Error in selecting from ${table} by id ${idValue}: ${error.message}`);
+        throw selectError;
     }
 };
 
-const getQuizById = async (id) => {
+const selectSingleRowById = async (table, idValue, selectFields = ["*"], idColumnName = "id") => {
+    const rows = await selectAllRowsById(table, idValue, selectFields, idColumnName);
+    return rows[0];
+};
 
-    try {
-        const quizQuery = "SELECT * FROM quiz WHERE id = $1";
-        const quizResult = await pool.query(quizQuery, [id]);
-        const quiz = quizResult.rows[0];
+const getAllQuizzes = async (limit = 20, offset = 0) => {
 
-        const categoryQuery = "SELECT * FROM category WHERE id = $1";
-        const categoryResult = await pool.query(categoryQuery, [quiz.category_id]);
-        const category = categoryResult.rows[0];
+    const query = "SELECT * FROM quiz LIMIT $1 OFFSET $2";
+    const result = await pool.query(query, [limit, offset]);
+    return result.rows;
+};
 
-        const userQuery = "SELECT id, username, email, nickname, joining_date FROM app_user WHERE id = $1";
-        const userResult = await pool.query(userQuery, [quiz.creator_id]);
-        const user = userResult.rows[0];
+const getQuizById = async (quizId) => {
 
-        const questionQuery = "SELECT * FROM question WHERE quiz_id = $1";
-        const questionResult = await pool.query(questionQuery, [id]);
-        const questions = questionResult.rows;
+    const quiz = await selectSingleRowById("quiz", quizId);
+    const category = await selectSingleRowById("category", quiz.category_id);
+    const user = await selectSingleRowById("app_user", quiz.creator_id,
+    ["id", "username", "email", "nickname", "joining_date"]);
+    const results = await selectAllRowsById("result", quizId,
+    ["id", "title", "description", "position"], "quiz_id");
+    const questions = await selectAllRowsById("question", quizId,
+    ["id", "content", "position", "weight", "single_choice"], "quiz_id");
 
-        const resultQuery = "SELECT * FROM result WHERE quiz_id = $1";
-        const resultResult = await pool.query(resultQuery, [id]);
-        const results = resultResult.rows;
+    let questionsWithOptions = [];
+    for (const question of questions) {
 
-        const optionQuery = "SELECT * FROM option WHERE question_id = $1";
-
-        let completeQuestions = []
-        for (const q of questions) {
-            const optionResult = await pool.query(optionQuery, [q.id]);
-            const options = optionResult.rows;
-
-            const question = {
-                "id": q.id,
-                "content": q.content,
-                "position": q.position,
-                "weight": q.weight,
-                "single_choice": q.single_choice,
-                "options": options
-            }
-
-            completeQuestions.push(question);
+        const options = await selectAllRowsById("option", question.id, ["id", "content", "position"], "question_id");
+        const questionWithOptions = {
+            ...question,
+            "options": options
         }
-
-        const result = {
-            "quiz": quiz,
-            "category": category,
-            "creator": user,
-            "questions": completeQuestions,
-            "results": results
-        }
-
-        return result;
+        questionsWithOptions.push(questionWithOptions);
     }
-    catch (error) {
-        throw error;
+
+    const response = {
+        "quiz": quiz,
+        "category": category,
+        "creator": user,
+        "questions": questionsWithOptions,
+        "results": results
     }
+    return response;
 };
 
 const createQuiz = async (quiz, creator_id) => {
