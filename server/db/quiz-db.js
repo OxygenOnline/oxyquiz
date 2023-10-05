@@ -2,20 +2,53 @@ const pool = require("./index");
 
 
 const selectAllRowsById = async (table, idValue, selectFields = ["*"], idColumnName = "id") => {
+
     try {
         const fields = selectFields.join(', ');
         const query = `SELECT ${fields} FROM ${table} WHERE ${idColumnName} = $1`;
+
         const result = await pool.query(query, [idValue]);
+
         return result.rows;
-    } catch (error) {
+    }
+    catch (error) {
+
         const selectError = new Error(`Error in selecting from ${table} by id ${idValue}: ${error.message}`);
         throw selectError;
     }
 };
 
 const selectSingleRowById = async (table, idValue, selectFields = ["*"], idColumnName = "id") => {
+
     const rows = await selectAllRowsById(table, idValue, selectFields, idColumnName);
     return rows[0];
+};
+
+const insertRow = async (table, fields, values, returnId = true) => {
+
+    try {
+
+        if (fields.length !== values.length) {
+            throw new Error();
+        }
+
+        const fieldNames = fields.join(', ');
+        const placeholders = values.map((_, index) => `$${index + 1}`).join(', ');
+        let query = `INSERT INTO ${table} (${fieldNames}) VALUES (${placeholders})`;
+
+        if (returnId) {
+            query += ` RETURNING id`;
+        }
+
+        const result = await pool.query(query, values);
+
+        return returnId ? result.rows[0].id : undefined;
+    }
+    catch (error) {
+
+        const insertError = new Error(`Error inserting row into ${table}: ${error.message}`);
+        throw insertError;
+    }
 };
 
 const getAllQuizzes = async (limit = 20, offset = 0) => {
@@ -30,11 +63,11 @@ const getQuizById = async (quizId) => {
     const quiz = await selectSingleRowById("quiz", quizId);
     const category = await selectSingleRowById("category", quiz.category_id);
     const user = await selectSingleRowById("app_user", quiz.creator_id,
-    ["id", "username", "email", "nickname", "joining_date"]);
+        ["id", "username", "email", "nickname", "joining_date"]);
     const results = await selectAllRowsById("result", quizId,
-    ["id", "title", "description", "position"], "quiz_id");
+        ["id", "title", "description", "position"], "quiz_id");
     const questions = await selectAllRowsById("question", quizId,
-    ["id", "content", "position", "weight", "single_choice"], "quiz_id");
+        ["id", "content", "position", "weight", "single_choice"], "quiz_id");
 
     let questionsWithOptions = [];
     for (const question of questions) {
@@ -44,6 +77,7 @@ const getQuizById = async (quizId) => {
             ...question,
             "options": options
         }
+
         questionsWithOptions.push(questionWithOptions);
     }
 
@@ -54,6 +88,7 @@ const getQuizById = async (quizId) => {
         "questions": questionsWithOptions,
         "results": results
     }
+
     return response;
 };
 
@@ -66,61 +101,35 @@ const createQuiz = async (quiz, creator_id) => {
 
         await pool.query('BEGIN');
 
-        const quizInsert = `INSERT INTO quiz(title, description, category_id, creator_id)
-        VALUES ($1, $2, $3, $4)
-        RETURNING id;`;
-        const quizResult = await pool.query(quizInsert, [quiz.title, quiz.description, quiz.category_id, creator_id]);
-        const quizId = quizResult.rows[0].id;
+        const quizId = await insertRow("quiz", ["title", "description", "category_id", "creator_id"],
+            [quiz.title, quiz.description, quiz.category_id, creator_id]);
 
+        // TODO: map result positions to ids better?
         let resultIdArray = [];
-        const resultInsert = `INSERT INTO result(quiz_id, title, description, position)
-        VALUES ($1, $2, $3, $4)
-        RETURNING id;`;
-        for (const r of results) {
-            let resultResult = await pool.query(resultInsert, [
-                quizId,
-                r.title,
-                r.description,
-                r.position
-            ]);
-            const resultId = resultResult.rows[0].id;
+        for (const result of results) {
 
-            resultIdArray.splice(r.position, 0, resultId);
+            const resultId = await insertRow("result", ["quiz_id", "title", "description", "position"],
+                [quizId, result.title, result.description, result.position]);
+
+            resultIdArray.splice(result.position, 0, resultId);
         }
 
         // TODO: validate unique position for:
         // question, option, result
-        const questionInsert = `INSERT INTO question(quiz_id, content, position, weight, single_choice)
-        VALUES ($1, $2, $3, $4, $5)
-        RETURNING id;`;
-        const optionInsert = `INSERT INTO option(question_id, content, position)
-        VALUES ($1, $2, $3)
-        RETURNING id;`;
-        const optionResultInsert = `INSERT INTO option_result(option_id, result_id)
-        VALUES ($1, $2);`;
-        for (const q of questions) {
-            const questionResult = await pool.query(questionInsert, [
-                quizId,
-                q.content,
-                q.position,
-                q.weight,
-                q.single_choice,
-            ]);
-            const questionId = questionResult.rows[0].id;
+        for (const question of questions) {
 
-            for (const o of q.options) {
-                const optionResult = await pool.query(optionInsert, [
-                    questionId,
-                    o.content,
-                    o.position
-                ]);
-                const optionId = optionResult.rows[0].id;
+            const questionId = await insertRow("question", ["quiz_id", "content", "position", "weight", "single_choice"],
+                [quizId, question.content, question.position, question.weight, question.single_choice]);
 
-                for (const r_o of o.result_ids) {
-                    await pool.query(optionResultInsert, [
-                        optionId,
-                        resultIdArray[r_o]
-                    ]);
+            for (const option of question.options) {
+
+                const optionId = await insertRow("option", ["question_id", "content", "position"],
+                    [questionId, option.content, option.position]);
+
+                for (const optionResult of option.result_ids) {
+
+                    await insertRow("option_result", ["option_id", "result_id"],
+                        [optionId, resultIdArray[optionResult]], false);
                 }
             }
         }
@@ -130,6 +139,7 @@ const createQuiz = async (quiz, creator_id) => {
         return quizId;
     }
     catch (error) {
+
         await pool.query('ROLLBACK');
         throw error;
     }
@@ -341,31 +351,18 @@ const updateQuizById = async (id, quiz) => {
     }
 }
 
-const deleteQuizById = async (id) => {
+const deleteQuizById = async (quizId) => {
 
-    try {
-        const queryText = "DELETE FROM quiz WHERE id = $1";
-        await pool.query(queryText, [id]);
-    }
-    catch (error) {
-        throw error;
-    }
+    const queryText = "DELETE FROM quiz WHERE id = $1";
+    await pool.query(queryText, [quizId]);
 };
 
-const checkQuizExists = async (id) => {
+const checkQuizExists = async (quizId) => {
 
-    try {
-        const queryText = "SELECT * FROM quiz WHERE id = $1 LIMIT 1";
-        const { rowCount } = await pool.query(queryText, [id]);
+    const query = 'SELECT COUNT(*) FROM quiz WHERE id = $1';
+    const result = await pool.query(query, [quizId]);
 
-        if (rowCount === 0) {
-            return false;
-        }
-        return true;
-    }
-    catch (error) {
-        throw error;
-    }
+    return Number(result.rows[0].count) === 1;
 };
 
 module.exports = {
