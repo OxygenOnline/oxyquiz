@@ -1,92 +1,122 @@
 const pool = require("./index");
+const query = require('./db-utils');
 
 // TODO: extract all queries into their own function, with one array arg that takes in the values, tablename and filedname are constants
 // generic queries into own file
-const selectAllRowsById = async (table, idValue, selectFields = ["*"], idColumnName = "id") => {
 
-    try {
-
-        const fields = selectFields.join(', ');
-        const query = `SELECT ${fields} FROM ${table} WHERE ${idColumnName} = $1`;
-
-        const result = await pool.query(query, [idValue]);
-
-        return result.rows;
-    }
-    catch (error) {
-
-        const selectError = new Error(`Error in selecting from ${table} by id ${idValue}: ${error.message}`);
-        throw selectError;
-    }
+const selectQuiz = async (quizId) => {
+    const quiz = await query.selectSingleRowById("quiz", quizId,
+        ["title", "description"]);
+    return quiz;
 };
 
-const selectSingleRowById = async (table, idValue, selectFields = ["*"], idColumnName = "id") => {
-
-    const rows = await selectAllRowsById(table, idValue, selectFields, idColumnName);
-    return rows[0];
+const selectCategory = async (categoryId) => {
+    const category = await query.selectSingleRowById("category", categoryId);
+    return category;
 };
 
-const insertRow = async (table, fields, values, returnId = true) => {
-
-    try {
-
-        if (fields.length !== values.length) {
-            throw new Error();
-        }
-
-        const fieldNames = fields.join(', ');
-        const placeholders = values.map((_, index) => `$${index + 1}`).join(', ');
-        let query = `INSERT INTO ${table} (${fieldNames}) VALUES (${placeholders})`;
-
-        if (returnId) {
-            query += ` RETURNING id`;
-        }
-
-        const result = await pool.query(query, values);
-
-        return returnId ? result.rows[0].id : undefined;
-    }
-    catch (error) {
-
-        const insertError = new Error(`Error inserting row into ${table}: ${error.message}`);
-        throw insertError;
-    }
+const selectUser = async (userId) => {
+    const user = await query.selectSingleRowById("app_user", userId,
+        ["id", "username", "email", "nickname", "joining_date"]);
+    return user;
 };
 
-const updateRow = async (table, fields, values, id) => {
-
-    try {
-
-        const setClause = fields.map((field, index) => `${field} = $${index + 1}`).join(', ');
-        const query = `UPDATE ${table} SET ${setClause} WHERE id = $${fields.length + 1}`;
-
-        await pool.query(query, [...values, id]);
-    }
-    catch (error) {
-
-        const updateError = new Error(`Error updating ${table} row with ID ${id}: ${error.message}`);
-        throw updateError;
-    }
+const selectResults = async (quizId) => {
+    const results = await query.selectAllRowsById("result", quizId,
+        ["id", "title", "description", "position"], "quiz_id");
+    return results;
 };
 
-const deleteRow = async (table, conditionValues, conditionFields = ["id"]) => {
+const selectQuestions = async (quizId) => {
+    const questions = await query.selectAllRowsById("question", quizId,
+        ["id", "content", "position", "weight", "single_choice"], "quiz_id");
+    return questions;
+};
 
-    try {
+const selectOptions = async (questionId) => {
+    const options = await query.selectAllRowsById("option", questionId,
+        ["id", "content", "position"], "question_id");
+    return options;
+};
 
-        if (conditionFields.length !== conditionValues.length) {
-            throw new Error();
-        }
+const selectOptionResults = async (optionId) => {
+    const optionResults = await query.selectAllRowsById("option_result", optionId,
+        ["result_id"], ["option_id"]);
+    return optionResults;
+};
 
-        const whereClauses = conditionFields.map((field, index) => `${field} = $${index + 1}`).join(' AND ');
-        const query = `DELETE FROM ${table} WHERE ${whereClauses}`;
+const insertQuiz = async (quiz) => {
+    const quizId = await query.insertRow("quiz",
+        ["title", "description", "category_id", "creator_id"],
+        quiz);
+    return quizId;
+};
 
-        await pool.query(query, conditionValues);
-    }
-    catch (error) {
+const insertResult = async (result) => {
+    const resultId = await query.insertRow("result",
+        ["quiz_id", "title", "description", "position"],
+        result);
+    return resultId;
+};
 
-        const deleteError = new Error(`Error deleting row from ${table}: ${error.message}`);
-        throw deleteError;
-    }
+const insertQuestion = async (question) => {
+    const questionId = await query.insertRow("question",
+        ["quiz_id", "content", "position", "weight", "single_choice"],
+        question);
+    return questionId;
+};
+
+const insertOption = async (option) => {
+    const optionId = await query.insertRow("option",
+        ["question_id", "content", "position"],
+        option);
+    return optionId;
+};
+
+const insertOptionResult = async (optionResult) => {
+    await query.insertRow("option_result", ["option_id", "result_id"],
+        optionResult, false);
+};
+
+const updateQuiz = async (quizId, quiz) => {
+    quiz.push("NOW()");
+    await query.updateRow("quiz", ["title", "description", "category_id", "modified_at"],
+        quiz, quizId);
+};
+
+const updateResult = async (resultId, result) => {
+    await query.updateRow("result", ["title", "description", "position"],
+        result, resultId);
+};
+
+const updateQuestion = async (questionId, question) => {
+    await query.updateRow("question", ["content", "position", "weight", "single_choice"],
+        question, questionId);
+};
+
+const updateOption = async (optionId, option) => {
+    await query.updateRow("option", ["content", "position"],
+        option, optionId);
+};
+
+const deleteQuiz = async (quizId) => {
+    await query.deleteRow("quiz", [quizId])
+};
+
+const deleteResult = async (ids) => {
+    await query.deleteRow("result", ids, ["id", "quiz_id"]);
+};
+
+const deleteQuestion = async (ids) => {
+    await query.deleteRow("question", ids, ["id", "quiz_id"]);
+};
+
+const deleteOption = async (ids) => {
+    await query.deleteRow("option", ids, ["id", "question_id"]);
+};
+
+const deleteOptionResult = async (ids) => {
+    await query.deleteRow("option_result", ids, ["option_id", "result_id"]);
 };
 
 const removableIds = (newArray, oldArray) => {
@@ -102,13 +132,11 @@ const removableIds = (newArray, oldArray) => {
 const checkValidPositions = (array) => {
 
     const positionsSet = new Set();
-
     array.filter(({ position }) => {
 
         if (position < 0 || position >= array.length || positionsSet.has(position)) {
             throw new Error(`Invalid or duplicate position found with value ${position}`);
         }
-
         positionsSet.add(position);
     });
 };
@@ -122,25 +150,20 @@ const getAllQuizzes = async (limit = 20, offset = 0) => {
 
 const getQuizById = async (quizId) => {
 
-    const quiz = await selectSingleRowById("quiz", quizId,
-        ["title", "description"]);
-    const category = await selectSingleRowById("category", quiz.category_id);
-    const user = await selectSingleRowById("app_user", quiz.creator_id,
-        ["id", "username", "email", "nickname", "joining_date"]);
-    const results = await selectAllRowsById("result", quizId,
-        ["id", "title", "description", "position"], "quiz_id");
-    const questions = await selectAllRowsById("question", quizId,
-        ["id", "content", "position", "weight", "single_choice"], "quiz_id");
+    const quiz = await selectQuiz(quizId);
+    const category = await selectCategory(quiz.category_id);
+    const user = await selectUser(quiz.creator_id);
+    const results = await selectResults(quizId);
+    const questions = await selectQuestions(quizId);
 
     let questionsWithOptions = [];
     for (const question of questions) {
 
-        const options = await selectAllRowsById("option", question.id, ["id", "content", "position"], "question_id");
+        const options = await selectOptions(question.id);
         const questionWithOptions = {
             ...question,
             "options": options
         }
-
         questionsWithOptions.push(questionWithOptions);
     }
 
@@ -164,16 +187,16 @@ const createQuiz = async (quiz, creator_id) => {
 
         await pool.query('BEGIN');
 
-        const quizId = await insertRow("quiz", ["title", "description", "category_id", "creator_id"],
+        const quizId = await insertQuiz(
             [quiz.title, quiz.description, quiz.category_id, creator_id]);
 
         checkValidPositions(results);
         let resultIdArray = [];
         for (const result of results) {
 
-            const resultDescription = result.description ?? null;
-            const resultId = await insertRow("result", ["quiz_id", "title", "description", "position"],
-                [quizId, result.title, resultDescription, result.position]);
+            result.description = result.description ?? null;
+            const resultId = await insertResult(
+                [quizId, result.title, result.description, result.position]);
 
             resultIdArray.splice(result.position, 0, resultId);
         }
@@ -181,26 +204,23 @@ const createQuiz = async (quiz, creator_id) => {
         checkValidPositions(questions);
         for (const question of questions) {
 
-            const questionId = await insertRow("question",
-                ["quiz_id", "content", "position", "weight", "single_choice"],
+            const questionId = await insertQuestion(
                 [quizId, question.content, question.position, question.weight, question.single_choice]);
 
             checkValidPositions(question.options);
             for (const option of question.options) {
 
-                const optionId = await insertRow("option", ["question_id", "content", "position"],
+                const optionId = await insertOption(
                     [questionId, option.content, option.position]);
 
                 for (const optionResult of option.result_ids) {
 
-                    await insertRow("option_result", ["option_id", "result_id"],
-                        [optionId, resultIdArray[optionResult]], false);
+                    await insertOptionResult([optionId, resultIdArray[optionResult]]);
                 }
             }
         }
 
         await pool.query('COMMIT');
-
         return quizId;
     }
     catch (error) {
@@ -219,27 +239,26 @@ const updateQuizById = async (quizId, quiz) => {
 
         await pool.query('BEGIN');
 
-        const quizDesc = quiz.description ?? null;
-        await updateRow("quiz", ["title", "description", "category_id", "modified_at"],
-            [quiz.title, quizDesc, quiz.category_id, "NOW()"], quizId);
+        quiz.description = quiz.description ?? null;
+        await updateQuiz(quizId,
+            [quiz.title, quiz.description, quiz.category_id]);
 
         checkValidPositions(results);
-        let dbRows = await selectAllRowsById("result", quizId,
-            ["id", "title", "description", "position"], "quiz_id");
+        let dbRows = await selectResults(quizId);
         let toBeDeleted = removableIds(results, dbRows);
         for (const deletableId of toBeDeleted) {
 
-            await deleteRow("result", [deletableId, quizId], ["id", "quiz_id"]);
+            await deleteResult([deletableId, quizId]);
         }
 
         let resultIdArray = [];
         for (const result of results) {
 
-            const resultDescription = result.description ?? null;
+            result.description = result.description ?? null;
             if (result.id === undefined) {
 
-                result.id = await insertRow("result", ["quiz_id", "title", "description", "position"],
-                    [quizId, result.title, resultDescription, result.position]);
+                result.id = await insertResult(
+                    [quizId, result.title, result.description, result.position]);
             }
             else {
 
@@ -247,27 +266,26 @@ const updateQuizById = async (quizId, quiz) => {
                     continue;
                 }
 
-                await updateRow("result", ["title", "description", "position"],
-                    [result.title, resultDescription, result.position], result.id)
+                await updateResult(result.id,
+                    [result.title, result.description, result.position]);
             }
 
             resultIdArray.splice(result.position, 0, result.id);
         }
 
         checkValidPositions(questions);
-        dbRows = await selectAllRowsById("question", quizId,
-            ["id", "content", "position", "weight", "single_choice"], "quiz_id");
+        dbRows = await selectQuestions(quizId);
         toBeDeleted = removableIds(questions, dbRows);
         for (const deletableId of toBeDeleted) {
 
-            await deleteRow("question", [deletableId, quizId], ["id", "quiz_id"]);
+            await deleteQuestion([deletableId, quizId]);
         }
 
         for (const question of questions) {
 
             if (question.id === undefined) {
 
-                question.id = await insertRow("question", ["quiz_id", "content", "position", "weight", "single_choice"],
+                question.id = await insertQuestion(
                     [quizId, question.content, question.position, question.weight, question.single_choice]);
             }
             else {
@@ -276,25 +294,24 @@ const updateQuizById = async (quizId, quiz) => {
                     continue;
                 }
 
-                await updateRow("question", ["content", "position", "weight", "single_choice"],
-                    [question.content, question.position, question.weight, question.single_choice], question.id);
+                await updateQuestion(question.id,
+                    [question.content, question.position, question.weight, question.single_choice]);
             }
 
             const options = question.options
             checkValidPositions(options);
-            dbRows = await selectAllRowsById("option", question.id,
-                ["id", "content", "position"], "question_id");
+            dbRows = await selectOptions(question.id);
             toBeDeleted = removableIds(options, dbRows);
             for (const deletableId of toBeDeleted) {
 
-                await deleteRow("option", [deletableId, question.id], ["id", "question_id"]);
+                await deleteOption([deletableId, question.id]);
             }
 
             for (const option of options) {
 
                 if (option.id === undefined) {
 
-                    option.id = await insertRow("option", ["question_id", "content", "position"],
+                    option.id = await insertOption(
                         [question.id, option.content, option.position]);
                 }
                 else {
@@ -303,11 +320,11 @@ const updateQuizById = async (quizId, quiz) => {
                         continue;
                     }
 
-                    await updateRow("option", ["content", "position"],
-                        [option.content, option.position], option.id);
+                    await updateOption(option.id,
+                        [option.content, option.position]);
                 }
 
-                dbRows = await selectAllRowsById("option_result", option.id, ["result_id AS id"], ["option_id"]);
+                dbRows = await selectOptionResults(option.id);
                 optionResults = option.result_ids
                     .map(index => resultIdArray[index])
                     .filter(resultId => resultId !== undefined && resultId !== null);
@@ -315,15 +332,14 @@ const updateQuizById = async (quizId, quiz) => {
                 for (const oldId of dbRows) {
 
                     if (!optionResults.includes(oldId)) {
-                        await deleteRow("option_result", [option.id, oldId], ["option_id", "result_id"]);
+                        await deleteOptionResult([option.id, oldId]);
                     }
                 }
 
                 for (const newId of optionResults) {
 
-                    console.log(newId);
                     if (!dbRows.includes(newId)) {
-                        await insertRow("option_result", ["option_id", "result_id"], [option.id, newId], false);
+                        await insertOptionResult([option.id, newId]);
                     }
                 }
                 // TODO: rename in schema, code and test data option.result_ids to result_positions
@@ -331,7 +347,6 @@ const updateQuizById = async (quizId, quiz) => {
         }
 
         await pool.query('COMMIT');
-
         return getQuizById(quizId);
     }
     catch (error) {
@@ -343,7 +358,7 @@ const updateQuizById = async (quizId, quiz) => {
 
 const deleteQuizById = async (quizId) => {
 
-    await deleteRow("quiz", [quizId])
+    await deleteQuiz(quizId);
 };
 
 const checkQuizExists = async (quizId) => {
