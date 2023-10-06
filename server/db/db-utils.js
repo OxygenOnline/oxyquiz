@@ -1,13 +1,25 @@
 const pool = require("./index");
 
-const selectAllRowsById = async (table, idValue, selectFields = ["*"], idColumnName = "id") => {
+
+const selectAllRowsById = async (table, idValue, selectFields = ["*"], idColumnName = "id", limit, offset) => {
 
     try {
 
         const fields = selectFields.join(', ');
-        const query = `SELECT ${fields} FROM ${table} WHERE ${idColumnName} = $1`;
+        let query = `SELECT ${fields} FROM ${table}`;
 
-        const result = await pool.query(query, [idValue]);
+        if (idValue !== undefined) {
+            query += ` WHERE ${idColumnName} = ${idValue}`;
+        }
+
+        if (limit !== undefined) {
+            query += ` LIMIT ${limit}`;
+        }
+        if (offset !== undefined) {
+            query += ` OFFSET ${offset}`;
+        }
+
+        const result = await pool.query(query);
 
         return result.rows;
     }
@@ -87,10 +99,34 @@ const deleteRow = async (table, conditionValues, conditionFields = ["id"]) => {
     }
 };
 
+const countRows = async (table, id, idColumnName = "id") => {
+
+    const query = `SELECT COUNT(*) FROM ${table} WHERE ${idColumnName} = $1`;
+    const result = await pool.query(query, [id]);
+
+    return Number(result.rows[0].count) !== 0;
+};
+
+const beginTransaction = async () => {
+    await pool.query('BEGIN');
+};
+
+const commitTransaction = async () => {
+    await pool.query('COMMIT');
+};
+
+const rollbackTransaction = async () => {
+    await pool.query('ROLLBACK');
+};
+
 module.exports = {
     selectAllRowsById,
     selectSingleRowById,
     insertRow,
     updateRow,
-    deleteRow
+    deleteRow,
+    countRows,
+    beginTransaction,
+    commitTransaction,
+    rollbackTransaction
 };

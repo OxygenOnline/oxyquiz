@@ -1,8 +1,11 @@
-const pool = require("./index");
 const query = require('./db-utils');
 
-// TODO: extract all queries into their own function, with one array arg that takes in the values, tablename and filedname are constants
-// generic queries into own file
+
+const selectQuizzes = async (limit, offset) => {
+    const quizzes = await query.selectAllRowsById("quiz",
+        undefined, undefined, undefined, limit, offset);
+    return quizzes;
+};
 
 const selectQuiz = async (quizId) => {
     const quiz = await query.selectSingleRowById("quiz", quizId,
@@ -79,9 +82,8 @@ const insertOptionResult = async (optionResult) => {
 };
 
 const updateQuiz = async (quizId, quiz) => {
-    quiz.push("NOW()");
     await query.updateRow("quiz", ["title", "description", "category_id", "modified_at"],
-        quiz, quizId);
+        [...quiz, "NOW()"], quizId);
 };
 
 const updateResult = async (resultId, result) => {
@@ -143,9 +145,8 @@ const checkValidPositions = (array) => {
 
 const getAllQuizzes = async (limit = 20, offset = 0) => {
 
-    const query = "SELECT * FROM quiz LIMIT $1 OFFSET $2";
-    const result = await pool.query(query, [limit, offset]);
-    return result.rows;
+    const result = await selectQuizzes(limit, offset);
+    return result;
 };
 
 const getQuizById = async (quizId) => {
@@ -185,7 +186,7 @@ const createQuiz = async (quiz, creator_id) => {
         const results = quiz.results;
         const questions = quiz.questions;
 
-        await pool.query('BEGIN');
+        await query.beginTransaction();
 
         const quizId = await insertQuiz(
             [quiz.title, quiz.description, quiz.category_id, creator_id]);
@@ -220,12 +221,12 @@ const createQuiz = async (quiz, creator_id) => {
             }
         }
 
-        await pool.query('COMMIT');
+        await query.commitTransaction();
         return quizId;
     }
     catch (error) {
 
-        await pool.query('ROLLBACK');
+        await query.rollbackTransaction();
         throw error;
     }
 };
@@ -237,7 +238,7 @@ const updateQuizById = async (quizId, quiz) => {
         const results = quiz.results;
         const questions = quiz.questions;
 
-        await pool.query('BEGIN');
+        await query.beginTransaction();
 
         quiz.description = quiz.description ?? null;
         await updateQuiz(quizId,
@@ -346,12 +347,12 @@ const updateQuizById = async (quizId, quiz) => {
             }
         }
 
-        await pool.query('COMMIT');
+        await query.commitTransaction();
         return getQuizById(quizId);
     }
     catch (error) {
 
-        await pool.query('ROLLBACK');
+        await query.rollbackTransaction();
         throw error;
     }
 }
@@ -363,10 +364,8 @@ const deleteQuizById = async (quizId) => {
 
 const checkQuizExists = async (quizId) => {
 
-    const query = 'SELECT COUNT(*) FROM quiz WHERE id = $1';
-    const result = await pool.query(query, [quizId]);
-
-    return Number(result.rows[0].count) !== 0;
+    const result = await query.countRows("quiz", quizId);
+    return result;
 };
 
 module.exports = {
