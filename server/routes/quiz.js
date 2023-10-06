@@ -53,7 +53,7 @@ router.route("/:id(\\d+)")
             res.json(quizId);
         }
         catch (error) {
-            next(createError(500));
+            next(error);
         }
     })
     .delete(async (req, res, next) => {
