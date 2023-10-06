@@ -75,7 +75,7 @@
                                         "position": {
                                             "type": "integer"
                                         },
-                                        "result_ids": {
+                                        "result_positions": {
                                             "type": "array",
                                             "minItems": 1,
                                             "uniqueItems": true,
@@ -87,7 +87,7 @@
                                     "required": [
                                         "content",
                                         "position",
-                                        "result_ids"
+                                        "result_positions"
                                     ]
                                 }
                             }

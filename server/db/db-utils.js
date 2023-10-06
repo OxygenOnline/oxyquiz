@@ -63,18 +63,23 @@ const insertRow = async (table, fields, values, returnId = true) => {
     }
 };
 
-const updateRow = async (table, fields, values, id) => {
+const updateRow = async (table, fields, values, conditionValues, conditionFields = ["id"]) => {
 
     try {
 
-        const setClause = fields.map((field, index) => `${field} = $${index + 1}`).join(', ');
-        const query = `UPDATE ${table} SET ${setClause} WHERE id = $${fields.length + 1}`;
+        if (conditionFields.length !== conditionValues.length) {
+            throw new Error();
+        }
 
-        await pool.query(query, [...values, id]);
+        const setClause = fields.map((field, index) => `${field} = $${index + 1}`).join(', ');
+        const whereClauses = conditionFields.map((field, index) => `${field} = $${fields.length + index + 1}`).join(' AND ');
+
+        const query = `UPDATE ${table} SET ${setClause} WHERE ${whereClauses}`;
+        await pool.query(query, [...values, ...conditionValues]);
     }
     catch (error) {
 
-        const updateError = new Error(`Error updating ${table} row with ID ${id}: ${error.message}`);
+        const updateError = new Error(`Error updating ${table} row: ${error.message}`);
         throw updateError;
     }
 };

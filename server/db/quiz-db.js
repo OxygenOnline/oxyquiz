@@ -8,8 +8,7 @@ const selectQuizzes = async (limit, offset) => {
 };
 
 const selectQuiz = async (quizId) => {
-    const quiz = await query.selectSingleRowById("quiz", quizId,
-        ["title", "description"]);
+    const quiz = await query.selectSingleRowById("quiz", quizId);
     return quiz;
 };
 
@@ -86,19 +85,19 @@ const updateQuiz = async (quizId, quiz) => {
         [...quiz, "NOW()"], quizId);
 };
 
-const updateResult = async (resultId, result) => {
+const updateResult = async (ids, result) => {
     await query.updateRow("result", ["title", "description", "position"],
-        result, resultId);
+        result, ids, ["id", quiz_id]);
 };
 
-const updateQuestion = async (questionId, question) => {
+const updateQuestion = async (ids, question) => {
     await query.updateRow("question", ["content", "position", "weight", "single_choice"],
-        question, questionId);
+        question, ids, ["id", quiz_id]);
 };
 
-const updateOption = async (optionId, option) => {
+const updateOption = async (ids, option) => {
     await query.updateRow("option", ["content", "position"],
-        option, optionId);
+        option, ids, ["id", question_id]);
 };
 
 const deleteQuiz = async (quizId) => {
@@ -167,7 +166,7 @@ const getQuizById = async (quizId) => {
         }
         questionsWithOptions.push(questionWithOptions);
     }
-
+    
     const response = {
         "quiz": quiz,
         "category": category,
@@ -179,7 +178,7 @@ const getQuizById = async (quizId) => {
     return response;
 };
 
-const createQuiz = async (quiz, creator_id) => {
+const createQuiz = async (quiz, creatorId) => {
 
     try {
 
@@ -189,7 +188,7 @@ const createQuiz = async (quiz, creator_id) => {
         await query.beginTransaction();
 
         const quizId = await insertQuiz(
-            [quiz.title, quiz.description, quiz.category_id, creator_id]);
+            [quiz.title, quiz.description, quiz.category_id, creatorId]);
 
         checkValidPositions(results);
         let resultIdArray = [];
@@ -214,7 +213,7 @@ const createQuiz = async (quiz, creator_id) => {
                 const optionId = await insertOption(
                     [questionId, option.content, option.position]);
 
-                for (const optionResult of option.result_ids) {
+                for (const optionResult of option.result_positions) {
 
                     await insertOptionResult([optionId, resultIdArray[optionResult]]);
                 }
@@ -241,7 +240,7 @@ const updateQuizById = async (quizId, quiz) => {
         await query.beginTransaction();
 
         quiz.description = quiz.description ?? null;
-        await updateQuiz(quizId,
+        await updateQuiz([quizId],
             [quiz.title, quiz.description, quiz.category_id]);
 
         checkValidPositions(results);
@@ -267,7 +266,7 @@ const updateQuizById = async (quizId, quiz) => {
                     continue;
                 }
 
-                await updateResult(result.id,
+                await updateResult([result.id, quizId],
                     [result.title, result.description, result.position]);
             }
 
@@ -295,7 +294,7 @@ const updateQuizById = async (quizId, quiz) => {
                     continue;
                 }
 
-                await updateQuestion(question.id,
+                await updateQuestion([question.id, quizId],
                     [question.content, question.position, question.weight, question.single_choice]);
             }
 
@@ -321,12 +320,12 @@ const updateQuizById = async (quizId, quiz) => {
                         continue;
                     }
 
-                    await updateOption(option.id,
+                    await updateOption([option.id, quizId],
                         [option.content, option.position]);
                 }
 
                 dbRows = await selectOptionResults(option.id);
-                optionResults = option.result_ids
+                optionResults = option.result_positions
                     .map(index => resultIdArray[index])
                     .filter(resultId => resultId !== undefined && resultId !== null);
 
@@ -343,7 +342,6 @@ const updateQuizById = async (quizId, quiz) => {
                         await insertOptionResult([option.id, newId]);
                     }
                 }
-                // TODO: rename in schema, code and test data option.result_ids to result_positions
             }
         }
 
