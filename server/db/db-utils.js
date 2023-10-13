@@ -1,7 +1,7 @@
 const pool = require("./index");
 
 
-const selectAllRowsById = async (table, idValue, selectFields = ["*"], idColumnName = "id", limit, offset) => {
+const selectAllRowsById = async (table, idValue, selectFields = ["*"], idColumnName = "id", limit, offset, orderBy) => {
 
     try {
 
@@ -17,6 +17,10 @@ const selectAllRowsById = async (table, idValue, selectFields = ["*"], idColumnN
         }
         if (offset !== undefined) {
             query += ` OFFSET ${offset}`;
+        }
+        
+        if (orderBy !== undefined) {
+            query += ` ORDER BY ${orderBy}`;
         }
 
         const result = await pool.query(query);

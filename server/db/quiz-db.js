@@ -166,7 +166,7 @@ const getQuizById = async (quizId) => {
         }
         questionsWithOptions.push(questionWithOptions);
     }
-    
+
     const response = {
         "quiz": quiz,
         "category": category,
@@ -262,10 +262,6 @@ const updateQuizById = async (quizId, quiz) => {
             }
             else {
 
-                if (result.quiz_id !== quizId) {
-                    continue;
-                }
-
                 await updateResult([result.id, quizId],
                     [result.title, result.description, result.position]);
             }
@@ -290,10 +286,6 @@ const updateQuizById = async (quizId, quiz) => {
             }
             else {
 
-                if (question.quiz_id !== quizId) {
-                    continue;
-                }
-
                 await updateQuestion([question.id, quizId],
                     [question.content, question.position, question.weight, question.single_choice]);
             }
@@ -315,10 +307,6 @@ const updateQuizById = async (quizId, quiz) => {
                         [question.id, option.content, option.position]);
                 }
                 else {
-
-                    if (option.question_id !== question.id) {
-                        continue;
-                    }
 
                     await updateOption([option.id, quizId],
                         [option.content, option.position]);
@@ -366,11 +354,90 @@ const checkQuizExists = async (quizId) => {
     return result;
 };
 
+const evaluateResult = async (quizId, answers) => {
+
+    // TODO: refactor
+    try {
+
+        const results = await query.selectAllRowsById("result", quizId,
+            undefined, "quiz_id", undefined, undefined, "position");
+        // TODO: maybe get their ids and substract in answer loop, check for empty array
+        // const questions = await selectQuestions(quizId);
+        const resultScores = Array(results.length).fill(0);
+
+        // TODO:
+        // all questions are filled?
+        // shouldnt tick all options
+        // single choice when there is only 2 options therefore
+        for (const answer of answers) {
+
+
+            const { question_id, option_ids } = answer;
+
+            const question = await query.selectSingleRowById("question", question_id);
+
+            if (question.quiz_id !== quizId) {
+                throw new Error("Invalid question in result evaluation");
+            }
+
+            if (question.single_choice && option_ids.length > 1) {
+                throw new Error("Invalid option in result evaluation");
+            }
+
+            for (const option_id of option_ids) {
+
+                const option = await query.selectSingleRowById("option", option_id);
+
+                if (option.question_id !== question_id) {
+                    throw new Error("Invalid option in result evaluation");
+                }
+
+                const optionResult = await selectOptionResults(option_id);
+                const resultIds = optionResult.map(item => item.result_id);
+
+                for (const resultId of resultIds) {
+
+                    const result = await query.selectSingleRowById("result", resultId);
+                    resultScores[result.position] += question.weight;
+                }
+            }
+        }
+
+        let resultsWithPoints = [];
+        for (const result of results) {
+
+            const resultWithPoint = {
+                "title": result.title,
+                "point": resultScores[result.position]
+            }
+            resultsWithPoints.push(resultWithPoint);
+        }
+
+
+        //TODO: send back the result that is the highest score
+        const max = Math.max(...resultScores);
+        const result = resultScores.indexOf(max);
+        const response = {
+            // "result": results[result],
+            // "point": max,
+            ...resultsWithPoints
+        }
+
+        return response;
+    }
+    catch (error) {
+
+        const evaluationError = new Error(`Error in evaluating ${quizId} result: ${error.message}`);
+        throw evaluationError;
+    }
+};
+
 module.exports = {
     getAllQuizzes,
     getQuizById,
     createQuiz,
     updateQuizById,
     deleteQuizById,
-    checkQuizExists
+    checkQuizExists,
+    evaluateResult
 };

@@ -6,6 +6,7 @@ const { Validator } = require("express-json-validator-middleware");
 const quizdb = require("../db/quiz-db")
 
 const quizSchema = require('../schemas/quiz.json');
+const evaluationSchema = require('../schemas/evaluation.json');
 const { validate } = new Validator();
 
 // TODO: user
@@ -39,6 +40,17 @@ router.route("/:id(\\d+)")
         try {
             const { id } = req.params;
             const result = await quizdb.getQuizById(id);
+            res.json(result);
+        }
+        catch (error) {
+            next(error);
+        }
+    })
+    .post(validate({ body: evaluationSchema }), async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            const answers = req.body.answers;
+            const result = await quizdb.evaluateResult(Number(id), answers);
             res.json(result);
         }
         catch (error) {
