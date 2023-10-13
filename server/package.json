@@ -15,7 +15,8 @@
     "express": "^4.18.2",
     "express-json-validator-middleware": "^3.0.1",
     "pg": "^8.11.3",
-    "pg-hstore": "^2.3.4"
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.33.0"
   },
   "devDependencies": {
     "sequelize-cli": "^6.6.1"
