@@ -4,7 +4,9 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate({ Quiz }) {
-      this.hasMany(Quiz);
+      this.hasMany(Quiz, {
+        foreignKey: "creator_id"
+      });
     }
   }
   User.init({
@@ -30,14 +32,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     nickname: {
       type: DataTypes.STRING,
-    },
-    joining_date: {
-      type: DataTypes.DATE,
-      allowNull: false
-    },
+    }
   }, {
     sequelize,
     modelName: 'User',
+    timestamps: true,
     createdAt: "joining_date",
     updatedAt: false,
     underscored: true

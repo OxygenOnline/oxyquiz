@@ -1,11 +1,17 @@
 'use strict';
-const { Model } = require('sequelize');
+const { Model, Sequelize } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Quiz extends Model {
     static associate({ Category, User, Result, Question }) {
-      this.belongsTo(User, {foreignKey: {allowNull: false}}, {onDelete: "CASCADE"});
-      this.belongsTo(Category, {foreignKey: {allowNull: false}}, {onDelete: "RESTRICT"});
+      this.belongsTo(User, {
+        foreignKey: { name: "creator_id", allowNull: false },
+        onDelete: "CASCADE"
+      });
+      this.belongsTo(Category, {
+        foreignKey: { allowNull: false },
+        onDelete: "RESTRICT"
+      });
       this.hasMany(Result);
       this.hasMany(Question);
     }

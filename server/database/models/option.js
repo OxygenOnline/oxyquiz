@@ -4,8 +4,14 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Option extends Model {
     static associate({ Question, Result }) {
-      this.belongsTo(Question, { foreignKey: { allowNull: false } }, { onDelete: "CASCADE" });
-      this.belongsToMany(Result, { through: "option_result" });
+      this.belongsTo(Question, {
+        foreignKey: { allowNull: false },
+        onDelete: "CASCADE"
+      });
+      this.belongsToMany(Result, {
+        through: "option_results",
+        timestamps: false
+      });
     }
   }
   Option.init({

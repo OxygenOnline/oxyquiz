@@ -4,7 +4,10 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Question extends Model {
     static associate({ Quiz }) {
-      this.belongsTo(Quiz, {foreignKey: {allowNull: false}}, {onDelete: "CASCADE"});
+      this.belongsTo(Quiz, {
+        foreignKey: { allowNull: false },
+        onDelete: "CASCADE"
+      });
     }
   }
   Question.init({
@@ -38,6 +41,6 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: false,
     underscored: true,
   });
-  
+
   return Question;
 };
