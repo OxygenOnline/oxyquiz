@@ -36,7 +36,6 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'User',
-    timestamps: true,
     createdAt: "joining_date",
     updatedAt: false,
     underscored: true

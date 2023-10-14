@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Questions', {
+    await queryInterface.createTable('questions', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -19,15 +19,26 @@ module.exports = {
       },
       weight: {
         allowNull: false,
+        defaultValue: 1,
         type: Sequelize.INTEGER
       },
       single_choice: {
         allowNull: false,
+        defaultValue: true,
         type: Sequelize.BOOLEAN
+      },
+      quiz_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'quizzes',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
       }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Questions');
+    await queryInterface.dropTable('questions');
   }
 };
