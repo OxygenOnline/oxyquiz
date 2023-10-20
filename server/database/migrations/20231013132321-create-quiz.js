@@ -16,7 +16,7 @@ module.exports = {
       description: {
         type: Sequelize.STRING
       },
-      creator_id: {
+      creatorId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -25,7 +25,7 @@ module.exports = {
         },
         onDelete: 'CASCADE',
       },
-      category_id: {
+      categoryId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -34,12 +34,12 @@ module.exports = {
         },
         onDelete: 'RESTRICT',
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         type: Sequelize.DATE
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         type: Sequelize.DATE

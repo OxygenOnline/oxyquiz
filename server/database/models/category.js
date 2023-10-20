@@ -4,7 +4,9 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Category extends Model {
     static associate({ Quiz }) {
-      this.hasMany(Quiz);
+      this.hasMany(Quiz, {
+        foreignKey: "categoryId"
+      });
     }
   }
   Category.init({
@@ -21,9 +23,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'Category',
-    timestamps: false,
-    underscored: true,
+    tableName: "categories",
+    timestamps: false
   });
 
   return Category;

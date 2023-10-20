@@ -5,15 +5,19 @@ module.exports = (sequelize, DataTypes) => {
   class Quiz extends Model {
     static associate({ Category, User, Result, Question }) {
       this.belongsTo(User, {
-        foreignKey: { name: "creator_id", allowNull: false },
+        foreignKey: { name: "creatorId", allowNull: false },
         onDelete: "CASCADE"
       });
       this.belongsTo(Category, {
-        foreignKey: { allowNull: false },
+        foreignKey: { name: "categoryId", allowNull: false },
         onDelete: "RESTRICT"
       });
-      this.hasMany(Result);
-      this.hasMany(Question);
+      this.hasMany(Result, {
+        foreignKey: "quizId"
+      });
+      this.hasMany(Question, {
+        foreignKey: "quizId"
+      });
     }
   }
   Quiz.init({
@@ -32,8 +36,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'Quiz',
-    underscored: true
+    tableName: 'quizzes'
   });
 
   return Quiz;

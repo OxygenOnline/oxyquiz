@@ -3,10 +3,13 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Question extends Model {
-    static associate({ Quiz }) {
+    static associate({ Quiz, Option }) {
       this.belongsTo(Quiz, {
-        foreignKey: { allowNull: false },
+        foreignKey: { name: "quizId", allowNull: false },
         onDelete: "CASCADE"
+      });
+      this.hasMany(Option, {
+        foreignKey: "questionId"
       });
     }
   }
@@ -30,16 +33,15 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 1
     },
-    single_choice: {
+    singleChoice: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: true
     }
   }, {
     sequelize,
-    modelName: 'Question',
-    timestamps: false,
-    underscored: true,
+    tableName: 'questions',
+    timestamps: false
   });
 
   return Question;

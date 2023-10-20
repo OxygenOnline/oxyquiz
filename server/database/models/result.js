@@ -3,14 +3,14 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Result extends Model {
-    static associate({ Quiz, Option }) {
+    static associate({ Quiz, Option, OptionResult }) {
       this.belongsTo(Quiz, {
-        foreignKey: { allowNull: false },
+        foreignKey: { name: "quizId", allowNull: false },
         onDelete: "CASCADE"
       });
       this.belongsToMany(Option, {
-        through: "option_results",
-        timestamps: false
+        through: OptionResult,
+        foreignKey: { name: "resultId"}
       });
     }
   }
@@ -34,9 +34,8 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     sequelize,
-    modelName: 'Result',
-    timestamps: false,
-    underscored: true
+    tableName: 'results',
+    timestamps: false
   });
 
   return Result;

@@ -20,7 +20,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER
       },
-      quiz_id: {
+      quizId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {

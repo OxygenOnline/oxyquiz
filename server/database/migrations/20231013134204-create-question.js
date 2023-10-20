@@ -22,12 +22,12 @@ module.exports = {
         defaultValue: 1,
         type: Sequelize.INTEGER
       },
-      single_choice: {
+      singleChoice: {
         allowNull: false,
         defaultValue: true,
         type: Sequelize.BOOLEAN
       },
-      quiz_id: {
+      quizId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
