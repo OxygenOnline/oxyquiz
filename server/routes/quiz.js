@@ -1,16 +1,16 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const createError = require("http-errors");
-const { Validator } = require("express-json-validator-middleware");
+const createError = require('http-errors');
+const { Validator } = require('express-json-validator-middleware');
 
-const quizdb = require("../database/quiz")
+const quizdb = require('../database/quiz');
 
 const quizSchema = require('../schemas/quiz.json');
 const evaluationSchema = require('../schemas/evaluation.json');
 const { validate } = new Validator();
 
 // TODO: user
-router.route("/")
+router.route('/')
     .get(async (req, res, next) => {
         try {
             const result = await quizdb.getAllQuizzes();
@@ -31,11 +31,11 @@ router.route("/")
         }
     });
 
-router.get("/new", async (req, res, next) => {
+router.get('/new', async (req, res, next) => {
     // TODO
 });
 
-router.route("/:id(\\d+)")
+router.route('/:id(\\d+)')
     .get(async (req, res, next) => {
         try {
             const { id } = req.params;
@@ -71,7 +71,7 @@ router.route("/:id(\\d+)")
     .delete(async (req, res, next) => {
         try {
             const { id } = req.params;
-            await quizdb.deleteQuizById(id)
+            await quizdb.deleteQuizById(id);
             res.sendStatus(204);
         }
         catch (error) {
@@ -79,7 +79,7 @@ router.route("/:id(\\d+)")
         }
     });
 
-router.param("id", async (req, res, next, id) => {
+router.param('id', async (req, res, next, id) => {
 
     try {
         const isValidQuiz = await quizdb.quizExists(id);

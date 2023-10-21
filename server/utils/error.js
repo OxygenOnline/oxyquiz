@@ -1,10 +1,10 @@
-const { ValidationError } = require("express-json-validator-middleware");
+const { ValidationError } = require('express-json-validator-middleware');
 
 const logErrors = (err, req, res, next) => {
     // TODO: change to logger
     console.error(err);
     next(err);
-}
+};
 
 const handleClientErrors = (err, req, res, next) => {
     // TODO
@@ -14,7 +14,7 @@ const handleClientErrors = (err, req, res, next) => {
     else {
         next(err);
     }
-}
+};
 
 module.exports = {
     logErrors,

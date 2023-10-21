@@ -1,6 +1,6 @@
-const express = require("express");
-const cors = require("cors");
-const { logErrors, handleClientErrors } = require("./utils/error")
+const express = require('express');
+const cors = require('cors');
+const { logErrors, handleClientErrors } = require('./utils/error');
 
 const app = express();
 const port = 3000;
@@ -8,13 +8,13 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 
-const quizRouter = require("./routes/quiz");
+const quizRouter = require('./routes/quiz');
 
-app.use("/quizzes", quizRouter);
+app.use('/quizzes', quizRouter);
 
-app.get("/", (req, res) => {
+app.get('/', (req, res) => {
     // TODO
-    res.send("homepage");
+    res.send('homepage');
 });
 
 app.listen(port, () => {

@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate({ Quiz }) {
       this.hasMany(Quiz, {
-        foreignKey: "creatorId"
+        foreignKey: 'creatorId'
       });
     }
   }
@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     tableName: 'users',
-    createdAt: "joiningDate",
+    createdAt: 'joiningDate',
     updatedAt: false
   });
 

@@ -5,12 +5,12 @@ module.exports = (sequelize, DataTypes) => {
   class Option extends Model {
     static associate({ Question, Result, OptionResult }) {
       this.belongsTo(Question, {
-        foreignKey: { name: "questionId", allowNull: false },
-        onDelete: "CASCADE"
+        foreignKey: { name: 'questionId', allowNull: false },
+        onDelete: 'CASCADE'
       });
       this.belongsToMany(Result, {
         through: OptionResult,
-        foreignKey: { name: "optionId"}
+        foreignKey: { name: 'optionId'}
       });
     }
   }

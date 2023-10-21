@@ -5,11 +5,11 @@ module.exports = (sequelize, DataTypes) => {
   class Question extends Model {
     static associate({ Quiz, Option }) {
       this.belongsTo(Quiz, {
-        foreignKey: { name: "quizId", allowNull: false },
-        onDelete: "CASCADE"
+        foreignKey: { name: 'quizId', allowNull: false },
+        onDelete: 'CASCADE'
       });
       this.hasMany(Option, {
-        foreignKey: "questionId"
+        foreignKey: 'questionId'
       });
     }
   }

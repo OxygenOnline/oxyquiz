@@ -1,4 +1,4 @@
-const db = require("./models/index");
+const db = require('./models/index');
 const { User, Category, Quiz, Question, Result, Option, OptionResult, sequelize } = db;
 
 const checkValidPositions = (array) => {
@@ -21,35 +21,35 @@ const removableIds = (newArray, oldArray) => {
     .map(item => item.id);
   const ids = existingIds.filter(id => !newIds.includes(id));
   return ids;
-}
+};
 
 const getAllQuizzes = async (limit = 20, offset = 0) => {
 
-  const result = await Quiz.findAll({ offset: offset, limit: limit })
+  const result = await Quiz.findAll({ offset: offset, limit: limit });
   return result;
 };
 
 const getQuizById = async (quizId) => {
 
   const quiz = await Quiz.findByPk(quizId, {
-    attributes: { exclude: ["categoryId", "creatorId"] },
+    attributes: { exclude: ['categoryId', 'creatorId'] },
     include: [
       { model: Category },
       {
         model: User,
-        attributes: { exclude: ["password", "email"] }
+        attributes: { exclude: ['password', 'email'] }
       },
       {
         model: Result,
-        attributes: { exclude: ["quizId"] }
+        attributes: { exclude: ['quizId'] }
       },
       {
         model: Question,
-        attributes: { exclude: ["quizId", "weight"] },
+        attributes: { exclude: ['quizId', 'weight'] },
         include: { model: Option }
       },
     ],
-  })
+  });
 
   return quiz;
 };
@@ -145,7 +145,7 @@ const updateQuizById = async (quizId, quizData) => {
       where: {
         quizId: quizId
       },
-      attributes: ["id"]
+      attributes: ['id']
     });
     let toBeDeleted = removableIds(results, dbRows);
     for (const deletableId of toBeDeleted) {
@@ -169,7 +169,7 @@ const updateQuizById = async (quizId, quizData) => {
           position: result.position,
           quizId: quizId
         });
-        result.id = newResult.id
+        result.id = newResult.id;
       }
       else {
 
@@ -195,7 +195,7 @@ const updateQuizById = async (quizId, quizData) => {
       where: {
         quizId: quizId
       }
-    })
+    });
     toBeDeleted = removableIds(questions, dbRows);
     for (const deletableId of toBeDeleted) {
 
@@ -218,7 +218,7 @@ const updateQuizById = async (quizId, quizData) => {
           singleChoice: question.singleChoice,
           quizId: quizId
         });
-        question.id = newQuestion.id
+        question.id = newQuestion.id;
       }
       else {
 
@@ -235,7 +235,7 @@ const updateQuizById = async (quizId, quizData) => {
         });
       }
 
-      const options = question.options
+      const options = question.options;
       checkValidPositions(options);
       dbRows = await Option.findAll({
         where: {
@@ -281,7 +281,7 @@ const updateQuizById = async (quizId, quizData) => {
           where: {
             optionId: option.id
           }
-        })
+        });
         const optionResults = option.resultPositions
           .map(index => resultIdArray[index])
           .filter(resultId => resultId !== undefined && resultId !== null);
@@ -330,7 +330,7 @@ const deleteQuizById = async (quizId) => {
       where: {
         id: quizId
       }
-    })
+    });
     await t.commit();
   }
   catch (error) {
@@ -358,14 +358,14 @@ const evaluateResult = async (quizId, answers) => {
       where: {
         quizId: quizId
       },
-      attributes: { exclude: ["quizId"] }
+      attributes: { exclude: ['quizId'] }
     });
 
     const questions = await Question.findAll({
       where: {
         quizId: quizId
       },
-      attributes: ["id"]
+      attributes: ['id']
     });
     let questionIds = questions.map(item => item.id);
     const resultScores = Array(results.length).fill(0);
@@ -375,18 +375,18 @@ const evaluateResult = async (quizId, answers) => {
       const { questionId, optionIds } = answer;
 
       if (!questionIds.includes(questionId)) {
-        throw new Error("Invalid question in result evaluation");
+        throw new Error('Invalid question in result evaluation');
       }
       questionIds = questionIds.filter(item => item !== questionId);
 
       const question = await Question.findByPk(questionId);
 
       if (question.quizId !== quizId) {
-        throw new Error("Invalid question in result evaluation");
+        throw new Error('Invalid question in result evaluation');
       }
 
       if (question.singleChoice && optionIds.length > 1) {
-        throw new Error("Invalid option in result evaluation");
+        throw new Error('Invalid option in result evaluation');
       }
 
       for (const optionId of optionIds) {
@@ -394,18 +394,18 @@ const evaluateResult = async (quizId, answers) => {
         const option = await Option.findByPk(optionId);
 
         if (option.questionId !== questionId) {
-          throw new Error("Invalid option in result evaluation");
+          throw new Error('Invalid option in result evaluation');
         }
 
         const optionResults = await OptionResult.findAll({
           where: {
             optionId: optionId
           },
-          attributes: ["resultId"]
+          attributes: ['resultId']
         });
         const resultIds = optionResults.map(item => item.resultId);
-        console.log(optionResults)
-        console.log(resultIds)
+        console.log(optionResults);
+        console.log(resultIds);
 
         for (const resultId of resultIds) {
 
@@ -416,7 +416,7 @@ const evaluateResult = async (quizId, answers) => {
     }
 
     if (questionIds.length !== 0) {
-      throw new Error("All questions need to be filled for result evaluation");
+      throw new Error('All questions need to be filled for result evaluation');
     }
 
     const max = Math.max(...resultScores);

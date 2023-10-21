@@ -5,70 +5,70 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert('quizzes', [{
       id: 1001,
-      title: "Are you a cat or a dog?",
+      title: 'Are you a cat or a dog?',
       categoryId: 6,
       creatorId: 1001,
-      createdAt: Sequelize.fn("NOW"),
-      updatedAt: Sequelize.fn("NOW")
+      createdAt: Sequelize.fn('NOW'),
+      updatedAt: Sequelize.fn('NOW')
     },
     {
       id: 1002,
-      title: "Which Harry Potter house suits you?",
+      title: 'Which Harry Potter house suits you?',
       categoryId: 3,
       creatorId: 1003,
-      createdAt: Sequelize.fn("NOW"),
-      updatedAt: Sequelize.fn("NOW")
+      createdAt: Sequelize.fn('NOW'),
+      updatedAt: Sequelize.fn('NOW')
     },
     {
       id: 1003,
-      title: "Would you survive a zombie apocalypse?",
+      title: 'Would you survive a zombie apocalypse?',
       categoryId: 9,
       creatorId: 1003,
-      createdAt: Sequelize.fn("NOW"),
-      updatedAt: Sequelize.fn("NOW")
+      createdAt: Sequelize.fn('NOW'),
+      updatedAt: Sequelize.fn('NOW')
     }
     ], {});
 
     await queryInterface.bulkInsert('questions', [{
       id: 1001,
       quizId: 1001,
-      content: "Are you a morning person or a night owl?",
+      content: 'Are you a morning person or a night owl?',
       position: 1
     },
     {
       id: 1002,
       quizId: 1001,
-      content: "Favorite color?",
+      content: 'Favorite color?',
       position: 2
     },
     {
       id: 1003,
       quizId: 1001,
-      content: "Favorite subject?",
+      content: 'Favorite subject?',
       position: 0
     },
     {
       id: 1004,
       quizId: 1002,
-      content: "Do you prefer the seaside, forest or the mountains?",
+      content: 'Do you prefer the seaside, forest or the mountains?',
       position: 1
     },
     {
       id: 1005,
       quizId: 1002,
-      content: "Favorite pet?",
+      content: 'Favorite pet?',
       position: 0
     },
     {
       id: 1006,
       quizId: 1003,
-      content: "Were you good at PE?",
+      content: 'Were you good at PE?',
       position: 0
     },
     {
       id: 1007,
       quizId: 1003,
-      content: "Do you think you would survive?",
+      content: 'Do you think you would survive?',
       position: 1
     }
     ], {});
@@ -76,49 +76,49 @@ module.exports = {
     await queryInterface.bulkInsert('results', [{
       id: 1001,
       quizId: 1001,
-      title: "Cat",
+      title: 'Cat',
       position: 0
     },
     {
       id: 1002,
       quizId: 1001,
-      title: "Dog",
+      title: 'Dog',
       position: 1
     },
     {
       id: 1003,
       quizId: 1002,
-      title: "Ravenclaw",
+      title: 'Ravenclaw',
       position: 0
     },
     {
       id: 1004,
       quizId: 1002,
-      title: "Hufflepuff",
+      title: 'Hufflepuff',
       position: 1
     },
     {
       id: 1005,
       quizId: 1002,
-      title: "Gryffindor",
+      title: 'Gryffindor',
       position: 2
     },
     {
       id: 1006,
       quizId: 1002,
-      title: "Slytherin",
+      title: 'Slytherin',
       position: 3
     },
     {
       id: 1007,
       quizId: 1003,
-      title: "Yes, you would survive",
+      title: 'Yes, you would survive',
       position: 0
     },
     {
       id: 1008,
       quizId: 1003,
-      title: "No, you would die",
+      title: 'No, you would die',
       position: 1
     }
     ], {});
@@ -126,115 +126,115 @@ module.exports = {
     await queryInterface.bulkInsert('options', [{
       id: 1001,
       questionId: 1001,
-      content: "Morning person",
+      content: 'Morning person',
       position: 0
     },
     {
       id: 1002,
       questionId: 1001,
-      content: "Night owl",
+      content: 'Night owl',
       position: 1
     },
     {
       id: 1003,
       questionId: 1002,
-      content: "Red",
+      content: 'Red',
       position: 1
     },
     {
       id: 1004,
       questionId: 1002,
-      content: "Blue",
+      content: 'Blue',
       position: 2
     },
     {
       id: 1005,
       questionId: 1002,
-      content: "Yellow",
+      content: 'Yellow',
       position: 0
     },
     {
       id: 1006,
       questionId: 1003,
-      content: "Math",
+      content: 'Math',
       position: 1
     },
     {
       id: 1007,
       questionId: 1003,
-      content: "Literature",
+      content: 'Literature',
       position: 2
     },
     {
       id: 1008,
       questionId: 1003,
-      content: "P.E.",
+      content: 'P.E.',
       position: 3
     },
     {
       id: 1009,
       questionId: 1003,
-      content: "Arts",
+      content: 'Arts',
       position: 0
     },
     {
       id: 1010,
       questionId: 1004,
-      content: "Seaside",
+      content: 'Seaside',
       position: 1
     },
     {
       id: 1011,
       questionId: 1004,
-      content: "Forest",
+      content: 'Forest',
       position: 2
     },
     {
       id: 1012,
       questionId: 1004,
-      content: "Mountain",
+      content: 'Mountain',
       position: 0
     },
     {
       id: 1013,
       questionId: 1005,
-      content: "Dog",
+      content: 'Dog',
       position: 1
     },
     {
       id: 1014,
       questionId: 1005,
-      content: "Cat",
+      content: 'Cat',
       position: 2
     },
     {
       id: 1015,
       questionId: 1005,
-      content: "Something exotic",
+      content: 'Something exotic',
       position: 0
     },
     {
       id: 1016,
       questionId: 1006,
-      content: "Yes",
+      content: 'Yes',
       position: 1
     },
     {
       id: 1017,
       questionId: 1006,
-      content: "No",
+      content: 'No',
       position: 0
     },
     {
       id: 1018,
       questionId: 1007,
-      content: "Yes",
+      content: 'Yes',
       position: 1
     },
     {
       id: 1019,
       questionId: 1007,
-      content: "No",
+      content: 'No',
       position: 0
     }
     ], {});
