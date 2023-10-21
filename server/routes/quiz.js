@@ -3,7 +3,7 @@ const router = express.Router();
 const createError = require("http-errors");
 const { Validator } = require("express-json-validator-middleware");
 
-const quizdb = require("../db/quiz-db")
+const quizdb = require("../repositories/quiz")
 
 const quizSchema = require('../schemas/quiz.json');
 const evaluationSchema = require('../schemas/evaluation.json');
@@ -82,7 +82,7 @@ router.route("/:id(\\d+)")
 router.param("id", async (req, res, next, id) => {
 
     try {
-        const isValidQuiz = await quizdb.checkQuizExists(id);
+        const isValidQuiz = await quizdb.quizExists(id);
 
         if (!isValidQuiz) {
             return next(createError(404, `Quiz with given id ${id} does not exist.`));
