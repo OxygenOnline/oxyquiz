@@ -1,4 +1,4 @@
-const db = require("../database/models/index");
+const db = require("./models/index");
 const { User, Category, Quiz, Question, Result, Option, OptionResult, sequelize } = db;
 
 const checkValidPositions = (array) => {
