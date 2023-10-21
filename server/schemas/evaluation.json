@@ -8,10 +8,10 @@
             "items": {
                 "type": "object",
                 "properties": {
-                    "question_id": {
+                    "questionId": {
                         "type": "integer"
                     },
-                    "option_ids": {
+                    "optionIds": {
                         "type": "array",
                         "minItems": 1,
                         "uniqueItems": true,
@@ -21,8 +21,8 @@
                     }
                 },
                 "required": [
-                    "question_id",
-                    "option_ids"
+                    "questionId",
+                    "optionIds"
                 ]
             }
         }

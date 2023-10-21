@@ -9,9 +9,10 @@
                     "type": "string"
                 },
                 "description": {
-                    "type": "string"
+                    "type": ["string", "null"],
+                    "default": null
                 },
-                "category_id": {
+                "categoryId": {
                     "type": "integer"
                 },
                 "results": {
@@ -27,7 +28,8 @@
                                 "type": "string"
                             },
                             "description": {
-                                "type": "string"
+                                "type": ["string", "null"],
+                                "default": null
                             },
                             "position": {
                                 "type": "integer"
@@ -35,6 +37,7 @@
                         },
                         "required": [
                             "title",
+                            "description",
                             "position"
                         ]
                     }
@@ -55,10 +58,12 @@
                                 "type": "integer"
                             },
                             "weight": {
-                                "type": "number"
+                                "type": "number",
+                                "default": 1
                             },
-                            "single_choice": {
-                                "type": "boolean"
+                            "singleChoice": {
+                                "type": "boolean",
+                                "default": true
                             },
                             "options": {
                                 "type": "array",
@@ -75,7 +80,7 @@
                                         "position": {
                                             "type": "integer"
                                         },
-                                        "result_positions": {
+                                        "resultPositions": {
                                             "type": "array",
                                             "minItems": 1,
                                             "uniqueItems": true,
@@ -87,7 +92,7 @@
                                     "required": [
                                         "content",
                                         "position",
-                                        "result_positions"
+                                        "resultPositions"
                                     ]
                                 }
                             }
@@ -96,7 +101,7 @@
                             "content",
                             "position",
                             "weight",
-                            "single_choice",
+                            "singleChoice",
                             "options"
                         ]
                     }
@@ -104,7 +109,8 @@
             },
             "required": [
                 "title",
-                "category_id",
+                "description",
+                "categoryId",
                 "results",
                 "questions"
             ]
