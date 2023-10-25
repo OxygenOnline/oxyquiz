@@ -57,6 +57,26 @@ const getQuizById = async (quizId) => {
   return quiz;
 };
 
+const getRandomQuiz = async (categoryPathName) => {
+
+  const queryOptions = {
+    order: sequelize.random(),
+  };
+
+  if (categoryPathName) {
+    const category = await Category.findOne({
+      where: { pathName: categoryPathName },
+      attributes: ['id']
+    });
+    queryOptions.where = { categoryId: category.id };
+  }
+
+  const quiz = await Quiz.findOne(queryOptions);
+  const result = await getQuizById(quiz?.id);
+
+  return result;
+};
+
 const createQuiz = async (quizData, creatorId) => {
 
   const t = await sequelize.transaction();
@@ -461,6 +481,7 @@ const evaluateResult = async (quizId, answers) => {
 module.exports = {
   getAllQuizzes,
   getQuizById,
+  getRandomQuiz,
   createQuiz,
   updateQuizById,
   deleteQuizById,

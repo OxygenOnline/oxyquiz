@@ -31,6 +31,30 @@ router.route('/')
         }
     });
 
+router.route('/random')
+    .get(async (req, res, next) => {
+        try {
+            const result = await quizdb.getRandomQuiz();
+            res.json(result);
+        }
+        catch (error) {
+            next(error);
+        }
+    });
+
+router.route('/random/:categoryName')
+    .get(async (req, res, next) => {
+        try {
+            const { categoryName } = req.params;
+            await validateCategoryPathName(categoryName);
+            const result = await quizdb.getRandomQuiz(categoryName);
+            res.json(result);
+        }
+        catch (error) {
+            next(error);
+        }
+    });
+
 router.route('/:id(\\d+)')
     .get(async (req, res, next) => {
         try {
@@ -75,13 +99,13 @@ router.route('/:id(\\d+)')
         }
     });
 
-router.param('id', async (req, res, next, id) => {
+router.param('id', async (req, res, next, quizId) => {
 
     try {
-        const isValidQuiz = await quizdb.quizExists(id);
+        const isValidQuiz = await quizdb.quizExists(quizId);
 
         if (!isValidQuiz) {
-            return next(createError(404, `Quiz with given id ${id} does not exist.`));
+            return next(createError(404, `Quiz with given id ${quizId} does not exist.`));
         }
         next();
     }
@@ -89,5 +113,14 @@ router.param('id', async (req, res, next, id) => {
         next(error);
     }
 });
+
+const validateCategoryPathName = async (categoryPathName) => {
+
+    const isValidCategory = await quizdb.categoryExists(categoryPathName);
+
+    if (!isValidCategory) {
+        throw Error(createError(404, `Category with given name "${categoryPathName}" does not exist.`));
+    }
+};
 
 module.exports = router;
