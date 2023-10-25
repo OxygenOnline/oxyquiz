@@ -31,10 +31,6 @@ router.route('/')
         }
     });
 
-router.get('/new', async (req, res, next) => {
-    // TODO
-});
-
 router.route('/:id(\\d+)')
     .get(async (req, res, next) => {
         try {

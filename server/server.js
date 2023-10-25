@@ -10,7 +10,7 @@ app.use(express.json());
 
 const quizRouter = require('./routes/quiz');
 
-app.use('/quizzes', quizRouter);
+app.use('/api/quizzes', quizRouter);
 
 app.get('/', (req, res) => {
     // TODO
