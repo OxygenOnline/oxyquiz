@@ -9,38 +9,50 @@ module.exports = {
     },
     {
       id: 2,
-      name: 'Movies, TV Shows & Animes'
+      name: 'Movies & TV Shows'
     },
     {
       id: 3,
-      name: 'Books'
+      name: 'Animes & Mangas'
     },
     {
       id: 4,
-      name: 'Video Games'
+      name: 'Music'
     },
     {
       id: 5,
-      name: 'Food & Drinks'
+      name: 'Books'
     },
     {
       id: 6,
-      name: 'Animals'
+      name: 'Video Games'
     },
     {
       id: 7,
-      name: 'Tech & Education'
+      name: 'Food & Drinks'
     },
     {
       id: 8,
-      name: 'Beauty'
+      name: 'Animals'
     },
     {
       id: 9,
-      name: 'Fantasy'
+      name: 'Science & Tech'
     },
     {
       id: 10,
+      name: 'Education & Career'
+    },
+    {
+      id: 11,
+      name: 'Beauty'
+    },
+    {
+      id: 12,
+      name: 'Fantasy'
+    },
+    {
+      id: 13,
       name: 'Other'
     }
     ], {});
