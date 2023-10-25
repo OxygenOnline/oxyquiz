@@ -55,19 +55,6 @@ router.route('/:categoryName/random')
         }
     });
 
-router.route('/:categoryName')
-    .get(async (req, res, next) => {
-        try {
-            const { categoryName } = req.params;
-            await validateCategoryPathName(categoryName);
-            const result = await quizdb.getQuizzesByCategory(categoryName);
-            res.json(result);
-        }
-        catch (error) {
-            next(error);
-        }
-    });
-
 router.route('/:id(\\d+)')
     .get(async (req, res, next) => {
         try {
@@ -106,6 +93,19 @@ router.route('/:id(\\d+)')
             const { id } = req.params;
             await quizdb.deleteQuizById(id);
             res.sendStatus(204);
+        }
+        catch (error) {
+            next(error);
+        }
+    });
+    
+router.route('/:categoryName')
+    .get(async (req, res, next) => {
+        try {
+            const { categoryName } = req.params;
+            await validateCategoryPathName(categoryName);
+            const result = await quizdb.getQuizzesByCategory(categoryName);
+            res.json(result);
         }
         catch (error) {
             next(error);

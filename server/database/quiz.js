@@ -51,20 +51,24 @@ const getQuizById = async (quizId) => {
     include: [
       {
         model: Category,
-        attributes: { exclude: ['pathName'] }
+        attributes: { exclude: ['pathName'] },
+        as: 'category'
       },
       {
         model: User,
-        attributes: { exclude: ['password', 'email'] }
+        attributes: { exclude: ['password', 'email'] },
+        as: 'creator'
       },
       {
         model: Result,
-        attributes: { exclude: ['quizId'] }
+        attributes: { exclude: ['quizId'] },
+        as: 'results'
       },
       {
         model: Question,
         attributes: { exclude: ['quizId', 'weight'] },
-        include: { model: Option }
+        include: { model: Option, as: 'options' },
+        as: 'questions'
       },
     ],
   });

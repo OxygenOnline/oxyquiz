@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE'
       });
       this.hasMany(Option, {
+        as: 'options',
         foreignKey: 'questionId'
       });
     }
