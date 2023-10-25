@@ -6,7 +6,7 @@ module.exports = {
     await queryInterface.bulkInsert('quizzes', [{
       id: 1001,
       title: 'Are you a cat or a dog?',
-      categoryId: 6,
+      categoryId: 8,
       creatorId: 1001,
       createdAt: Sequelize.fn('NOW'),
       updatedAt: Sequelize.fn('NOW')
@@ -14,7 +14,7 @@ module.exports = {
     {
       id: 1002,
       title: 'Which Harry Potter house suits you?',
-      categoryId: 3,
+      categoryId: 5,
       creatorId: 1003,
       createdAt: Sequelize.fn('NOW'),
       updatedAt: Sequelize.fn('NOW')
@@ -22,7 +22,7 @@ module.exports = {
     {
       id: 1003,
       title: 'Would you survive a zombie apocalypse?',
-      categoryId: 9,
+      categoryId: 12,
       creatorId: 1003,
       createdAt: Sequelize.fn('NOW'),
       updatedAt: Sequelize.fn('NOW')
