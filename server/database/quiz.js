@@ -34,7 +34,10 @@ const getQuizById = async (quizId) => {
   const quiz = await Quiz.findByPk(quizId, {
     attributes: { exclude: ['categoryId', 'creatorId'] },
     include: [
-      { model: Category },
+      {
+        model: Category,
+        attributes: { exclude: ['pathName'] }
+      },
       {
         model: User,
         attributes: { exclude: ['password', 'email'] }
@@ -280,13 +283,15 @@ const updateQuizById = async (quizId, quizData) => {
         dbRows = await OptionResult.findAll({
           where: {
             optionId: option.id
-          }
+          },
+          attributes: ['resultId']
         });
+        dbRows = dbRows.map(item => item.resultId);
         const optionResults = option.resultPositions
           .map(index => resultIdArray[index])
           .filter(resultId => resultId !== undefined && resultId !== null);
 
-        for (const oldId of optionResults) {
+        for (const oldId of dbRows) {
 
           if (!optionResults.includes(oldId)) {
             await OptionResult.destroy({
@@ -345,6 +350,16 @@ const quizExists = async (quizId) => {
   const count = await Quiz.count({
     where: {
       id: quizId,
+    },
+  });
+  return count != 0;
+};
+
+const categoryExists = async (categoryPathName) => {
+
+  const count = await Category.count({
+    where: {
+      pathName: categoryPathName,
     },
   });
   return count != 0;
@@ -450,5 +465,6 @@ module.exports = {
   updateQuizById,
   deleteQuizById,
   quizExists,
+  categoryExists,
   evaluateResult
 };
