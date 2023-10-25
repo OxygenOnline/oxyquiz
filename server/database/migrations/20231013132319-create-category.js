@@ -13,6 +13,11 @@ module.exports = {
         allowNull: false,
         unique: true,
         type: Sequelize.STRING
+      },
+      pathName: {
+        allowNull: false,
+        unique: true,
+        type: Sequelize.STRING
       }
     });
   },

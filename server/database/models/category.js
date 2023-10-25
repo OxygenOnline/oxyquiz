@@ -20,6 +20,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true
+    },
+    pathName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
     }
   }, {
     sequelize,

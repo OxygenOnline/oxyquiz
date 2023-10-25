@@ -5,55 +5,68 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert('categories', [{
       id: 1,
-      name: 'Personality'
+      name: 'Personality',
+      pathName: 'personality'
     },
     {
       id: 2,
-      name: 'Movies & TV Shows'
+      name: 'Movies & TV Shows',
+      pathName: 'movies-and-tv-shows'
     },
     {
       id: 3,
-      name: 'Animes & Mangas'
+      name: 'Animes & Mangas',
+      pathName: 'animes-and-mangas'
     },
     {
       id: 4,
-      name: 'Music'
+      name: 'Music',
+      pathName: 'music'
     },
     {
       id: 5,
-      name: 'Books'
+      name: 'Books',
+      pathName: 'books'
     },
     {
       id: 6,
-      name: 'Video Games'
+      name: 'Video Games',
+      pathName: 'video-games'
     },
     {
       id: 7,
-      name: 'Food & Drinks'
+      name: 'Food & Drinks',
+      pathName: 'food-and-drinks'
     },
     {
       id: 8,
-      name: 'Animals'
+      name: 'Animals',
+      pathName: 'animals'
     },
     {
       id: 9,
-      name: 'Science & Tech'
+      name: 'Science & Tech',
+      pathName: 'science-and-tech'
     },
     {
       id: 10,
-      name: 'Education & Career'
+      name: 'Education & Career',
+      pathName: 'education-and-career'
     },
     {
       id: 11,
-      name: 'Beauty'
+      name: 'Beauty',
+      pathName: 'beauty'
     },
     {
       id: 12,
-      name: 'Fantasy'
+      name: 'Fantasy',
+      pathName: 'fantasy'
     },
     {
       id: 13,
-      name: 'Other'
+      name: 'Other',
+      pathName: 'other'
     }
     ], {});
   },
