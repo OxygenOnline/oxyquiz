@@ -42,12 +42,25 @@ router.route('/random')
         }
     });
 
-router.route('/random/:categoryName')
+router.route('/:categoryName/random')
     .get(async (req, res, next) => {
         try {
             const { categoryName } = req.params;
             await validateCategoryPathName(categoryName);
             const result = await quizdb.getRandomQuiz(categoryName);
+            res.json(result);
+        }
+        catch (error) {
+            next(error);
+        }
+    });
+
+router.route('/:categoryName')
+    .get(async (req, res, next) => {
+        try {
+            const { categoryName } = req.params;
+            await validateCategoryPathName(categoryName);
+            const result = await quizdb.getQuizzesByCategory(categoryName);
             res.json(result);
         }
         catch (error) {

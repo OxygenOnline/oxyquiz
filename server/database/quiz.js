@@ -25,7 +25,22 @@ const removableIds = (newArray, oldArray) => {
 
 const getAllQuizzes = async (limit = 20, offset = 0) => {
 
-  const result = await Quiz.findAll({ offset: offset, limit: limit });
+  const result = await Quiz.findAll({ offset, limit });
+  return result;
+};
+
+const getQuizzesByCategory = async (categoryPathName, limit = 20, offset = 0) => {
+
+  const category = await Category.findOne({
+    where: { pathName: categoryPathName },
+    attributes: ['id']
+  });
+
+  const result = await Quiz.findAll({
+    offset,
+    limit,
+    where: { categoryId: category.id }
+  });
   return result;
 };
 
@@ -480,6 +495,7 @@ const evaluateResult = async (quizId, answers) => {
 
 module.exports = {
   getAllQuizzes,
+  getQuizzesByCategory,
   getQuizById,
   getRandomQuiz,
   createQuiz,
