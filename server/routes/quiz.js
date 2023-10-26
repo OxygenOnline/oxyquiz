@@ -104,7 +104,7 @@ router.route('/:categoryName')
         try {
             const { categoryName } = req.params;
             await validateCategoryPathName(categoryName);
-            const result = await quizdb.getQuizzesByCategory(categoryName);
+            const result = await quizdb.getAllQuizzesByCategory(categoryName);
             res.json(result);
         }
         catch (error) {

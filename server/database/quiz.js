@@ -23,24 +23,47 @@ const removableIds = (newArray, oldArray) => {
   return ids;
 };
 
+const getQuizzes = async (limit = 20, offset = 0, categoryPathName = null) => {
+
+  const queryOptions = {
+    offset,
+    limit,
+    attributes: ['id', 'title', 'description', 'createdAt'],
+    include: [
+      {
+        model: Category,
+        as: 'category',
+      },
+      {
+        model: User,
+        attributes: ['id', 'username'],
+        as: 'creator',
+      },
+    ],
+  };
+
+  if (categoryPathName) {
+
+    const category = await Category.findOne({
+      where: { pathName: categoryPathName },
+      attributes: ['id'],
+    });
+    queryOptions.where = { categoryId: category.id };
+  }
+
+  const quizzes = await Quiz.findAll(queryOptions);
+  return quizzes;
+};
+
 const getAllQuizzes = async (limit = 20, offset = 0) => {
 
-  const result = await Quiz.findAll({ offset, limit });
+  const result = await getQuizzes(limit, offset);
   return result;
 };
 
-const getQuizzesByCategory = async (categoryPathName, limit = 20, offset = 0) => {
+const getAllQuizzesByCategory = async (categoryPathName, limit = 20, offset = 0) => {
 
-  const category = await Category.findOne({
-    where: { pathName: categoryPathName },
-    attributes: ['id']
-  });
-
-  const result = await Quiz.findAll({
-    offset,
-    limit,
-    where: { categoryId: category.id }
-  });
+  const result = await getQuizzes(limit, offset, categoryPathName);
   return result;
 };
 
@@ -67,8 +90,8 @@ const getQuizById = async (quizId) => {
       {
         model: Question,
         attributes: { exclude: ['quizId', 'weight'] },
-        include: { model: Option, as: 'options' },
-        as: 'questions'
+        as: 'questions',
+        include: { model: Option, as: 'options' }
       },
     ],
   });
@@ -105,7 +128,7 @@ const createQuiz = async (quizData, creatorId) => {
     const quiz = await Quiz.create({
       title: quizData.title,
       description: quizData.description,
-      creatorId: creatorId,
+      creatorId,
       categoryId: quizData.categoryId
     });
 
@@ -185,7 +208,7 @@ const updateQuizById = async (quizId, quizData) => {
 
     let dbRows = await Result.findAll({
       where: {
-        quizId: quizId
+        quizId
       },
       attributes: ['id']
     });
@@ -195,7 +218,7 @@ const updateQuizById = async (quizId, quizData) => {
       await Result.destroy({
         where: {
           id: deletableId,
-          quizId: quizId
+          quizId
         }
       });
     }
@@ -209,7 +232,7 @@ const updateQuizById = async (quizId, quizData) => {
           title: result.title,
           description: result.description,
           position: result.position,
-          quizId: quizId
+          quizId
         });
         result.id = newResult.id;
       }
@@ -222,7 +245,7 @@ const updateQuizById = async (quizId, quizData) => {
         }, {
           where: {
             id: result.id,
-            quizId: quizId
+            quizId
           }
         });
         resultIdArray.splice(result.position, 0, result.id);
@@ -235,7 +258,7 @@ const updateQuizById = async (quizId, quizData) => {
 
     dbRows = await Question.findAll({
       where: {
-        quizId: quizId
+        quizId
       }
     });
     toBeDeleted = removableIds(questions, dbRows);
@@ -244,7 +267,7 @@ const updateQuizById = async (quizId, quizData) => {
       await Question.destroy({
         where: {
           id: deletableId,
-          quizId: quizId
+          quizId
         }
       });
     }
@@ -258,7 +281,7 @@ const updateQuizById = async (quizId, quizData) => {
           position: question.position,
           weight: question.weight,
           singleChoice: question.singleChoice,
-          quizId: quizId
+          quizId
         });
         question.id = newQuestion.id;
       }
@@ -272,7 +295,7 @@ const updateQuizById = async (quizId, quizData) => {
         }, {
           where: {
             id: question.id,
-            quizId: quizId
+            quizId
           }
         });
       }
@@ -410,14 +433,14 @@ const evaluateResult = async (quizId, answers) => {
 
     const results = await Result.findAll({
       where: {
-        quizId: quizId
+        quizId
       },
       attributes: { exclude: ['quizId'] }
     });
 
     const questions = await Question.findAll({
       where: {
-        quizId: quizId
+        quizId
       },
       attributes: ['id']
     });
@@ -453,7 +476,7 @@ const evaluateResult = async (quizId, answers) => {
 
         const optionResults = await OptionResult.findAll({
           where: {
-            optionId: optionId
+            optionId
           },
           attributes: ['resultId']
         });
@@ -499,7 +522,7 @@ const evaluateResult = async (quizId, answers) => {
 
 module.exports = {
   getAllQuizzes,
-  getQuizzesByCategory,
+  getAllQuizzesByCategory,
   getQuizById,
   getRandomQuiz,
   createQuiz,
