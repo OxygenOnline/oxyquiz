@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 const { Validator } = require('express-json-validator-middleware');
-const quizSchema = require('../schemas/quiz.json');
-const evaluationSchema = require('../schemas/evaluation.json');
+const quizSchema = require('../validators/quiz.json');
+const evaluationSchema = require('../validators/evaluation.json');
 const { validate } = new Validator();
 
 const controller = require('../controllers/quiz');
