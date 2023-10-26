@@ -23,9 +23,6 @@ module.exports = {
         unique: true,
         type: Sequelize.STRING
       },
-      nickname: {
-        type: Sequelize.STRING
-      },
       joiningDate: {
         allowNull: false,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
