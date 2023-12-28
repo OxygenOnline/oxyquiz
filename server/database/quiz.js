@@ -79,7 +79,7 @@ const getQuizById = async (quizId) => {
       },
       {
         model: User,
-        attributes: { exclude: ['password', 'email', 'salt'] },
+        attributes: { exclude: ['password', 'email'] },
         as: 'creator'
       },
       {

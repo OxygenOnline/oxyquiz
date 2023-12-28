@@ -36,10 +36,6 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isEmail: true
       }
-    },
-    salt: {
-      type: DataTypes.STRING,
-      allowNull: false
     }
   }, {
     sequelize,

@@ -38,7 +38,7 @@ const createUser = async (user) => {
 
         const salt = genSaltSync(10);
         const hashedPassword = hashSync(password, salt);
-        const user = await User.create({ username, email, password: hashedPassword, salt });
+        const user = await User.create({ username, email, password: hashedPassword });
 
         await t.commit();
 

@@ -29,10 +29,6 @@ module.exports = {
           isEmail: true
         }
       },
-      salt: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
       joiningDate: {
         allowNull: false,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
