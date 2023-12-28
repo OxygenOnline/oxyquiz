@@ -1,6 +1,7 @@
 const db = require('./models/index');
 const { User, Category, Quiz, Question, Result, Option, OptionResult, sequelize } = db;
 
+
 const checkValidPositions = (array) => {
 
   const positionsSet = new Set();
@@ -23,7 +24,7 @@ const removableIds = (newArray, oldArray) => {
   return ids;
 };
 
-const getQuizzes = async (limit = 20, offset = 0, categoryPathName = null) => {
+const getQuizzes = async (limit = 20, offset = 0, categoryPathName = null, userId = null) => {
 
   const queryOptions = {
     offset,
@@ -50,6 +51,10 @@ const getQuizzes = async (limit = 20, offset = 0, categoryPathName = null) => {
     });
     queryOptions.where = { categoryId: category.id };
   }
+  
+  if (userId) {
+    queryOptions.where = { creatorId: userId };
+  }
 
   const quizzes = await Quiz.findAll(queryOptions);
   return quizzes;
@@ -64,6 +69,12 @@ const getAllQuizzes = async (limit = 20, offset = 0) => {
 const getAllQuizzesByCategory = async (categoryPathName, limit = 20, offset = 0) => {
 
   const result = await getQuizzes(limit, offset, categoryPathName);
+  return result;
+};
+
+const getAllQuizzesByUser = async (userId, limit = 20, offset = 0) => {
+
+  const result = await getQuizzes(limit, offset, null, userId);
   return result;
 };
 
@@ -523,6 +534,7 @@ const evaluateResult = async (quizId, answers) => {
 module.exports = {
   getAllQuizzes,
   getAllQuizzesByCategory,
+  getAllQuizzesByUser,
   getQuizById,
   getRandomQuiz,
   createQuiz,
