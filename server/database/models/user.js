@@ -20,7 +20,10 @@ module.exports = (sequelize, DataTypes) => {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
+      validate: {
+        is: /^[a-z0-9\_\-]+$/i,
+      }
     },
     password: {
       type: DataTypes.STRING,
@@ -29,7 +32,14 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
+      validate: {
+        isEmail: true
+      }
+    },
+    salt: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
   }, {
     sequelize,

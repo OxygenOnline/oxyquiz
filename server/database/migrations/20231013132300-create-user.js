@@ -12,7 +12,10 @@ module.exports = {
       username: {
         allowNull: false,
         unique: true,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        validate: {
+          is: /^[a-z0-9\_\-]+$/i,
+        }
       },
       password: {
         allowNull: false,
@@ -21,6 +24,13 @@ module.exports = {
       email: {
         allowNull: false,
         unique: true,
+        type: Sequelize.STRING,
+        validate: {
+          isEmail: true
+        }
+      },
+      salt: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       joiningDate: {
