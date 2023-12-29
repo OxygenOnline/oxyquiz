@@ -13,6 +13,9 @@ const register = async (req, res, next) => {
   try {
 
     await userdb.createUser(user);
+    return res.status(200).json({
+      message: `Registration successful for ${user.username}`,
+    });
   }
   catch (error) {
 
@@ -25,20 +28,20 @@ const login = async (req, res, next) => {
   return passport.authenticate('local', (err, user, info) => {
     if (err) {
       console.log(err)
-      return res.status(500).send({
-        message: '500: Authentication failed, try again.',
+      return res.status(500).json({
+        message: err,
       });
     }
 
     if (!user) {
-      return res.status(404).send({
-        message: '404: Authentication failed, try again.',
+      return res.status(404).json({
+        message: err,
       });
     }
 
     req.login(user, err => {
       if (!err) {
-        return res.status(200).send({
+        return res.status(200).json({
           message: `Login successful for ${user.username}`,
         });
       }
@@ -50,7 +53,7 @@ const logout = async (req, res) => {
 
   req.logout(err => {
     if (!err) {
-      return res.status(200).send({
+      return res.status(200).json({
         message: 'Logout successful.',
       });
     }
