@@ -1,6 +1,6 @@
-import { useRouter } from "next/navigation"
-import { useState } from "react"
-import { login } from "../api"
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { login } from '../api';
 
 
 const LoginForm = () => {
@@ -8,32 +8,32 @@ const LoginForm = () => {
     const router = useRouter();
 
     const [state, setState] = useState({
-        username: "",
-        password: "",
+        username: '',
+        password: '',
     });
 
-    const [error, setError] = useState("");
+    const [error, setError] = useState('');
     
     const submitLogin = async () => {
 
-        const user = state
+        const user = state;
 
         try {
             const response = await login(user);
 
             if (response.ok) {
-                router.push("/");
+                router.push('/');
             }
             else {
                 const data = await response.json();
-                setError(data.errors[0].msg || "Registration failed");
+                setError(data.errors[0].msg || 'Registration failed');
             }
         }
         catch (error) {
-            console.error("Login error:", error);
-            setError("Login failed. Please try again.");
+            console.error('Login error:', error);
+            setError('Login failed. Please try again.');
         }
-    }
+    };
 
     const handleChange = async (e) =>  {
         const { name, value } = e.target;
@@ -41,18 +41,18 @@ const LoginForm = () => {
             ...prevState,
             [name]: value,
         }));
-    }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!state.username || !state.password) {
-            setError("Please fill in all fields");
+            setError('Please fill in all fields');
             return;
         }
 
         await submitLogin(state);
-    }
+    };
 
     return (
         <form className="flex flex-col items-center justify-between">
@@ -86,7 +86,7 @@ const LoginForm = () => {
             <button onClick={handleSubmit} className="text-2xl font-semibold px-10 py-3">Login</button>
         </form>
 
-    )
-}
+    );
+};
 
 export default LoginForm;

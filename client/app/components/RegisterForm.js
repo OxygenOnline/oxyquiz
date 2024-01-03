@@ -1,6 +1,6 @@
-import { useRouter } from "next/navigation"
-import { useState } from "react"
-import { register } from "../api";
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { register } from '../api';
 
 
 const RegisterForm = () => {
@@ -8,13 +8,13 @@ const RegisterForm = () => {
     const router = useRouter();
 
     const [state, setState] = useState({
-        email: "",
-        username: "",
-        password: "",
-        confirmPassword: "",
+        email: '',
+        username: '',
+        password: '',
+        confirmPassword: '',
     });
 
-    const [error, setError] = useState("");
+    const [error, setError] = useState('');
 
     const submitRegister = async () => {
 
@@ -28,18 +28,18 @@ const RegisterForm = () => {
             const response = await register(user);
 
             if (response.ok) {
-                router.push("/login");
+                router.push('/login');
             }
             else {
                 const data = await response.json();
-                setError(data.errors[0].msg || "Registration failed");
+                setError(data.errors[0].msg || 'Registration failed');
             }
         }
         catch (error) {
-            console.error("Registration error:", error);
-            setError("Registration failed. Please try again.");
+            console.error('Registration error:', error);
+            setError('Registration failed. Please try again.');
         }
-    }
+    };
 
     const handleChange = async (e) =>  {
         const { name, value } = e.target;
@@ -47,23 +47,23 @@ const RegisterForm = () => {
             ...prevState,
             [name]: value,
         }));
-    }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!state.email || !state.username || !state.password || !state.confirmPassword) {
-            setError("Please fill in all fields");
+            setError('Please fill in all fields');
             return;
         }
 
         if (state.password !== state.confirmPassword) {
-            setError("Passwords do not match");
+            setError('Passwords do not match');
             return;
         }
 
         await submitRegister();
-    }
+    };
 
     return (
         <form className="flex flex-col items-center justify-between">
@@ -120,7 +120,7 @@ const RegisterForm = () => {
                 <button onClick={handleSubmit} className="text-2xl font-semibold px-10 py-3">Register</button>
             </div>
         </form>
-    )
-}
+    );
+};
 
 export default RegisterForm;
