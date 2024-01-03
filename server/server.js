@@ -29,10 +29,6 @@ const userRouter = require('./routes/user');
 app.use('/api/quizzes', quizRouter);
 app.use('/api/users', userRouter);
 
-app.get('/', (req, res) => {
-    res.send('homepage');
-});
-
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}.`);
 });
