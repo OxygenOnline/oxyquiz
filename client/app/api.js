@@ -23,7 +23,27 @@ const login = async (user) => {
     return response;
 };
 
+const getOneQuiz = async (quizId) => {
+    const response = await fetch(`${api}/quizzes/${quizId}`,
+        { method: 'GET' });
+    return response;
+};
+
+const getQuizResult = async (quizId, answers) => {
+    const response = await fetch(`${api}/quizzes/${quizId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(answers),
+    });
+    return response;
+};
+
+
 module.exports = {
     register,
     login,
+    getOneQuiz,
+    getQuizResult,
 };
