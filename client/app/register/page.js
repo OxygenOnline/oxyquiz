@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import RegisterForm from '../components/RegisterForm';
+import RegisterForm from './RegisterForm';
 
 const RegisterPage = () => {
   
