@@ -7,6 +7,7 @@ import { getOneQuiz, getQuizResult } from '../../api';
 const QuizPage = ({ params }) => {
 
     const [quizData, setQuizData] = useState(null);
+    const [error, setError] = useState('');
 
     const fetchQuiz = async () => {
         try {
@@ -29,7 +30,6 @@ const QuizPage = ({ params }) => {
     }, [params.id]);
 
     const handleSubmit = async (e) => {
-
         e.preventDefault();
         const form = document.getElementById('answersForm');
         const formData = new FormData(form);
@@ -52,6 +52,17 @@ const QuizPage = ({ params }) => {
             optionIds: questionOptionsMap[questionId],
         }));
 
+        const answeredQuestionIds = answerArray.map((answer) => answer.questionId);
+        const allQuestionIds = quizData.questions.map((question) => question.id);
+        const unansweredQuestionIds = allQuestionIds.filter(
+            (questionId) => !answeredQuestionIds.includes(questionId)
+        );
+
+        if (unansweredQuestionIds.length !== 0) {
+            setError('Please fill in all fields');
+            return;
+        }
+
         const answers = { answers: answerArray };
 
         try {
@@ -62,6 +73,7 @@ const QuizPage = ({ params }) => {
             }
 
             const data = await response.json();
+            setError('')
             alert(data.winningResult.title);
         }
         catch (error) {
@@ -70,31 +82,16 @@ const QuizPage = ({ params }) => {
     };
 
     const renderOptions = (options, singleChoice, questionIndex) => {
-
-        if (singleChoice) {
-            return options.map((option, index) => (
-                <div key={index} className='m-2'>
-                    <input type='radio'
-                        name={`${questionIndex}`}
-                        value={option.id}
-                        className='mr-1'
-                    />
-                    <label>{option.content}</label>
-                </div>
-            ));
-        }
-        else {
-            return options.map((option, index) => (
-                <div key={index} className='m-2'>
-                    <input type='checkbox'
-                        name={`${questionIndex}`}
-                        value={option.id}
-                        className='mr-1'
-                    />
-                    <label>{option.content}</label>
-                </div>
-            ));
-        }
+        return options.map((option, index) => (
+            <div key={index} className='m-2'>
+                <input type={singleChoice ? 'radio' : 'checkbox'}
+                    name={`${questionIndex}`}
+                    value={option.id}
+                    className='mr-1'
+                />
+                <label>{option.content}</label>
+            </div>
+        ));
     };
 
     return (
@@ -121,6 +118,9 @@ const QuizPage = ({ params }) => {
                                 </div>
                             ))}
                         </form>
+                    )}
+                    {error && (
+                        <p className="text-red-600 w-full text-center p-3 mb-4">{error}</p>
                     )}
                     <button onClick={handleSubmit} className='text-2xl font-semibold py-3'>results</button>
                 </div>
