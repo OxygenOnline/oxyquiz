@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link';
 
 
 const categories = [{
@@ -70,14 +70,14 @@ const categories = [{
 const SideMenu = () => {
 
     return (
-        <div className="sidebar px-2 md:fixed md:w-fit md:h-fit z-50 w-auto h-auto relative static">
-            <ul className="p-2 flex flex-col items-start text-lg">
-                <li key={0} className="p-2">
-                    <Link href='/' className="category">All</Link>
+        <div className='sidebar px-2 md:fixed md:w-fit md:h-fit z-50 w-auto h-auto relative static'>
+            <ul className='p-2 flex flex-col items-start text-lg'>
+                <li key={0} className='p-2'>
+                    <Link href='/' className='category'>All</Link>
                 </li>
                 {categories.map((category) => (
-                    <li key={category.id} className="p-2">
-                        <Link href={`/categories/${category.pathName}`} className="category">{category.name}</Link>
+                    <li key={category.id} className='p-2'>
+                        <Link href={`/categories/${category.pathName}`} className='category'>{category.name}</Link>
                     </li>
                 ))}
             </ul>

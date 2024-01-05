@@ -66,7 +66,7 @@ const Quiz = (props) => {
             }
 
             const data = await response.json();
-            setError('')
+            setError('');
             alert(data.winningResult.title);
         }
         catch (error) {
@@ -87,7 +87,7 @@ const Quiz = (props) => {
                 ))}
             </form>
             {error && (
-                <p className="text-red-600 w-full text-center p-3 mb-4">{error}</p>
+                <p className='text-red-600 w-full text-center p-3 mb-4'>{error}</p>
             )}
             <button onClick={handleSubmit} className='text-2xl font-semibold py-3'>results</button>
         </div>

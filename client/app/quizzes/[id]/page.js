@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
 import { getOneQuiz } from '../../api';
 import QuizCard from '../../components/QuizCard';
-import Quiz from './Quiz'
+import Quiz from './Quiz';
+import Navbar from '../../components/Navbar';
 
 
 const fetchQuiz = async (quizId) => {
@@ -30,11 +31,11 @@ const QuizPage = async ({ params }) => {
 
     return (
         <>
+            <Navbar />
             <div className='flex flex-col md:flex-row my-12 mx-6'>
                 <div className='md:mr-12 mb-6 md:mb-0'>
                     <QuizCard quizData={quizData} className=''></QuizCard>
                 </div>
-                
                 <Quiz quizData={quizData}></Quiz>
             </div>
         </>
