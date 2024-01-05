@@ -77,6 +77,10 @@ input[type='checkbox']:checked::before {
   color: rgb(var(--accent-color-rgb));
 }
 
+.white-colored {
+  color: rgb(var(--component-background-rgb));
+}
+
 button {
   width: 100%;
   padding: 10px;
@@ -93,8 +97,15 @@ button:hover {
   box-shadow: 0 0 1px 1px rgb(var(--accent-color-rgb));
 }
 
-nav {
-  background: rgb(var(--accent-color-rgb));
-  width: 100%;
+.sidebar, nav {
+  background-color: rgb(var(--accent-color-rgb));
   color: rgb(var(--component-background-rgb));
+}
+
+.category:hover {
+  color: rgb(var(--foreground-rgb));
+}
+
+nav {
+  width: 100%;
 }

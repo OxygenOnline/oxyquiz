@@ -7,9 +7,11 @@ const QuizCard = (props) => {
 
     return (
         <div className='container h-fit flex-1 text-center p-6'>
-            <Link href={`/quizzes/${quizData.id}`}>
-                <h1 className='underlined text-2xl font-semibold pb-4'>{quizData.title}</h1>
-            </Link>
+            <div className='underlined pb-4'>
+                <Link href={`/quizzes/${quizData.id}`}>
+                    <h1 className=' text-2xl font-semibold '>{quizData.title}</h1>
+                </Link>
+            </div>
             <Link href={`/categories/${quizData.category.pathName}`} className='accent-colored lowercase'>
                 {quizData.category.name}
             </Link>
