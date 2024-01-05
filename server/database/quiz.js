@@ -85,7 +85,6 @@ const getQuizById = async (quizId) => {
     include: [
       {
         model: Category,
-        attributes: { exclude: ['pathName'] },
         as: 'category'
       },
       {
