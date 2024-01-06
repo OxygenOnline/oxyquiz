@@ -32,8 +32,8 @@ const QuizPage = async ({ params }) => {
     return (
         <>
             <Navbar />
-            <div className='flex flex-col md:flex-row my-12 mx-6'>
-                <div className='md:mr-12 mb-6 md:mb-0'>
+            <div className='flex flex-col md:flex-row my-8 mx-6 md:m-12'>
+                <div className='basis-1/3 md:mr-8 mb-8 md:mb-0'>
                     <QuizCard quizData={quizData} className=''></QuizCard>
                 </div>
                 <Quiz quizData={quizData}></Quiz>
