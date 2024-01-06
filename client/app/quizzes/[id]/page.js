@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getOneQuiz } from '../../api';
+import { getQuizById } from '../../api';
 import QuizCard from '../../components/QuizCard';
 import Quiz from './Quiz';
 import Navbar from '../../components/Navbar';
@@ -7,7 +7,7 @@ import Navbar from '../../components/Navbar';
 
 const fetchQuiz = async (quizId) => {
     try {
-        const response = await getOneQuiz(quizId);
+        const response = await getQuizById(quizId);
 
         if (response.status === 404) {
             return undefined;

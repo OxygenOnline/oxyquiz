@@ -23,7 +23,7 @@ const login = async (user) => {
     return response;
 };
 
-const getOneQuiz = async (quizId) => {
+const getQuizById = async (quizId) => {
     const response = await fetch(`${api}/quizzes/${quizId}`,
         { method: 'GET' });
     return response;
@@ -44,6 +44,6 @@ const getQuizResult = async (quizId, answers) => {
 module.exports = {
     register,
     login,
-    getOneQuiz,
+    getQuizById,
     getQuizResult,
 };
