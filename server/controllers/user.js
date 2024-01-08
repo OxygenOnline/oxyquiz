@@ -27,7 +27,6 @@ const login = async (req, res, next) => {
 
   return passport.authenticate('local', (err, user, info) => {
     if (err) {
-      console.log(err)
       return res.status(500).json({
         message: err,
       });

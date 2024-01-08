@@ -12,7 +12,10 @@ require('./utils/passport')
 
 app.use(express.json());
 app.use(cookieParser())
-app.use(cors({ origin: CLIENT_URL, credentials: true }));
+app.use(cors({
+    origin: CLIENT_URL,
+    credentials: true
+}));
 
 app.use(session({
     secret: SECRET,
