@@ -22,6 +22,7 @@ const LoginForm = () => {
             const response = await login(user);
 
             if (response.ok) {
+                localStorage.setItem('loggedInUser', true);
                 router.push('/');
             }
             else {

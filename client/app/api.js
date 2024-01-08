@@ -7,14 +7,23 @@ const register = async (user) => {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(user),
+        body: JSON.stringify(user)
     });
     return response;
 };
 
-const login = async (user) => {
+const login = async () => {
+    const response = await fetch(`${api}/users/logout`, {
+        method: 'GET',
+        credentials: 'include',
+    });
+    return response;
+};
+
+const logout = async (user) => {
     const response = await fetch(`${api}/users/login`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -35,7 +44,7 @@ const getQuizResult = async (quizId, answers) => {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(answers),
+        body: JSON.stringify(answers)
     });
     return response;
 };
@@ -44,6 +53,7 @@ const getQuizResult = async (quizId, answers) => {
 module.exports = {
     register,
     login,
+    logout,
     getQuizById,
-    getQuizResult,
+    getQuizResult
 };
