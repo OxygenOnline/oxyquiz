@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation';
 import { getQuizById } from '../../api';
 import QuizCard from '../../components/QuizCard';
 import Quiz from './Quiz';
-import Navbar from '../../components/Navbar';
 
 
 const fetchQuiz = async (quizId) => {
@@ -31,13 +30,12 @@ const QuizPage = async ({ params }) => {
 
     return (
         <>
-            <Navbar />
-            <div className='flex flex-col md:flex-row my-8 mx-6 md:m-12'>
-                <div className='basis-1/3 md:mr-8 mb-8 md:mb-0'>
+            <main className='flex flex-col lg:flex-row my-8 mx-6 lg:m-12'>
+                <div className='basis-1/3 lg:mr-8 mb-8 lg:mb-0'>
                     <QuizCard quizData={quizData} className=''></QuizCard>
                 </div>
                 <Quiz quizData={quizData}></Quiz>
-            </div>
+            </main>
         </>
     );
 };
