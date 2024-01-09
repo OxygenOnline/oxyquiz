@@ -65,9 +65,15 @@ const getUser = async (req, res) => {
   return res.json(userData);
 };
 
+const checkAuth = async (req, res) => {
+
+  return res.status(200).send();
+};
+
 module.exports = {
   register,
   login,
   logout,
-  getUser
+  getUser,
+  checkAuth
 };

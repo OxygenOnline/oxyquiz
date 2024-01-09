@@ -1,32 +1,45 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faUser, faSignOutAlt, faSignInAlt } from '@fortawesome/free-solid-svg-icons'
 import SideMenu from "./SideMenu";
-import { logout } from '../api';
+import { logout, checkAuth } from '../api';
 
 
 const Navbar = () => {
-    
+
     const router = useRouter();
+    const pathname = usePathname()
 
     const [isOpen, setIsOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState();
 
     useEffect(() => {
-        const value = localStorage.getItem('loggedInUser');
-        if (value) {
-            setIsLoggedIn(true)
-        }
-    }, []);
+        const userLoggedIn = async () => {
+            try {
+                const response = await checkAuth();
+
+                if (response.ok) {
+                    setIsLoggedIn(true);
+                }
+                else {
+                    setIsLoggedIn(false);
+                }
+            }
+            catch (error) {
+                console.error(error);
+            }
+        };
+
+        userLoggedIn();
+    }, [pathname]);
 
     const handleLogout = async () => {
         try {
             await logout();
-            localStorage.removeItem('loggedInUser');
             setIsLoggedIn(false);
             router.push('/')
         }

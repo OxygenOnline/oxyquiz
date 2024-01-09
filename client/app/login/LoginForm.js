@@ -22,12 +22,11 @@ const LoginForm = () => {
             const response = await login(user);
 
             if (response.ok) {
-                localStorage.setItem('loggedInUser', true);
                 router.push('/');
             }
             else {
                 const data = await response.json();
-                setError(data.errors[0].msg || 'Registration failed');
+                setError(data.errors[0].msg || 'Login failed');
             }
         }
         catch (error) {

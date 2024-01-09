@@ -32,6 +32,14 @@ const logout = async () => {
     return response;
 };
 
+const checkAuth = async () => {
+    const response = await fetch(`${api}/users/check-auth`, {
+        method: 'GET',
+        credentials: 'include',
+    });
+    return response;
+};
+
 const getQuizById = async (quizId) => {
     const response = await fetch(`${api}/quizzes/${quizId}`,
         { method: 'GET' });
@@ -61,6 +69,7 @@ module.exports = {
     register,
     login,
     logout,
+    checkAuth,
     getQuizById,
     getQuizResult,
     getUserData
