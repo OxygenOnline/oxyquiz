@@ -53,14 +53,21 @@ const logout = async (req, res) => {
   req.logout(err => {
     if (!err) {
       return res.status(200).json({
-        message: 'Logout successful.',
+        message: 'Logout successful.'
       });
     }
   });
 };
 
+const getUser = async (req, res) => {
+
+  const userData = await userdb.getUserById(req.user.id);
+  return res.json(userData);
+};
+
 module.exports = {
   register,
   login,
-  logout
+  logout,
+  getUser
 };
