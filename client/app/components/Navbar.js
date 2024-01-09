@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faUser, faSignOutAlt, faSignInAlt } from '@fortawesome/free-solid-svg-icons'
@@ -9,6 +10,8 @@ import { logout } from '../api';
 
 
 const Navbar = () => {
+    
+    const router = useRouter();
 
     const [isOpen, setIsOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState();
@@ -25,6 +28,7 @@ const Navbar = () => {
             await logout();
             localStorage.removeItem('loggedInUser');
             setIsLoggedIn(false);
+            router.push('/')
         }
         catch (error) {
             console.error('Logout failed:', error);
