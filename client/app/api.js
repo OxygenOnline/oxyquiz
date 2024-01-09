@@ -12,15 +12,7 @@ const register = async (user) => {
     return response;
 };
 
-const login = async () => {
-    const response = await fetch(`${api}/users/logout`, {
-        method: 'GET',
-        credentials: 'include',
-    });
-    return response;
-};
-
-const logout = async (user) => {
+const login = async (user) => {
     const response = await fetch(`${api}/users/login`, {
         method: 'POST',
         credentials: 'include',
@@ -28,6 +20,14 @@ const logout = async (user) => {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(user),
+    });
+    return response;
+};
+
+const logout = async () => {
+    const response = await fetch(`${api}/users/logout`, {
+        method: 'GET',
+        credentials: 'include',
     });
     return response;
 };
@@ -49,11 +49,19 @@ const getQuizResult = async (quizId, answers) => {
     return response;
 };
 
+const getUserData = async () => {
+    const response = await fetch(`${api}/users/profile-data`, {
+        method: 'GET',
+        credentials: 'include',
+    });
+    return response;
+};
 
 module.exports = {
     register,
     login,
     logout,
     getQuizById,
-    getQuizResult
+    getQuizResult,
+    getUserData
 };

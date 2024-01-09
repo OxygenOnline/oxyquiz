@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faUser, faSignOutAlt, faSignInAlt } from '@fortawesome/free-solid-svg-icons'
 import SideMenu from "./SideMenu";
-import { login } from '../api';
+import { logout } from '../api';
 
 
 const Navbar = () => {
@@ -22,7 +22,7 @@ const Navbar = () => {
 
     const handleLogout = async () => {
         try {
-            await login();
+            await logout();
             localStorage.removeItem('loggedInUser');
             setIsLoggedIn(false);
         }

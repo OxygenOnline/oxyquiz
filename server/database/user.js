@@ -32,7 +32,6 @@ const createUser = async (user) => {
 
     const { email, username, password } = user;
     const t = await sequelize.transaction();
-    console.log(user)
 
     try {
 
