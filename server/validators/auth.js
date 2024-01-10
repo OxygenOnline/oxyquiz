@@ -27,7 +27,8 @@ const username = check('username')
       .withMessage('Please provide a valid username.');
 
 const emailExists = check('email').custom(async (email) => {
-    const emailExists = await userdb.userExistsByEmail(email);
+    const normalizedEmail = email.toLowerCase();
+    const emailExists = await userdb.userExistsByEmail(normalizedEmail);
 
     if (emailExists) {
         throw Error(createError(409, `Email "${email}" already exists.`));
