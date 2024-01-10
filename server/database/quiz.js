@@ -509,19 +509,8 @@ const evaluateResult = async (quizId, answers) => {
     const max = Math.max(...resultScores);
     const resultIndex = resultScores.indexOf(max);
     const winningResult = results[resultIndex];
-    winningResult.point = max;
 
-    const resultsWithPoints = results.map((result, index) => ({
-      result: result,
-      point: resultScores[index]
-    }));
-
-    const response = {
-      winningResult: winningResult,
-      allResults: resultsWithPoints
-    };
-
-    return response;
+    return winningResult;
   }
   catch (error) {
 

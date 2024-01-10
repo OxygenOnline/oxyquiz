@@ -8,6 +8,7 @@ const Quiz = (props) => {
 
     const { quizData } = props;
     const [error, setError] = useState('');
+    const [result, setResult] = useState(null);
 
     const renderOptions = (options, singleChoice, questionIndex) => {
         return options.map((option, index) => (
@@ -67,11 +68,15 @@ const Quiz = (props) => {
 
             const data = await response.json();
             setError('');
-            alert(data.winningResult.title);
+            setResult(data);
         }
         catch (error) {
             console.error(error);
         }
+    };
+
+    const closeResult = () => {
+        setResult(null);
     };
 
     return (
@@ -90,6 +95,34 @@ const Quiz = (props) => {
                 <p className='text-red-600 w-full text-center p-3 mb-4'>{error}</p>
             )}
             <button onClick={handleSubmit} className='text-2xl font-semibold py-3'>results</button>
+            {result && (
+                <div
+                    className="fixed top-0 left-0 z-50 w-screen h-screen
+                    flex items-center justify-center"
+                >
+                    <div
+                        className="bg-stone-900 bg-opacity-60 absolute inset-0"
+                    >
+                    </div>
+                    <div
+                        className="bg-white w-4/5 md:w-2/3 lg:w-1/3
+                        rounded-lg shadow-lg p-6 text-center relative z-10"
+                    >
+                        <h2 className='accent-colored underlined pb-2 text-2xl font-bold'>Your Result</h2>
+                        <h3 className="text-2xl font-bold mt-8">{result.title}</h3>
+                        {result.description && (
+                            <p className="text-base">{result.description}</p>
+                        )}
+                        <button
+                            className=" px-6 py-3 mt-12
+                            hover:bg-emerald-600 transition duration-300 ease-in-out"
+                            onClick={closeResult}
+                        >
+                            Ok
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
