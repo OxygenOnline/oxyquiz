@@ -22,7 +22,7 @@ const LoginForm = () => {
             const response = await login(user);
 
             if (response.ok) {
-                router.push('/');
+                router.push('/profile');
             }
             else {
                 const data = await response.json();
