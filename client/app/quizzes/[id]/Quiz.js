@@ -76,6 +76,7 @@ const Quiz = (props) => {
     };
 
     const closeResult = () => {
+        document.getElementById('answersForm').reset();
         setResult(null);
     };
 
