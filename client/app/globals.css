@@ -69,6 +69,10 @@ input[type='checkbox']:checked::before {
   display: block;
 }
 
+td {
+  border: 1px dotted rgb(var(--accent-color-rgb));
+}
+
 .container {
   max-width: 100%;
   filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
@@ -86,6 +90,16 @@ input[type='checkbox']:checked::before {
 
 .white-colored {
   color: rgb(var(--component-background-rgb));
+}
+
+.main-btn {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.main-btn:hover {
+  background-color: rgb(5 150 105);
 }
 
 button {

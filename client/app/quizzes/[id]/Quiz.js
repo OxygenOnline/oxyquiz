@@ -95,7 +95,7 @@ const Quiz = (props) => {
             {error && (
                 <p className='text-red-600 w-full text-center p-3 mb-4'>{error}</p>
             )}
-            <button onClick={handleSubmit} className='text-2xl font-semibold py-3'>results</button>
+            <button onClick={handleSubmit} className='main-btn text-2xl font-semibold py-3'>results</button>
             {result && (
                 <div
                     className="fixed top-0 left-0 z-50 w-screen h-screen
@@ -115,8 +115,7 @@ const Quiz = (props) => {
                             <p className="text-base">{result.description}</p>
                         )}
                         <button
-                            className=" px-6 py-3 mt-12
-                            hover:bg-emerald-600 transition duration-300 ease-in-out"
+                            className='main-btn px-6 py-3 mt-12'
                             onClick={closeResult}
                         >
                             Ok
