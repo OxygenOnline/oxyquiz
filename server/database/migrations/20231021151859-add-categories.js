@@ -55,8 +55,8 @@ module.exports = {
     },
     {
       id: 11,
-      name: 'Beauty',
-      pathName: 'beauty'
+      name: 'Beauty & Lifestyle',
+      pathName: 'beauty-and-lifestyle'
     },
     {
       id: 12,
