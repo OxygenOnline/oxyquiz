@@ -35,6 +35,7 @@ const Navbar = () => {
         };
 
         userLoggedIn();
+        setIsOpen(false);
     }, [pathname]);
 
     const handleLogout = async () => {
