@@ -7,7 +7,7 @@ const SideMenu = () => {
         <div className='sidebar px-2 md:fixed md:w-fit md:h-full z-50 w-auto h-auto relative static'>
             <ul className='p-2 flex flex-col items-start text-lg'>
                 <li key={0} className='p-2'>
-                    <Link href='/' className='category'>All</Link>
+                    <Link href='/quizzes/all' className='category'>All</Link>
                 </li>
                 {categories.map((category) => (
                     <li key={category.id} className='p-2'>
