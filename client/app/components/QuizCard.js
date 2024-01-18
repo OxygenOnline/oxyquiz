@@ -7,7 +7,10 @@ const QuizCard = (props) => {
 
     return (
         <Link href={`/quizzes/${quizData.id}`}>
-            <div className='container flex flex-col h-full flex-auto items-center justify-center my-auto text-center p-6'>
+            <div
+                className='container transition-transform duration-500 transform hover:scale-105 
+            flex flex-col h-full flex-auto items-center justify-center my-auto text-center p-6'
+            >
                 <div className='underlined pb-4 w-full'>
                     <h1 className='text-2xl font-semibold'>{quizData.title}</h1>
                 </div>
