@@ -90,6 +90,48 @@ const getUserData = async () => {
     return response;
 };
 
+const getUserQuizzes = async () => {
+    const response = await fetch(`${api}/quizzes/current`, {
+        method: 'GET',
+        credentials: 'include',
+    });
+    return response;
+};
+
+const createQuiz = async (quiz) => {
+    const response = await fetch(`${api}/quizzes`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(quiz)
+    });
+    return response;
+};
+
+const deleteQuiz = async (quizId) => {
+    const response = await fetch(`${api}/quizzes/${quizId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+    });
+    console.log(response.status)
+    return response;
+};
+
+const updateQuiz = async (quizId, quiz) => {
+    const response = await fetch(`${api}/quizzes/${quizId}`, {
+        method: 'PUT',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(quiz)
+    });
+    return response;
+};
+
+
 module.exports = {
     register,
     login,
@@ -101,5 +143,9 @@ module.exports = {
     getRandomQuiz,
     getCategoryQuizzes,
     getRandomQuizByCategory,
-    getUserData
+    getUserData,
+    getUserQuizzes,
+    createQuiz,
+    deleteQuiz,
+    updateQuiz
 };
