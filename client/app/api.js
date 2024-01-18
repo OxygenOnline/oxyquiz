@@ -1,6 +1,5 @@
 const api = process.env.NEXT_PUBLIC_SERVER_URL;
 
-
 const register = async (user) => {
     const response = await fetch(`${api}/users/register`, {
         method: 'POST',
@@ -40,6 +39,13 @@ const checkAuth = async () => {
     return response;
 };
 
+const getQuizzes = async (page = 0, limit = 6) => {
+    const offset = limit * page;
+    const response = await fetch(`${api}/quizzes?limit=${limit}&offset=${offset}`,
+        { method: 'GET' });
+    return response;
+};
+
 const getQuizById = async (quizId) => {
     const response = await fetch(`${api}/quizzes/${quizId}`,
         { method: 'GET' });
@@ -57,6 +63,25 @@ const getQuizResult = async (quizId, answers) => {
     return response;
 };
 
+const getRandomQuiz = async () => {
+    const response = await fetch(`${api}/quizzes/random`,
+        { method: 'GET' });
+    return response;
+};
+
+const getCategoryQuizzes = async (categoryName, page, limit = 6) => {
+    const offset = limit * page;
+    const response = await fetch(`${api}/quizzes/${categoryName}?limit=${limit}&offset=${offset}`,
+        { method: 'GET' });
+    return response;
+};
+
+const getRandomQuizByCategory = async (categoryName) => {
+    const response = await fetch(`${api}/quizzes/${categoryName}/random`,
+        { method: 'GET' });
+    return response;
+};
+
 const getUserData = async () => {
     const response = await fetch(`${api}/users/profile-data`, {
         method: 'GET',
@@ -70,7 +95,11 @@ module.exports = {
     login,
     logout,
     checkAuth,
+    getQuizzes,
     getQuizById,
     getQuizResult,
+    getRandomQuiz,
+    getCategoryQuizzes,
+    getRandomQuizByCategory,
     getUserData
 };
