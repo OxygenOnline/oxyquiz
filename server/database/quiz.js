@@ -41,6 +41,7 @@ const getQuizzes = async (limit = 20, offset = 0, categoryPathName = null, userI
         as: 'creator',
       },
     ],
+    order: ['createdAt']
   };
 
   if (categoryPathName) {
@@ -123,10 +124,9 @@ const getRandomQuiz = async (categoryPathName) => {
     queryOptions.where = { categoryId: category.id };
   }
 
-  const quiz = await Quiz.findOne(queryOptions);
-  const result = await getQuizById(quiz?.id);
+  const quizId = await Quiz.findOne(queryOptions);
 
-  return result;
+  return quizId;
 };
 
 const createQuiz = async (quizData, creatorId) => {
