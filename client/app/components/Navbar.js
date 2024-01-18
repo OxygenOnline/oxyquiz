@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faUser, faSignOutAlt, faSignInAlt } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faUser, faSignOutAlt, faSignInAlt, faPlus } from '@fortawesome/free-solid-svg-icons'
 import SideMenu from "./SideMenu";
 import { logout, checkAuth } from '../api';
 
@@ -52,13 +52,17 @@ const Navbar = () => {
     return (
         <>
             <nav className='flex flex-row justify-between'>
-                <div className='my-auto'>
-                    <button onClick={() => setIsOpen(!isOpen)} className="m1-2 white-colored focus:outline-none">
-                        <FontAwesomeIcon icon={faBars} className="text-2xl" />
+                <div className='my-auto flex flex-row text-2xl focus:outline-none'>
+                    <button onClick={() => setIsOpen(!isOpen)}>
+                        <FontAwesomeIcon icon={faBars} className='white-colored' />
                     </button>
+                    {isLoggedIn &&
+                        (<button onClick={() => router.push('/quizzes/make')} className='pl-4'>
+                            <FontAwesomeIcon icon={faPlus} className='white-colored' />
+                        </button>)}
                 </div>
 
-                <div className='my-auto hidden md:block font-semibold tracking-widest text-2xl'>
+                <div className='my-auto font-semibold sm:tracking-widest text-2xl'>
                     <Link href='/'>oxyquiz</Link>
                 </div>
 
