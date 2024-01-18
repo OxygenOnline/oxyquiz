@@ -11,7 +11,8 @@ const validateCategoryPathName = async (categoryPathName) => {
 
 const getAllQuizzes = async (req, res, next) => {
     try {
-        const result = await quizdb.getAllQuizzes();
+        const { limit, offset } = req.query;
+        const result = await quizdb.getAllQuizzes(limit, offset);
         res.json(result);
     } catch (error) {
         next(error);
@@ -33,7 +34,8 @@ const getAllQuizzesByCategory = async (req, res, next) => {
     try {
         const { categoryName } = req.params;
         await validateCategoryPathName(categoryName);
-        const result = await quizdb.getAllQuizzesByCategory(categoryName);
+        const { limit, offset } = req.query;
+        const result = await quizdb.getAllQuizzesByCategory(categoryName, limit, offset);
         res.json(result);
     }
     catch (error) {
