@@ -41,8 +41,12 @@ const checkAuth = async () => {
 
 const getQuizzes = async (page = 0, limit = 6) => {
     const offset = limit * page;
-    const response = await fetch(`${api}/quizzes?limit=${limit}&offset=${offset}`,
-        { method: 'GET' });
+    const response = await fetch(`${api}/quizzes?limit=${limit}&offset=${offset}`, {
+        method: 'GET',
+        headers: {
+            'Cache-Control': 'no-cache, max-age=120, must-revalidate',
+        }
+    });
     return response;
 };
 
@@ -71,8 +75,12 @@ const getRandomQuiz = async () => {
 
 const getCategoryQuizzes = async (categoryName, page, limit = 6) => {
     const offset = limit * page;
-    const response = await fetch(`${api}/quizzes/${categoryName}?limit=${limit}&offset=${offset}`,
-        { method: 'GET' });
+    const response = await fetch(`${api}/quizzes/${categoryName}?limit=${limit}&offset=${offset}`, {
+        method: 'GET',
+        headers: {
+            'Cache-Control': 'no-cache, max-age=120, must-revalidate',
+        }
+    });
     return response;
 };
 
