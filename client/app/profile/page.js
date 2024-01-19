@@ -7,9 +7,11 @@ import { getUserData, getUserQuizzes } from '../api';
 import QuizTable from './QuizTable';
 
 
-const ProfilePage = () => {
+const ProfilePage = ({ searchParams }) => {
 
   const router = useRouter();
+
+  const page = searchParams['page'] ?? '0';
 
   const [profileData, setProfileData] = useState(null);
   const [quizzes, setQuizzes] = useState(null);
@@ -35,7 +37,7 @@ const ProfilePage = () => {
 
     const fetchUserQuizzes = async () => {
       try {
-        const response = await getUserQuizzes();
+        const response = await getUserQuizzes(page);
 
         if (response.status === 403) {
           router.push('/login')
@@ -52,7 +54,7 @@ const ProfilePage = () => {
 
     fetchUserData();
     fetchUserQuizzes();
-  }, []);
+  }, [searchParams]);
 
   return (
     <>

@@ -98,8 +98,9 @@ const getUserData = async () => {
     return response;
 };
 
-const getUserQuizzes = async () => {
-    const response = await fetch(`${api}/quizzes/current`, {
+const getUserQuizzes = async (page, limit = 12) => {
+    const offset = limit * page;
+    const response = await fetch(`${api}/quizzes/current?limit=${limit}&offset=${offset}`, {
         method: 'GET',
         credentials: 'include',
     });
