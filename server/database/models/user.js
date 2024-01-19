@@ -39,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
+    paranoid: true,
     tableName: 'users',
     createdAt: 'joiningDate',
     updatedAt: false
