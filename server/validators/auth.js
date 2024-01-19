@@ -5,8 +5,14 @@ const userdb = require('../database/user');
 
 
 const password = check('password')
-    .isStrongPassword()
-    .withMessage('Please provide a strong password.');
+    .isStrongPassword({
+        minLength: 8,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 0
+    })
+    .withMessage('Password must be at least 8 characters long, should contain uppercase, lowercase and number.');
 
 const email = check('email')
     .isEmail()
@@ -17,14 +23,14 @@ const username = check('username')
     .withMessage("Username length must be between 4 and and 32.")
     .custom((value) => {
         const usernameRegex = /^[a-z0-9\_\-]+$/i;
-    
+
         if (!usernameRegex.test(value)) {
-          throw Error(createError('Invalid username format.'));
+            throw Error(createError('Invalid username format.'));
         }
-        
+
         return true;
-      })
-      .withMessage('Please provide a valid username.');
+    })
+    .withMessage('Please provide a valid username.');
 
 const emailExists = check('email').custom(async (email) => {
     const normalizedEmail = email.toLowerCase();
