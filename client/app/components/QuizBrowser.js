@@ -42,9 +42,8 @@ const QuizBrowser = ({ quizzes }) => {
                 <QuizGrid quizzes={quizzes} />
 
                 <div className='flex flex-row lg:w-2/5 mx-auto pt-8 md:pt-16 font-semibold text-2xl'>
-
                     <button
-                        className='pb-3 rounded-none rounded-l-lg hover:shadow-none'
+                        className='py-3 rounded-none rounded-l-lg hover:shadow-none'
                         disabled={page <= 0}
                         onClick={prev}
                     >
