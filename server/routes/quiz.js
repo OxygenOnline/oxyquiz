@@ -25,7 +25,10 @@ router.route('/:id(\\d+)')
     .post(validate({ body: evaluationSchema }), controller.getResultEvaluation)
     .put(validate({ body: quizSchema }), userAuth, controller.updateQuiz)
     .delete(userAuth, controller.deleteQuiz);
-
+    
+router.route('/:id(\\d+)/full')
+    .get(userAuth, controller.getFullQuizById)
+    
 router.route('/:categoryName')
     .get(controller.getAllQuizzesByCategory);
 

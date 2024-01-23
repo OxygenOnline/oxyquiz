@@ -54,7 +54,7 @@ const getQuizzes = async (limit = 20, offset = 0, categoryPathName = null, userI
     });
     queryOptions.where = { categoryId: category.id };
   }
-  
+
   if (userId) {
     queryOptions.where = { creatorId: userId };
   }
@@ -79,6 +79,47 @@ const getAllQuizzesByUser = async (userId, limit = 20, offset = 0) => {
 
   const result = await getQuizzes(limit, offset, null, userId);
   return result;
+};
+
+const getFullQuizById = async (quizId) => {
+
+  let quizData = await Quiz.findByPk(quizId, {
+    include: [
+      {
+        model: Result,
+        attributes: { exclude: ['quizId'] },
+        as: 'results'
+      },
+      {
+        model: Question,
+        attributes: { exclude: ['quizId'] },
+        as: 'questions',
+        include: {
+          model: Option,
+          as: 'options',
+          include: {
+            model: Result,
+            attributes: ['position'],
+            through: { attributes: [] },
+          }
+        }
+      },
+    ],
+  });
+
+  const quiz = {
+    ...quizData.toJSON(),
+    questions: quizData.questions.map((question) => ({
+      ...question.toJSON(),
+      options: question.options.map((option) => ({
+        ...option.toJSON(),
+        selectedResults: option.Results.map((result) => result.position),
+        Results: undefined
+      })),
+    })),
+  };
+
+  return quiz;
 };
 
 const getQuizById = async (quizId) => {
@@ -439,6 +480,18 @@ const categoryExists = async (categoryPathName) => {
   return count != 0;
 };
 
+const checkCreator = async (quizId, userId) => {
+
+  const quiz = await Quiz.findByPk(quizId, {
+    attributes: ['creatorId'],
+  });
+
+  if (quiz && quiz.creatorId === userId) {
+    return true;
+  };
+  return false;
+};
+
 const evaluateResult = async (quizId, answers) => {
 
   try {
@@ -525,6 +578,7 @@ module.exports = {
   getAllQuizzes,
   getAllQuizzesByCategory,
   getAllQuizzesByUser,
+  getFullQuizById,
   getQuizById,
   getRandomQuiz,
   createQuiz,
@@ -532,5 +586,6 @@ module.exports = {
   deleteQuizById,
   quizExists,
   categoryExists,
+  checkCreator,
   evaluateResult
 };
