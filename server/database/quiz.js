@@ -41,7 +41,9 @@ const getQuizzes = async (limit = 20, offset = 0, categoryPathName = null, userI
         as: 'creator',
       },
     ],
-    order: ['createdAt']
+    order: [
+      ['createdAt', 'DESC']
+    ]
   };
 
   if (categoryPathName) {
