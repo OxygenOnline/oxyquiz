@@ -59,7 +59,7 @@ const Results = () => {
 
             <div className='mt-6 p-3'>
                 {quiz.results.map((result, index) => (
-                    <div key={index} className='mb-4'>
+                    <div key={index} className='mb-8'>
                         <label className='flex mb-2'>
                             <p className='my-auto'>{index + 1}.</p>
                             <input
@@ -88,7 +88,7 @@ const Results = () => {
                 ))}
             </div>
 
-            <button className='mt-3' onClick={addNewResult}>Add Result</button>
+            <button onClick={addNewResult}>Add Result</button>
         </div>
     );
 };
