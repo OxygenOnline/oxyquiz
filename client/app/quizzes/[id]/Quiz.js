@@ -12,13 +12,15 @@ const Quiz = (props) => {
 
     const renderOptions = (options, singleChoice, questionIndex) => {
         return options.map((option, index) => (
-            <div key={index} className='m-2'>
-                <input type={singleChoice ? 'radio' : 'checkbox'}
-                    name={`${questionIndex}`}
-                    value={option.id}
-                    className='mr-1'
-                />
-                <label>{option.content}</label>
+            <div key={index} className='m-1'>
+                <label>
+                    <input type={singleChoice ? 'radio' : 'checkbox'}
+                        name={`${questionIndex}`}
+                        value={option.id}
+                        className='mr-1'
+                    />
+                    {option.content}
+                </label>
             </div>
         ));
     };
@@ -86,7 +88,7 @@ const Quiz = (props) => {
                 {quizData.questions.map((question, index) => (
                     <div key={index} className='p-1'>
                         <h2 className='underlined text-xl mb-2 pb-2'>{question.content}</h2>
-                        <div className='mt-3 mb-6'>
+                        <div className='grid md:grid-cols-2 mt-3 mb-6'>
                             {renderOptions(question.options, question.singleChoice, question.id)}
                         </div>
                     </div>
