@@ -3,12 +3,12 @@ import React, { createContext, useState, useContext } from 'react';
 
 const QuizContext = createContext();
 
-export const QuizProvider = ({ children }) => {
+export const QuizProvider = ({ children, initialData }) => {
 
-    const [quiz, setQuiz] = useState({
+    const [quiz, setQuiz] = useState(initialData || {
         title: '',
         description: '',
-        category: '',
+        categoryId: '',
         results: [
             { title: '', description: '' },
             { title: '', description: '' },

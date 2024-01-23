@@ -170,7 +170,7 @@ const Questions = () => {
                                         className='w-full ml-2'
                                         type='text'
                                         placeholder='Question Title'
-                                        value={question.title}
+                                        value={question.content}
                                         onChange={(event) =>
                                             handleQuestionTitleChange(event, questionIndex)
                                         }
@@ -231,7 +231,7 @@ const Questions = () => {
                                         <input
                                             type='text'
                                             placeholder={`Option ${optionIndex + 1}`}
-                                            value={option.title}
+                                            value={option.content}
                                             className='flex-1'
                                             onChange={(event) =>
                                                 handleOptionChange(

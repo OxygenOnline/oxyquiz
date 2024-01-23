@@ -1,5 +1,6 @@
 import { useQuiz } from './QuizContext';
 import categories from '../../data/categories.json';
+import Link from 'next/link';
 
 
 const MetaData = () => {
@@ -23,23 +24,23 @@ const MetaData = () => {
     const handleCategoryChange = (event) => {
         setQuiz({
             ...quiz,
-            category: event.target.value,
+            categoryId: event.target.value,
         });
     };
 
     return (
         <div className='container p-3 mb-6'>
             {quiz.id && (
-                <div className='flex flex-col'>
-                    <label className='text-xl font-bold'>Quiz Id</label>
-                    <input
-                        className='p-1'
-                        type="number"
-                        value={quiz.title}
-                        disabled
-                    />
-                </div>)}
-            < div className='flex flex-col'>
+                <div className='underlined'>
+                    <Link
+                        href={`/quizzes/${quiz.id}`}
+                        className='text-xl font-bold accent-colored'
+                    >
+                        View The Published Quiz
+                    </Link>
+                </div>
+            )}
+            < div className='flex flex-col mt-6'>
                 <label className='text-xl font-bold'>Quiz Title</label>
                 <input
                     className='p-1'
@@ -61,7 +62,7 @@ const MetaData = () => {
                 <label className='text-xl font-bold'>Category</label>
                 <select
                     className='py-1'
-                    value={quiz.category}
+                    value={quiz.categoryId}
                     onChange={handleCategoryChange}
                     required>
                     <option value=''></option>

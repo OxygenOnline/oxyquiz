@@ -32,14 +32,14 @@ const PublishButton = () => {
             {
                 title: quiz.title,
                 description: quiz.description || null,
-                categoryId: Number(quiz.category),
+                categoryId: Number(quiz.categoryId),
                 results: mappedResults,
                 questions: mappedQuestions
             }
         }
 
         const response = await createQuiz(createdQuiz);
-        
+
         if (response.status === 201) {
             const data = await response.json();
             router.push(`/quizzes/${data}`);
