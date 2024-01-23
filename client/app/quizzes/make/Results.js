@@ -76,7 +76,7 @@ const Results = () => {
                             value={result.description}
                             onChange={(event) => handleDescriptionChange(event, index)}
                         />
-                        {index > 1 && (
+                        {quiz.results.length > 2 && (
                             <button
                                 className='p-1 bg-stone-400 hover:shadow-none'
                                 onClick={() => cancelResult(index)}

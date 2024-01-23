@@ -176,7 +176,7 @@ const Questions = () => {
                                         }
                                     />
                                 </label>
-                                {questionIndex > 1 && (
+                                {quiz.questions.length > 2 && (
                                     <button
                                         className='py-1 w-fit ml-2 bg-stone-400 hover:shadow-none'
                                         onClick={() => cancelQuestion(questionIndex)}
@@ -220,7 +220,7 @@ const Questions = () => {
                                     className='flex flex-col md:flex-row w-full mb-8 items-start'
                                 >
                                     <div className='flex flex-row w-full md:basis-1/2 flex-initial mb-2 md:mb-0 md:mr-5'>
-                                        {optionIndex > 1 && (
+                                        {question.options.length > 2 && (
                                             <button
                                                 className='py-1 mr-2 w-fit bg-stone-400 hover:shadow-none'
                                                 onClick={() => cancelOption(questionIndex, optionIndex)}
