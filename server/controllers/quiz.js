@@ -24,7 +24,8 @@ const getFullQuizById = async (req, res, next) => {
         const { id } = req.params;
         const userId = req.user.id;
         
-        if (!quizdb.checkCreator(id, userId)) {
+        const isCreator = await quizdb.checkCreator(id, userId);
+        if (!isCreator) {
             return res.status(403).json({ message: 'Unauthorized: You cannot access this quiz' });
         }
         const result = await quizdb.getFullQuizById(id);
@@ -86,8 +87,9 @@ const updateQuiz = async (req, res, next) => {
         const { id } = req.params;
         const newQuiz = req.body.quiz;
         const userId = req.user.id;
-        
-        if (!quizdb.checkCreator(id, userId)) {
+
+        const isCreator = await quizdb.checkCreator(id, userId);
+        if (!isCreator) {
             return res.status(403).json({ message: 'Unauthorized: You cannot update this quiz' });
         }
         const quizId = await quizdb.updateQuizById(id, newQuiz);
@@ -102,8 +104,9 @@ const deleteQuiz = async (req, res, next) => {
     try {
         const { id } = req.params;
         const userId = req.user.id;
-        
-        if (!quizdb.checkCreator(id, userId)) {
+
+        const isCreator = await quizdb.checkCreator(id, userId);
+        if (!isCreator) {
             return res.status(403).json({ message: 'Unauthorized: You cannot delete this quiz' });
         }
         await quizdb.deleteQuizById(id);
