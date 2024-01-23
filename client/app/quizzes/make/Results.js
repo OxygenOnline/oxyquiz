@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faX } from '@fortawesome/free-solid-svg-icons'
 import { useQuiz } from './QuizContext';
 
 
@@ -60,30 +62,32 @@ const Results = () => {
             <div className='mt-6 p-3'>
                 {quiz.results.map((result, index) => (
                     <div key={index} className='mb-8'>
-                        <label className='flex mb-2'>
-                            <p className='my-auto'>{index + 1}.</p>
-                            <input
-                                className='w-full ml-2'
-                                type='text'
-                                placeholder='Result Title'
-                                value={result.title}
-                                onChange={(event) => handleTitleChange(event, index)}
-                            />
-                        </label>
+                        <div className='flex mb-2'>
+                            <label className='flex w-full'>
+                                <p className='my-auto'>{index + 1}.</p>
+                                <input
+                                    className='w-full ml-2'
+                                    type='text'
+                                    placeholder='Result Title'
+                                    value={result.title}
+                                    onChange={(event) => handleTitleChange(event, index)}
+                                />
+                            </label>
+                            {quiz.results.length > 2 && (
+                                <button
+                                    className='py-1 ml-2 w-fit bg-stone-400 hover:shadow-none'
+                                    onClick={() => cancelResult(index)}
+                                >
+                                    <FontAwesomeIcon icon={faX} />
+                                </button>
+                            )}
+                        </div>
                         <textarea
                             className='w-full'
                             placeholder='Result Description'
                             value={result.description}
                             onChange={(event) => handleDescriptionChange(event, index)}
                         />
-                        {quiz.results.length > 2 && (
-                            <button
-                                className='p-1 bg-stone-400 hover:shadow-none'
-                                onClick={() => cancelResult(index)}
-                            >
-                                Cancel
-                            </button>
-                        )}
                     </div>
                 ))}
             </div>
