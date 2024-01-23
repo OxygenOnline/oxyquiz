@@ -50,6 +50,14 @@ const getQuizzes = async (page = 0, limit = 6) => {
     return response;
 };
 
+const getFullQuizById = async (quizId) => {
+    const response = await fetch(`${api}/quizzes/${quizId}/full`, {
+        method: 'GET',
+        credentials: 'include',
+    });
+    return response;
+};
+
 const getQuizById = async (quizId) => {
     const response = await fetch(`${api}/quizzes/${quizId}`,
         { method: 'GET' });
@@ -147,6 +155,7 @@ module.exports = {
     logout,
     checkAuth,
     getQuizzes,
+    getFullQuizById,
     getQuizById,
     getQuizResult,
     getRandomQuiz,
