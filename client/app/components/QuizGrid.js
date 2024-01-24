@@ -1,4 +1,4 @@
-import QuizCard from "./QuizCard";
+import QuizCard from './QuizCard';
 
 
 const QuizGrid = ({ quizzes }) => {

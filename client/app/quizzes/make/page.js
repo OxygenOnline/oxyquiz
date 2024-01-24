@@ -51,7 +51,7 @@ const MakeQuizPage = ({ searchParams }) => {
             catch (error) {
                 console.error(error);
             }
-        }
+        };
 
         userLoggedIn();
 

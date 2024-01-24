@@ -7,41 +7,41 @@ import RegisterSection from './components/LandingPage/RegisterSection';
 
 
 const fetchQuizzes = async () => {
-  try {
-    const response = await getQuizzes();
+    try {
+        const response = await getQuizzes();
 
-    const data = await response.json();
-    return data;
-  }
-  catch (error) {
-    console.error(error);
-  }
+        const data = await response.json();
+        return data;
+    }
+    catch (error) {
+        console.error(error);
+    }
 };
 
 const Home = async () => {
 
-  const quizzes = await fetchQuizzes();
+    const quizzes = await fetchQuizzes();
 
-  return (
-    <main className='flex flex-col items-center justify-between p-8 lg:p-12'>
+    return (
+        <main className='flex flex-col items-center justify-between p-8 lg:p-12'>
 
-      <WelcomeSection />
+            <WelcomeSection />
 
-      {quizzes && (
-        <section className='text-center pt-12 md:pt-20 md:pb-24 pb-16'>
-          <h2 className='accent-colored text-4xl font-bold mb-12'>Hottest Selection</h2>
-          <QuizGrid quizzes={quizzes} />
-        </section>
-      )}
+            {quizzes && (
+                <section className='text-center pt-12 md:pt-20 md:pb-24 pb-16'>
+                    <h2 className='accent-colored text-4xl font-bold mb-12'>Hottest Selection</h2>
+                    <QuizGrid quizzes={quizzes} />
+                </section>
+            )}
 
-      <RandomSection />
+            <RandomSection />
 
-      <CategorySection />
+            <CategorySection />
 
-      <RegisterSection />
+            <RegisterSection />
 
-    </main>
-  )
+        </main>
+    );
 };
 
 export default Home;

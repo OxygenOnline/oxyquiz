@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { deleteQuiz } from '../api';
 
@@ -12,7 +12,7 @@ const QuizRow = ({ quiz }) => {
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
     const editQuiz = () => {
-        location.assign(`/quizzes/make?quizId=${quiz.id}`)
+        location.assign(`/quizzes/make?quizId=${quiz.id}`);
     };
 
     const confirmDelete = async () => {

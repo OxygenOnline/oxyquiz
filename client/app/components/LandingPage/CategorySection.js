@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import categories from '../../data/categories'
+import categories from '../../data/categories';
 
 
 const CategorySection = () => {
@@ -31,7 +31,7 @@ const CategorySection = () => {
                 </div>
             </div>
         </section>
-    )
+    );
 };
 
 export default CategorySection;

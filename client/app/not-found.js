@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from 'next/link';
 
 const NotFound = () => {
     return (
@@ -9,7 +9,7 @@ const NotFound = () => {
                 <button className='w-80'>Return Home</button>
             </Link>
         </div>
-    )
+    );
 };
 
 export default NotFound;

@@ -13,11 +13,11 @@ const QuizTable = ({ quizzes }) => {
     const page = searchParams.get('page') ?? '0';
 
     const prev = () => {
-        router.replace(`${pathname}/?page=${Number(page) - 1}`)
+        router.replace(`${pathname}/?page=${Number(page) - 1}`);
     };
 
     const next = () => {
-        router.replace(`${pathname}/?page=${Number(page) + 1}`)
+        router.replace(`${pathname}/?page=${Number(page) + 1}`);
     };
 
     return (

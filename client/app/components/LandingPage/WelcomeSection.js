@@ -26,7 +26,7 @@ const WelcomeSection = () => {
                 </button>
             </div>
         </section>
-    )
+    );
 };
 
 export default WelcomeSection;

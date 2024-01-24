@@ -15,11 +15,11 @@ const QuizBrowser = ({ quizzes }) => {
     const page = searchParams.get('page') ?? '0';
 
     const prev = () => {
-        router.replace(`${pathname}/?page=${Number(page) - 1}`)
+        router.replace(`${pathname}/?page=${Number(page) - 1}`);
     };
 
     const next = () => {
-        router.replace(`${pathname}/?page=${Number(page) + 1}`)
+        router.replace(`${pathname}/?page=${Number(page) + 1}`);
     };
 
     const random = async () => {
@@ -31,7 +31,7 @@ const QuizBrowser = ({ quizzes }) => {
             response = await getRandomQuiz();
         }
         const quiz = await response.json();
-        router.push(`/quizzes/${quiz.id}`)
+        router.push(`/quizzes/${quiz.id}`);
     };
 
     return (

@@ -32,7 +32,7 @@ const RegisterSection = () => {
                 </button>
             </div>
         </section>
-    )
+    );
 };
 
 export default RegisterSection;

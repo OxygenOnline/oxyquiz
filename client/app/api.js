@@ -132,7 +132,6 @@ const deleteQuiz = async (quizId) => {
         method: 'DELETE',
         credentials: 'include',
     });
-    console.log(response.status)
     return response;
 };
 

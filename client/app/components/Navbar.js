@@ -3,16 +3,16 @@
 import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faUser, faSignOutAlt, faSignInAlt, faPlus } from '@fortawesome/free-solid-svg-icons'
-import SideMenu from "./SideMenu";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faUser, faSignOutAlt, faSignInAlt, faPlus } from '@fortawesome/free-solid-svg-icons';
+import SideMenu from './SideMenu';
 import { logout, checkAuth } from '../api';
 
 
 const Navbar = () => {
 
     const router = useRouter();
-    const pathname = usePathname()
+    const pathname = usePathname();
 
     const [isOpen, setIsOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState();
@@ -42,7 +42,7 @@ const Navbar = () => {
         try {
             await logout();
             setIsLoggedIn(false);
-            router.push('/')
+            router.push('/');
         }
         catch (error) {
             console.error('Logout failed:', error);
