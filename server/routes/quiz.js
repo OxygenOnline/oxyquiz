@@ -1,12 +1,10 @@
 const express = require('express');
 const router = express.Router();
-
 const { Validator } = require('express-json-validator-middleware');
+const { validate } = new Validator();
 const quizSchema = require('../validators/quiz.json');
 const evaluationSchema = require('../validators/evaluation.json');
-const { validate } = new Validator();
 const userAuth = require('../utils/auth');
-
 const controller = require('../controllers/quiz');
 
 
@@ -27,7 +25,7 @@ router.route('/:id(\\d+)')
     .delete(userAuth, controller.deleteQuiz);
     
 router.route('/:id(\\d+)/full')
-    .get(userAuth, controller.getFullQuizById)
+    .get(userAuth, controller.getFullQuizById);
     
 router.route('/:categoryName')
     .get(controller.getAllQuizzesByCategory);

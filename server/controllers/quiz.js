@@ -63,7 +63,7 @@ const getAllQuizzesByCategory = async (req, res, next) => {
 const getAllQuizzesByUser = async (req, res, next) => {
     try {
         const { limit, offset } = req.query;
-        const userId = req.user.id
+        const userId = req.user.id;
         const result = await quizdb.getAllQuizzesByUser(userId, limit, offset);
         res.json(result);
     }

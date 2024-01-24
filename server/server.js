@@ -1,17 +1,18 @@
 const express = require('express');
-const app = express();
-const { PORT, CLIENT_URL, SECRET } = require('./config/config');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport');
 const cors = require('cors');
+const { PORT, CLIENT_URL, SECRET } = require('./config/config');
+const quizRouter = require('./routes/quiz');
+const userRouter = require('./routes/user');
 const { logErrors, handleClientErrors } = require('./utils/error');
 
 
-require('./utils/passport')
+const app = express();
 
 app.use(express.json());
-app.use(cookieParser())
+app.use(cookieParser());
 app.use(cors({
     origin: CLIENT_URL,
     credentials: true
@@ -23,11 +24,9 @@ app.use(session({
     saveUninitialized: false
 }));
 
-app.use(passport.initialize())
+app.use(passport.initialize());
 app.use(passport.session());
-
-const quizRouter = require('./routes/quiz');
-const userRouter = require('./routes/user');
+require('./utils/passport');
 
 app.use('/api/quizzes', quizRouter);
 app.use('/api/users', userRouter);

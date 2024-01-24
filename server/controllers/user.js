@@ -8,7 +8,7 @@ const register = async (req, res, next) => {
     email: req.body.email,
     username: req.body.username,
     password: req.body.password,
-  }
+  };
 
   try {
 
@@ -26,6 +26,7 @@ const register = async (req, res, next) => {
 const login = async (req, res, next) => {
 
   return passport.authenticate('local', (err, user, info) => {
+
     if (err) {
       return res.status(500).json({
         message: err,

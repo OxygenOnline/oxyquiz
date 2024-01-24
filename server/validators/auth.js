@@ -20,9 +20,9 @@ const email = check('email')
 
 const username = check('username')
     .isLength({ min: 4, max: 32 })
-    .withMessage("Username length must be between 4 and and 32.")
+    .withMessage('Username length must be between 4 and and 32.')
     .custom((value) => {
-        const usernameRegex = /^[a-z0-9\_\-]+$/i;
+        const usernameRegex = /^[a-z0-9_-]+$/i;
 
         if (!usernameRegex.test(value)) {
             throw Error(createError('Invalid username format.'));
@@ -63,7 +63,7 @@ const loginFieldsCheck = check('username').custom(async (username, { req }) => {
 
     const validPassword = await compare(givenPassword, user.password);
     if (!validPassword) {
-        throw Error(createError(401, `Wrong password.`));
+        throw Error(createError(401, 'Wrong password.'));
     }
 
     req.user = user;

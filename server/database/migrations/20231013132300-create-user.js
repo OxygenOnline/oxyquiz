@@ -14,7 +14,7 @@ module.exports = {
         unique: true,
         type: Sequelize.STRING,
         validate: {
-          is: /^[a-z0-9\_\-]+$/i,
+          is: /^[a-z0-9_-]+$/i,
         }
       },
       password: {

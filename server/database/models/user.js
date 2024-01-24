@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
       validate: {
-        is: /^[a-z0-9\_\-]+$/i,
+        is: /^[a-z0-9_-]+$/i,
       }
     },
     password: {

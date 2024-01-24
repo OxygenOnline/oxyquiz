@@ -488,7 +488,8 @@ const checkCreator = async (quizId, userId) => {
 
   if (quiz && quiz.creatorId === userId) {
     return true;
-  };
+  }
+  
   return false;
 };
 
