@@ -22,7 +22,7 @@ const ProfilePage = ({ searchParams }) => {
             try {
                 const response = await getUserData();
 
-                if (response.status === 403) {
+                if (response.status === 401) {
                     router.push('/login');
                     return;
                 }
@@ -39,7 +39,7 @@ const ProfilePage = ({ searchParams }) => {
             try {
                 const response = await getUserQuizzes(page);
 
-                if (response.status === 403) {
+                if (response.status === 401) {
                     router.push('/login');
                     return;
                 }

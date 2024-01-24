@@ -4,7 +4,7 @@ const userAuth = (req, res, next) => {
     return next();
   }
 
-  return res.status(403).send({
+  return res.status(401).send({
     message: 'not authenticated',
   });
 };

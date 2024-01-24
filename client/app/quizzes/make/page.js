@@ -23,12 +23,12 @@ const MakeQuizPage = ({ searchParams }) => {
             try {
                 const response = await checkAuth();
 
-                if (response.status === 403) {
-                    setIsLoggedIn(false);
-                    router.replace('/login');
+                if (response.ok) {
+                    setIsLoggedIn(true);
                 }
                 else {
-                    setIsLoggedIn(true);
+                    setIsLoggedIn(false);
+                    router.replace('/login');
                 }
             }
             catch (error) {
