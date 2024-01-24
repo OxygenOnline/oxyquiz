@@ -43,9 +43,7 @@ const getQuizzes = async (page = 0, limit = 6) => {
     const offset = limit * page;
     const response = await fetch(`${api}/quizzes?limit=${limit}&offset=${offset}`, {
         method: 'GET',
-        headers: {
-            'Cache-Control': 'no-cache, max-age=120, must-revalidate',
-        }
+        cache: 'no-store'
     });
     return response;
 };
@@ -59,8 +57,10 @@ const getFullQuizById = async (quizId) => {
 };
 
 const getQuizById = async (quizId) => {
-    const response = await fetch(`${api}/quizzes/${quizId}`,
-        { method: 'GET' });
+    const response = await fetch(`${api}/quizzes/${quizId}`, {
+        method: 'GET',
+        cache: 'no-store'
+    });
     return response;
 };
 
@@ -85,9 +85,7 @@ const getCategoryQuizzes = async (categoryName, page, limit = 6) => {
     const offset = limit * page;
     const response = await fetch(`${api}/quizzes/${categoryName}?limit=${limit}&offset=${offset}`, {
         method: 'GET',
-        headers: {
-            'Cache-Control': 'no-cache, max-age=120, must-revalidate',
-        }
+        cache: 'no-store'
     });
     return response;
 };

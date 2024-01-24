@@ -43,9 +43,6 @@ const PublishButton = () => {
                     questions: mappedQuestions
                 }
             };
-            console.log(quiz.categoryId);
-
-            console.log(createdQuiz);
             await quizSchema.validate(createdQuiz, { abortEarly: false });
 
             let response = null;
