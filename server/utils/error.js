@@ -1,5 +1,16 @@
 const { ValidationError } = require('express-json-validator-middleware');
 const { validationResult } = require('express-validator');
+const winston = require('winston');
+
+
+const logger = winston.createLogger({
+    level: process.env.LOG_LEVEL || 'info',
+    format: winston.format.json(),
+    transports: [
+        new winston.transports.Console(),
+        new winston.transports.File({ filename: 'error.log' })
+    ],
+});
 
 const validationErrors = (req, res, next) => {
 
@@ -13,15 +24,14 @@ const validationErrors = (req, res, next) => {
 };
 
 const logErrors = (err, req, res, next) => {
-    // TODO: change to logger
-    console.error(err);
+    logger.error(err);
     next(err);
 };
 
 const handleClientErrors = (err, req, res, next) => {
-    // TODO: more error handling
+    
     if (err instanceof ValidationError) {
-        res.status(400).send(err.validationErrors);
+        res.status(err.status).send(err.validationErrors);
     }
     else {
         next(err);
