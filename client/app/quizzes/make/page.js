@@ -15,6 +15,8 @@ const MakeQuizPage = ({ searchParams }) => {
     const router = useRouter();
     const quizId = searchParams['quizId'];
     const [quizData, setQuizData] = useState(undefined);
+    const [isLoggedIn, setIsLoggedIn] = useState();
+
 
     useEffect(() => {
         const userLoggedIn = async () => {
@@ -22,7 +24,11 @@ const MakeQuizPage = ({ searchParams }) => {
                 const response = await checkAuth();
 
                 if (response.status === 403) {
+                    setIsLoggedIn(false);
                     router.replace('/login');
+                }
+                else {
+                    setIsLoggedIn(true);
                 }
             }
             catch (error) {
@@ -35,7 +41,7 @@ const MakeQuizPage = ({ searchParams }) => {
                 const response = await getFullQuizById(quizId);
 
                 if (response.status === 403) {
-                    router.push('/');
+                    router.replace('/');
                     return;
                 }
 
@@ -53,16 +59,15 @@ const MakeQuizPage = ({ searchParams }) => {
             getFullQuiz(quizId);
         }
         else {
-            setQuizData(null)
+            setQuizData(null);
         }
 
     }, [searchParams]);
 
     return (
         <>
-            <main className='flex flex-col lg:flex-row m-8 justify-center lg:m-12'>
-
-                {quizData !== undefined && (
+            {isLoggedIn && quizData !== undefined && (
+                <main className='flex flex-col lg:flex-row m-8 justify-center lg:m-12'>
                     <QuizProvider initialData={quizData}>
                         <div className='flex flex-col basis-1/3 lg:mr-8 mb-8 lg:mb-0'>
                             <MetaData />
@@ -73,10 +78,9 @@ const MakeQuizPage = ({ searchParams }) => {
                             <Questions />
                             <PublishButton />
                         </div>
-                    </QuizProvider>)
-                }
-
-            </main >
+                    </QuizProvider>
+                </main >
+            )}
         </>
     );
 };
