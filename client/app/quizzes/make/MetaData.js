@@ -49,7 +49,7 @@ const MetaData = () => {
             )}
             <div className='container p-3 mb-6'>
                 <div className='flex flex-col'>
-                    <label className='text-xl font-bold'>Quiz Title</label>
+                    <label className='text-xl font-bold'>Quiz Title*</label>
                     <input
                         className='p-1'
                         type="text"
@@ -67,13 +67,13 @@ const MetaData = () => {
                     />
                 </div>
                 <div className='flex flex-col mt-6'>
-                    <label className='text-xl font-bold'>Category</label>
+                    <label className='text-xl font-bold'>Category*</label>
                     <select
                         className='py-1'
                         value={quiz.categoryId}
                         onChange={handleCategoryChange}
                         required>
-                        <option value=''></option>
+                        <option value={null}></option>
                         {categories.map((category) => (
                             <option
                                 key={category.id}

@@ -1,5 +1,5 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faX } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faX } from '@fortawesome/free-solid-svg-icons';
 import { useQuiz } from './QuizContext';
 
 
@@ -156,7 +156,7 @@ const Questions = () => {
 
     return (
         <div className='container h-fit p-6'>
-            <h3 className='underlined text-2xl font-bold'>Questions</h3>
+            <h3 className='underlined text-2xl font-bold'>Questions*</h3>
 
             <div className='mt-6 sm:p-3 p-0'>
                 {quiz.questions.map((question, questionIndex) => (
@@ -174,6 +174,7 @@ const Questions = () => {
                                         onChange={(event) =>
                                             handleQuestionTitleChange(event, questionIndex)
                                         }
+                                        required
                                     />
                                 </label>
                                 {quiz.questions.length > 2 && (
@@ -195,6 +196,7 @@ const Questions = () => {
                                         onChange={(event) =>
                                             handleSingleChoiceChange(event, questionIndex)
                                         }
+                                        required
                                     />
                                     Single Choice
                                 </label>
@@ -203,11 +205,12 @@ const Questions = () => {
                                     <input
                                         className='max-w-14 max-h-6 mr-2 py-0'
                                         type='number'
-                                        placeholder='Weight'
+                                        min="1"
                                         value={question.weight}
                                         onChange={(event) =>
                                             handleWeightChange(event, questionIndex)
                                         }
+                                        required
                                     />
                                     Weight
                                 </label>
@@ -240,6 +243,7 @@ const Questions = () => {
                                                     optionIndex
                                                 )
                                             }
+                                            required
                                         />
                                     </div>
                                     <select
@@ -253,6 +257,7 @@ const Questions = () => {
                                                 optionIndex
                                             )
                                         }
+                                        required
                                     >
                                         {quiz.results.map((result, index) => (
                                             <option
