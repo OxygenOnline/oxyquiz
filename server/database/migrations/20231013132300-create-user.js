@@ -38,6 +38,7 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
+    await queryInterface.sequelize.query('ALTER SEQUENCE users_id_seq RESTART WITH 100001');
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('users');
