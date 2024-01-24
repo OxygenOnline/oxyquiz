@@ -73,6 +73,7 @@ const Quiz = (props) => {
             setResult(data);
         }
         catch (error) {
+            setError('');
             console.error(error);
         }
     };
@@ -100,21 +101,21 @@ const Quiz = (props) => {
             <button onClick={handleSubmit} className='main-btn text-2xl font-semibold py-3'>results</button>
             {result && (
                 <div
-                    className="fixed top-0 left-0 z-50 w-screen h-screen
-                    flex items-center justify-center"
+                    className='fixed top-0 left-0 z-50 w-screen h-screen
+                    flex items-center justify-center'
                 >
                     <div
-                        className="bg-stone-900 bg-opacity-60 absolute inset-0"
+                        className='bg-stone-900 bg-opacity-60 absolute inset-0'
                     >
                     </div>
                     <div
-                        className="bg-white w-4/5 md:w-2/3 lg:w-1/3
-                        rounded-lg shadow-lg p-6 text-center relative z-10"
+                        className='bg-white w-4/5 md:w-2/3 lg:w-1/3
+                        rounded-lg shadow-lg p-6 text-center relative z-10'
                     >
                         <h2 className='accent-colored underlined pb-2 text-2xl font-bold'>Your Result</h2>
-                        <h3 className="text-2xl font-bold mt-8">{result.title}</h3>
+                        <h3 className='text-2xl font-bold mt-8'>{result.title}</h3>
                         {result.description && (
-                            <p className="text-base">{result.description}</p>
+                            <p className='text-base'>{result.description}</p>
                         )}
                         <button
                             className='main-btn px-6 py-3 mt-12'
