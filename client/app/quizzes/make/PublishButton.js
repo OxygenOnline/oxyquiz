@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation';
 import { useQuiz } from './QuizContext';
-import { createQuiz } from '../../api';
+import { createQuiz, updateQuiz } from '../../api';
 
 
 const PublishButton = () => {
@@ -20,9 +20,10 @@ const PublishButton = () => {
             ...question,
             position: index,
             options: question.options.map((option, optionIndex) => ({
-                content: option.content,
+                ...option,
                 position: optionIndex,
-                resultPositions: option.selectedResults
+                resultPositions: option.selectedResults,
+                selectedResults: undefined
             })),
         }));
 
@@ -38,14 +39,22 @@ const PublishButton = () => {
             }
         }
 
-        const response = await createQuiz(createdQuiz);
+        let response = null;
 
-        if (response.status === 201) {
-            const data = await response.json();
-            router.push(`/quizzes/${data}`);
+        if (quiz.id) {
+            response = await updateQuiz(quiz.id, createdQuiz);
         }
         else {
-            const data = await response.json();
+            response = await createQuiz(createdQuiz);
+        }
+
+        const data = await response.json();
+        
+        if (response.status === 201 || response.ok) {
+            const targetRoute = quiz.id ? `/quizzes/${quiz.id}` : `/quizzes/${data}`;
+            router.push(targetRoute);
+        }
+        else {
             console.error(data)
         }
     };
