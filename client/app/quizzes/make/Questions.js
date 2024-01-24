@@ -169,6 +169,7 @@ const Questions = () => {
                                     <input
                                         className='w-full ml-2'
                                         type='text'
+                                        maxLength='255'
                                         placeholder='Question Title'
                                         value={question.content}
                                         onChange={(event) =>
@@ -205,7 +206,8 @@ const Questions = () => {
                                     <input
                                         className='max-w-14 max-h-6 mr-2 py-0'
                                         type='number'
-                                        min="1"
+                                        min='1'
+                                        max='100'
                                         value={question.weight}
                                         onChange={(event) =>
                                             handleWeightChange(event, questionIndex)
@@ -225,14 +227,14 @@ const Questions = () => {
                                     <div className='flex flex-row w-full md:basis-1/2 flex-initial mb-2 md:mb-0 md:mr-5'>
                                         {question.options.length > 2 && (
                                             <button
-                                                className='py-1 mr-2 w-fit bg-stone-400 hover:shadow-none'
+                                                className='py-1 mr-2 w-fit h-fit bg-stone-400 hover:shadow-none'
                                                 onClick={() => cancelOption(questionIndex, optionIndex)}
                                             >
                                                 <FontAwesomeIcon icon={faX} />
                                             </button>
                                         )}
-                                        <input
-                                            type='text'
+                                        <textarea
+                                            maxLength='1000'
                                             placeholder={`Option ${optionIndex + 1}`}
                                             value={option.content}
                                             className='flex-1'

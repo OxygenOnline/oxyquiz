@@ -52,7 +52,9 @@ const MetaData = () => {
                     <label className='text-xl font-bold'>Quiz Title*</label>
                     <input
                         className='p-1'
-                        type="text"
+                        type='text'
+                        minLength='6'
+                        maxLength='255'
                         value={quiz.title}
                         onChange={handleTitleChange}
                         required
@@ -62,6 +64,7 @@ const MetaData = () => {
                     <label className='text-xl font-bold'>Description</label>
                     <textarea
                         className='p-1'
+                        maxLength='1000'
                         value={quiz.description}
                         onChange={handleDescriptionChange}
                     />

@@ -68,6 +68,7 @@ const Results = () => {
                                 <input
                                     className='w-full ml-2'
                                     type='text'
+                                    maxLength='255'
                                     placeholder='Result Title'
                                     value={result.title}
                                     onChange={(event) => handleTitleChange(event, index)}
@@ -85,6 +86,7 @@ const Results = () => {
                         </div>
                         <textarea
                             className='w-full'
+                            maxLength='1000'
                             placeholder='Result Description'
                             value={result.description}
                             onChange={(event) => handleDescriptionChange(event, index)}
