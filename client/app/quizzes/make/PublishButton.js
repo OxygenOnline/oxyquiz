@@ -88,7 +88,7 @@ const PublishButton = () => {
                         rounded-lg shadow-lg p-6 text-center relative z-10'
                     >
                         <h2 className='text-red-600 border-b-2 border-red-600 pb-2 text-2xl font-bold'>Error</h2>
-                        <ul className='mt-6 overflow-y-auto max-h-60'>
+                        <ul className='mt-6 overflow-y-auto max-h-72'>
                             {error.map((errorMessage, index) => (
                                 <li key={index} className='text-lg font-semibold mt-2'>{errorMessage}</li>
                             ))}

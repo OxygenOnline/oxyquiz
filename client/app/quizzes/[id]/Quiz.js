@@ -1,12 +1,15 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { getQuizResult } from '../../api';
 
 
 const Quiz = (props) => {
 
+    const router = useRouter();
     const { quizData } = props;
+
     const [error, setError] = useState('');
     const [result, setResult] = useState(null);
 
@@ -115,13 +118,19 @@ const Quiz = (props) => {
                         <h2 className='accent-colored underlined pb-2 text-2xl font-bold'>Your Result</h2>
                         <h3 className='text-2xl font-bold mt-8'>{result.title}</h3>
                         {result.description && (
-                            <p className='text-base'>{result.description}</p>
+                            <p className='mt-2 text-base overflow-y-auto max-h-72'>{result.description}</p>
                         )}
                         <button
-                            className='main-btn px-6 py-3 mt-12'
+                            className='bg-stone-400 hover:shadow-none px-6 py-3 mt-12'
                             onClick={closeResult}
                         >
                             Ok
+                        </button>
+                        <button
+                            className='px-6 py-3 mt-2'
+                            onClick={() => router.push('/')}
+                        >
+                            Homepage
                         </button>
                     </div>
                 </div>
