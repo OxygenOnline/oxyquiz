@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dbinit": "npx sequelize-cli db:drop && npx sequelize-cli db:create",
-    "dbdata": "npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
+    "dbinit": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate",
+    "dbdata": "npx sequelize-cli db:seed:all",
     "db": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all"
   },
   "keywords": [],

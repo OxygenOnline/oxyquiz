@@ -31,7 +31,7 @@ const logErrors = (err, req, res, next) => {
 const handleClientErrors = (err, req, res, next) => {
     
     if (err instanceof ValidationError) {
-        res.status(err.status).send(err.validationErrors);
+        res.status(400).send(err.validationErrors);
     }
     else {
         next(err);
