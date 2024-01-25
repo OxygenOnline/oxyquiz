@@ -14,7 +14,8 @@ const getAllQuizzes = async (req, res, next) => {
         const { limit, offset } = req.query;
         const result = await quizdb.getAllQuizzes(limit, offset);
         res.json(result);
-    } catch (error) {
+    }
+    catch (error) {
         next(error);
     }
 };
@@ -23,7 +24,7 @@ const getFullQuizById = async (req, res, next) => {
     try {
         const { id } = req.params;
         const userId = req.user.id;
-        
+
         const isCreator = await quizdb.checkCreator(id, userId);
         if (!isCreator) {
             return res.status(403).json({ message: 'Unauthorized: You cannot access this quiz' });
@@ -133,7 +134,8 @@ const getRandomQuizWithCategory = async (req, res, next) => {
         await validateCategoryPathName(categoryName);
         const result = await quizdb.getRandomQuiz(categoryName);
         res.json(result);
-    } catch (error) {
+    }
+    catch (error) {
         next(error);
     }
 };

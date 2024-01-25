@@ -6,6 +6,7 @@ const cors = require('cors');
 const { PORT, CLIENT_URL, SECRET } = require('./config/config');
 const quizRouter = require('./routes/quiz');
 const userRouter = require('./routes/user');
+const categoryRouter = require('./routes/category');
 const { logErrors, handleClientErrors } = require('./utils/error');
 
 
@@ -30,6 +31,7 @@ require('./utils/passport');
 
 app.use('/api/quizzes', quizRouter);
 app.use('/api/users', userRouter);
+app.use('/api/categories', categoryRouter);
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}.`);
