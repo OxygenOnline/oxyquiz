@@ -65,7 +65,7 @@ const MetaData = () => {
                     <textarea
                         className='p-1'
                         maxLength='1000'
-                        value={quiz.description}
+                        value={quiz.description ?? ''}
                         onChange={handleDescriptionChange}
                     />
                 </div>
