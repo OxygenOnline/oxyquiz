@@ -7,6 +7,7 @@ const { PORT, CLIENT_URL, SECRET } = require('./config/config');
 const quizRouter = require('./routes/quiz');
 const userRouter = require('./routes/user');
 const categoryRouter = require('./routes/category');
+const logger = require('./utils/logger');
 const { logErrors, handleClientErrors } = require('./utils/error');
 
 
@@ -34,7 +35,7 @@ app.use('/api/users', userRouter);
 app.use('/api/categories', categoryRouter);
 
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}.`);
+    logger.info(`Server running on port ${PORT}.`);
 });
 
 app.use(logErrors);

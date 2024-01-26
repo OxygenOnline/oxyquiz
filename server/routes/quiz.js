@@ -6,7 +6,13 @@ const quizSchema = require('../validators/quiz.json');
 const evaluationSchema = require('../validators/evaluation.json');
 const userAuth = require('../utils/auth');
 const controller = require('../controllers/quiz');
+const logger = require('../utils/logger');
 
+
+router.use((req, res, next) => {
+    logger.http(`[${req.method}] ${req.originalUrl}`);
+    next();
+});
 
 router.route('/')
     .get(controller.getAllQuizzes)

@@ -1,5 +1,6 @@
 const createError = require('http-errors');
 const quizdb = require('../database/quiz');
+const logger = require('../utils/logger');
 
 
 const validateCategoryPathName = async (categoryPathName) => {
@@ -77,6 +78,7 @@ const createQuiz = async (req, res, next) => {
     try {
         const { quiz } = req.body;
         const quizId = await quizdb.createQuiz(quiz, req.user.id);
+        logger.verbose(`Created quiz [${quizId}]`);
         res.status(201).json(quizId);
     } catch (error) {
         next(error);
@@ -94,6 +96,7 @@ const updateQuiz = async (req, res, next) => {
             return res.status(403).json({ message: 'Unauthorized: You cannot update this quiz' });
         }
         const quizId = await quizdb.updateQuizById(id, newQuiz);
+        logger.verbose(`Updated quiz [${quizId}]`);
         res.json(quizId);
     }
     catch (error) {
@@ -111,6 +114,7 @@ const deleteQuiz = async (req, res, next) => {
             return res.status(403).json({ message: 'Unauthorized: You cannot delete this quiz' });
         }
         await quizdb.deleteQuizById(id);
+        logger.verbose(`Deleted quiz [${id}]`);
         res.sendStatus(204);
     }
     catch (error) {

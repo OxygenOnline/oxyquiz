@@ -6,4 +6,4 @@ npm-debug.log
 .eslintrc.js
 database/test.js
 test/
-error.log
+oxy.log

@@ -1,5 +1,6 @@
 const passport = require('passport');
 const userdb = require('../database/user');
+const logger = require('../utils/logger');
 
 
 const register = async (req, res, next) => {
@@ -13,6 +14,7 @@ const register = async (req, res, next) => {
   try {
 
     await userdb.createUser(user);
+    logger.info(`Registered user ${user.username}`);
     return res.status(200).json({
       message: `Registration successful for ${user.username}`,
     });
@@ -41,6 +43,7 @@ const login = async (req, res, next) => {
 
     req.login(user, err => {
       if (!err) {
+        logger.verbose(`Logged in user [${user.id}] ${user.username}`);
         return res.status(200).json({
           message: `Login successful for ${user.username}`,
         });
