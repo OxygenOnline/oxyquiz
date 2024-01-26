@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { checkAuth, getFullQuizById } from '../../api';
+import CancelButton from './CancelButton';
 import { QuizProvider } from './QuizContext';
 import MetaData from './MetaData';
 import Results from './Results';
@@ -70,6 +71,7 @@ const MakeQuizPage = ({ searchParams }) => {
                 <main className='flex flex-col lg:flex-row m-8 justify-center lg:m-12'>
                     <QuizProvider initialData={quizData}>
                         <div className='flex flex-col basis-1/3 lg:mr-8 mb-8 lg:mb-0'>
+                            <CancelButton />
                             <MetaData />
                             <Results />
                         </div>
