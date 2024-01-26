@@ -37,7 +37,7 @@ const QuizBrowser = ({ quizzes }) => {
     return (
         <>
 
-            {quizzes && quizzes.length !== 0 && (<>
+            {quizzes && quizzes.length !== 0 ? (<>
 
                 <QuizGrid quizzes={quizzes} />
 
@@ -73,6 +73,27 @@ const QuizBrowser = ({ quizzes }) => {
                     </button>
                 </div>
             </>
+            ) : (
+                <div className='flex flex-col items-center justify-center h-96'>
+                    <h3 className='text-4xl font-bold mb-4'>
+                        Nothing to see here...
+                    </h3>
+                    <p className='accent-colored text-2xl font-semibold mb-4'>
+                        Be the one to fill the void!
+                    </p>
+                    <button
+                        className='main-btn text-2xl font-semibold py-3 max-w-lg mt-6'
+                        onClick={() => router.push('/')}
+                    >
+                        create a quiz
+                    </button>
+                    <button
+                        className='bg-stone-400 text-2xl font-semibold py-3 max-w-lg mt-4'
+                        onClick={() => router.push('/')}
+                    >
+                        homepage
+                    </button>
+                </div>
             )}
         </ >
     );
