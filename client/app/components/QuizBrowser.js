@@ -41,27 +41,35 @@ const QuizBrowser = ({ quizzes }) => {
 
                 <QuizGrid quizzes={quizzes} />
 
-                <div className='flex flex-row lg:w-2/5 mx-auto pt-8 md:pt-16 font-semibold text-2xl'>
+                <div className='flex flex-col w-full mx-auto md:w-2/3 lg:w-1/2 mt-12 md:mt-16 font-semibold text-2xl'>
+                    <div className='flex flex-row w-full mb-4'>
+                        <button
+                            className='py-3 rounded-none rounded-l-lg'
+                            disabled={page <= 0}
+                            onClick={prev}
+                        >
+                            &lt;
+                        </button>
+                        <button
+                            className='py-3 rounded-none'
+                            onClick={random}
+                        >
+                            <p className='md:hidden text-2xl'>?</p>
+                            <p className='hidden md:block'>random</p>
+                        </button>
+                        <button
+                            className='py-3 rounded-none rounded-r-lg'
+                            disabled={!quizzes || quizzes.length < 6}
+                            onClick={next}
+                        >
+                            &gt;
+                        </button>
+                    </div>
                     <button
-                        className='py-3 rounded-none rounded-l-lg hover:shadow-none'
-                        disabled={page <= 0}
-                        onClick={prev}
+                        className='bg-stone-400'
+                        onClick={() => router.push('/')}
                     >
-                        &lt;
-                    </button>
-                    <button
-                        className='py-3 rounded-none hover:shadow-none'
-                        onClick={random}
-                    >
-                        <p className='md:hidden text-2xl'>?</p>
-                        <p className='hidden md:block'>random</p>
-                    </button>
-                    <button
-                        className='py-3 rounded-none rounded-r-lg hover:shadow-none'
-                        disabled={!quizzes || quizzes.length < 6}
-                        onClick={next}
-                    >
-                        &gt;
+                        homepage
                     </button>
                 </div>
             </>
