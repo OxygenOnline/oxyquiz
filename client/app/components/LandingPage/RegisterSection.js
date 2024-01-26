@@ -25,7 +25,7 @@ const RegisterSection = () => {
                     Login
                 </button>
                 <button
-                    className='main-btn px-6 py-3 text-xl font-semibold h-fill'
+                    className='bg-stone-400 px-6 py-3 text-xl font-semibold h-fill'
                     onClick={() => router.push('/register')}
                 >
                     Register

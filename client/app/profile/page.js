@@ -77,7 +77,7 @@ const ProfilePage = ({ searchParams }) => {
                             onClick={() => {
                                 router.push('/');
                             }}
-                            className='main-btn text-2xl font-semibold py-3'
+                            className='bg-stone-400 text-2xl font-semibold py-3'
                         >
                             homepage
                         </button>

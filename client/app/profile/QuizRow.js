@@ -49,13 +49,13 @@ const QuizRow = ({ quiz }) => {
                         <p>Delete "{`[${quiz.id}] ${quiz.title}`}" quiz?</p>
                         <div className='flex justify-center mt-4'>
                             <button
-                                className='px-6 py-3 bg-stone-400 hover:shadow-none mr-4 w-fit'
+                                className='bg-red-600 text-white hover:font-semibold px-6 py-3 mr-4 w-fit'
                                 onClick={confirmDelete}
                             >
                                 Delete
                             </button>
                             <button
-                                className='px-6 py-3 w-fit'
+                                className='px-6 py-3 bg-stone-400 w-fit'
                                 onClick={() => setShowConfirmDialog(false)}
                             >
                                 Cancel

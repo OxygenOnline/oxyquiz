@@ -77,7 +77,7 @@ const Results = () => {
                             </label>
                             {quiz.results.length > 2 && (
                                 <button
-                                    className='py-1 ml-2 w-fit bg-stone-400 hover:shadow-none'
+                                    className='py-1 ml-2 w-fit bg-stone-400'
                                     onClick={() => cancelResult(index)}
                                 >
                                     <FontAwesomeIcon icon={faX} />

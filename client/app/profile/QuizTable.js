@@ -41,14 +41,14 @@ const QuizTable = ({ quizzes }) => {
                     {(page <= 0 && quizzes.length < 12) || (
                         <div className='flex w-5/6 md:w-3/4 lg:w-3/5 mt-6'>
                             <button
-                                className='py-2 rounded-none rounded-l-lg hover:shadow-none'
+                                className='py-2 rounded-none rounded-l-lg'
                                 disabled={page <= 0}
                                 onClick={prev}
                             >
                                 &lt;
                             </button>
                             <button
-                                className='py-2 rounded-none rounded-r-lg hover:shadow-none'
+                                className='py-2 rounded-none rounded-r-lg'
                                 disabled={!quizzes || quizzes.length < 12}
                                 onClick={next}
                             >

@@ -94,7 +94,7 @@ const PublishButton = () => {
                             ))}
                         </ul>
                         <button
-                            className='bg-stone-400 hover:shadow-none font-semibold px-6 py-3 mt-12'
+                            className='bg-stone-400 font-semibold px-6 py-3 mt-12'
                             onClick={() => setError('')}
                         >
                             Ok

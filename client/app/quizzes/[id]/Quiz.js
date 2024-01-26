@@ -121,7 +121,7 @@ const Quiz = (props) => {
                             <p className='mt-2 text-base overflow-y-auto max-h-72'>{result.description}</p>
                         )}
                         <button
-                            className='bg-stone-400 hover:shadow-none px-6 py-3 mt-12'
+                            className='bg-stone-400 px-6 py-3 mt-12'
                             onClick={closeResult}
                         >
                             Ok
