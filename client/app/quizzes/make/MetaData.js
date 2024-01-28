@@ -1,11 +1,27 @@
+import { useState, useEffect } from 'react';
 import { useQuiz } from './QuizContext';
-import categories from '../../data/categories.json';
+import getCategoryList from '../../data/categories';
 import Link from 'next/link';
 
 
 const MetaData = () => {
 
     const { quiz, setQuiz } = useQuiz();
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        const setCategoryData = async () => {
+            try {
+                const data = await getCategoryList();
+                setCategories(data);
+            }
+            catch (error) {
+                console.error(error);
+            }
+        };
+
+        setCategoryData();
+    }, []);
 
     const handleTitleChange = (event) => {
         setQuiz({
@@ -77,7 +93,7 @@ const MetaData = () => {
                         onChange={handleCategoryChange}
                         required>
                         <option value={null}></option>
-                        {categories.map((category) => (
+                        {categories?.map((category) => (
                             <option
                                 key={category.id}
                                 value={category.id}

@@ -1,9 +1,11 @@
 import Link from 'next/link';
-import categories from '../../data/categories';
+import getCategoryList from '../../data/categories';
 
 
-const CategorySection = () => {
+const CategorySection = async () => {
 
+    const categories = await getCategoryList();
+    
     return (
         <section className='py-16 mt-16'>
             <div className='container py-12 mx-auto text-center'>
@@ -18,7 +20,7 @@ const CategorySection = () => {
                             All
                         </Link>
                     </p>
-                    {categories.map((category) => (
+                    {categories?.map((category) => (
                         <p
                             key={category.id}
                             className='text-lg m-2 hover:font-semibold'

@@ -39,6 +39,13 @@ const checkAuth = async () => {
     return response;
 };
 
+const getCategories = async () => {
+    const response = await fetch(`${api}/categories`,
+        { method: 'GET' }
+    );
+    return response;
+};
+
 const getQuizzes = async (page = 0, limit = 6) => {
     const offset = limit * page;
     const response = await fetch(`${api}/quizzes?limit=${limit}&offset=${offset}`, {
@@ -151,6 +158,7 @@ module.exports = {
     login,
     logout,
     checkAuth,
+    getCategories,
     getQuizzes,
     getFullQuizById,
     getQuizById,
