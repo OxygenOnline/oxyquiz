@@ -39,7 +39,7 @@ const Results = () => {
         setQuiz((prevQuiz) => {
             const newQuiz = { ...prevQuiz };
             newQuiz.results = [...newQuiz.results,
-                { title: '', description: '' }
+            { title: '', description: '' }
             ];
             return newQuiz;
         });
@@ -96,7 +96,12 @@ const Results = () => {
                 ))}
             </div>
 
-            <button onClick={addNewResult}>Add Result</button>
+            {quiz.results.length < 100 && (
+                <button onClick={addNewResult}>
+                    Add Result
+                </button>
+            )}
+
         </div>
     );
 };

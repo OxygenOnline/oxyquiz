@@ -25,7 +25,8 @@ const quizSchema = yup.object().shape({
                     .max(1000, 'Result Description: maximum 1000 characters'),
                 position: yup.number().integer().required(),
             })
-        ).min(2, 'Results: minimum 2'),
+        ).min(2, 'Results: minimum 2')
+            .max(100, 'Results: maximum 100'),
         questions: yup.array().of(
             yup.object().shape({
                 id: yup.number().integer(),
@@ -58,9 +59,11 @@ const quizSchema = yup.object().shape({
                                 return `Empty Result list in Option ${optionIndex + 1} (Question ${questionIndex + 1})`;
                             }),
                     })
-                ).min(2, 'Options: minimum 2'),
+                ).min(2, 'Options: minimum 2')
+                    .max(255, 'Options: maximum 255'),
             })
-        ).min(2, 'Questions: minimum 2'),
+        ).min(2, 'Questions: minimum 2')
+            .max(500, 'Questions: maximum 500'),
     }).required(),
 });
 

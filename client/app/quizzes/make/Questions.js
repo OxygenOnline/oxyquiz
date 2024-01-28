@@ -274,17 +274,23 @@ const Questions = () => {
                                 </div>
                             ))}
 
-                            <button
-                                className='max-w-fit px-6'
-                                onClick={() => addNewOption(questionIndex)}
-                            >
-                                Add Option
-                            </button>
+                            {question.options.length < 255 && (
+                                <button
+                                    className='max-w-fit px-6'
+                                    onClick={() => addNewOption(questionIndex)}
+                                >
+                                    Add Option
+                                </button>
+                            )}
                         </div>
                     </div>
                 ))}
 
-                <button onClick={addNewQuestion}>Add Question</button>
+                {quiz.questions.length < 500 && (
+                    <button onClick={addNewQuestion}>
+                        Add Question
+                    </button>
+                )}
             </div>
         </div>
     );
