@@ -156,7 +156,7 @@ const Questions = () => {
 
     return (
         <div className='container h-fit p-6'>
-            <h3 className='underlined text-2xl font-bold'>Questions*</h3>
+            <h3 className='underlined text-2xl font-bold'>Questions</h3>
 
             <div className='mt-6 sm:p-3 p-0'>
                 {quiz.questions.map((question, questionIndex) => (
@@ -170,7 +170,7 @@ const Questions = () => {
                                         className='w-full ml-2'
                                         type='text'
                                         maxLength='255'
-                                        placeholder='Question Title'
+                                        placeholder='Question Title*'
                                         value={question.content}
                                         onChange={(event) =>
                                             handleQuestionTitleChange(event, questionIndex)
@@ -199,7 +199,7 @@ const Questions = () => {
                                         }
                                         required
                                     />
-                                    Single Choice
+                                    Single Choice*
                                 </label>
 
                                 <label>
@@ -214,7 +214,7 @@ const Questions = () => {
                                         }
                                         required
                                     />
-                                    Weight
+                                    Weight*
                                 </label>
                             </div>
                         </div>
@@ -235,7 +235,7 @@ const Questions = () => {
                                         )}
                                         <textarea
                                             maxLength='1000'
-                                            placeholder={`Option ${optionIndex + 1}`}
+                                            placeholder={`Option ${optionIndex + 1}*`}
                                             value={option.content}
                                             className='flex-1'
                                             onChange={(event) =>

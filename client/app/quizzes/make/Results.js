@@ -57,7 +57,7 @@ const Results = () => {
 
     return (
         <div className='container p-3'>
-            <h3 className='underlined text-xl font-bold mb-6'>Results*</h3>
+            <h3 className='underlined text-xl font-bold mb-6'>Results</h3>
 
             <div className='mt-6 p-3'>
                 {quiz.results.map((result, index) => (
@@ -69,7 +69,7 @@ const Results = () => {
                                     className='w-full ml-2'
                                     type='text'
                                     maxLength='255'
-                                    placeholder='Result Title'
+                                    placeholder='Result Title*'
                                     value={result.title}
                                     onChange={(event) => handleTitleChange(event, index)}
                                     required
