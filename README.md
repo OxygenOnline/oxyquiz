@@ -19,7 +19,7 @@ Browse the various categories or choose at random, explore all the possibilities
 - [Sequelize ORM](https://sequelize.org)
 - [Passport.js](https://www.passportjs.org) for authentication
 
-### Frontend : [Nextjs](https://nextjs.org)
+### Frontend : [Next.js](https://nextjs.org)
 
 - [Figma](https://www.figma.com/ui-design-tool) for prototyping
 - [Tailwind CSS](https://tailwindcss.com) for easy CSS styling
