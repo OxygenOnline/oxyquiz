@@ -4,7 +4,7 @@ The place to create and fill out fun quizzes🎉
 
 Browse the various categories or choose at random, explore all the possibilities!
 
-## Main features ✔️
+## Main Features ✔️
 
 - Create quizzes
 - Browse categories
