@@ -1,0 +1,58 @@
+Project oxyquiz {
+  database_type: 'PostgreSQL'
+}
+
+Table categories {
+  id integer [primary key, not null, increment]
+  name varchar [not null, unique]
+  pathName varchar [not null, unique]
+}
+
+Table users {
+  id integer [primary key, not null, increment]
+  username varchar [not null, unique]
+  password varchar [not null]
+  email varchar [not null, unique]
+  joiningDate timestamp [not null, default: 'CURRENT_TIMESTAMP']
+  deletedAt timestamp
+}
+
+Table quizzes {
+  id integer [primary key, not null, increment]
+  title varchar [not null]
+  description varchar
+  creatorId integer [ref: > users.id, not null]
+  categoryId integer [ref: > categories.id, not null]
+  createdAt timestamp [not null, default: 'CURRENT_TIMESTAMP']
+  updatedAt timestamp [not null, default: 'CURRENT_TIMESTAMP']
+  deletedAt timestamp
+}
+
+Table questions {
+  id integer [primary key, not null, increment]
+  content varchar [not null]
+  position integer [not null]
+  weight integer [not null, default: 1]
+  singleChoice boolean [not null, default: true]
+  quizId integer [ref: > quizzes.id, not null]
+}
+
+Table results {
+  id integer [primary key, not null, increment]
+  title varchar [not null]
+  description varchar
+  position integer [not null]
+  quizId integer [ref: > quizzes.id, not null]
+}
+
+Table options {
+  id integer [primary key, not null, increment]
+  content varchar [not null]
+  position integer [not null]
+  questionId integer [ref: > questions.id, not null]
+}
+
+Table option_results {
+  optionId integer [primary key, ref: > options.id, not null]
+  resultId integer [primary key, ref: > results.id, not null]
+}
