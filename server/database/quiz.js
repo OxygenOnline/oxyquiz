@@ -547,8 +547,6 @@ const evaluateResult = async (quizId, answers) => {
           attributes: ['resultId']
         });
         const resultIds = optionResults.map(item => item.resultId);
-        console.log(optionResults);
-        console.log(resultIds);
 
         for (const resultId of resultIds) {
 
