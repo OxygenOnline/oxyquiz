@@ -133,7 +133,7 @@ const getQuizById = async (quizId) => {
       },
       {
         model: User,
-        attributes: { exclude: ['password', 'email'] },
+        attributes: { exclude: ['password', 'email', 'deletedAt'] },
         as: 'creator'
       },
       {
@@ -145,7 +145,11 @@ const getQuizById = async (quizId) => {
         model: Question,
         attributes: { exclude: ['quizId', 'weight'] },
         as: 'questions',
-        include: { model: Option, as: 'options' }
+        include: {
+          model: Option,
+          attributes: { exclude: ['questionId'] },
+          as: 'options'
+        }
       },
     ],
   });
@@ -489,7 +493,7 @@ const checkCreator = async (quizId, userId) => {
   if (quiz && quiz.creatorId === userId) {
     return true;
   }
-  
+
   return false;
 };
 
