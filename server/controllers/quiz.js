@@ -3,13 +3,6 @@ const quizdb = require('../database/quiz');
 const logger = require('../utils/logger');
 
 
-const validateCategoryPathName = async (categoryPathName) => {
-    const isValidCategory = await quizdb.categoryExists(categoryPathName);
-    if (!isValidCategory) {
-        throw Error(createError(404, `Category with given name "${categoryPathName}" does not exist.`));
-    }
-};
-
 const getAllQuizzes = async (req, res, next) => {
     try {
         const { limit, offset } = req.query;
@@ -52,7 +45,6 @@ const getQuizById = async (req, res, next) => {
 const getAllQuizzesByCategory = async (req, res, next) => {
     try {
         const { categoryName } = req.params;
-        await validateCategoryPathName(categoryName);
         const { limit, offset } = req.query;
         const result = await quizdb.getAllQuizzesByCategory(categoryName, limit, offset);
         res.json(result);
@@ -135,7 +127,6 @@ const getRandomQuiz = async (req, res, next) => {
 const getRandomQuizWithCategory = async (req, res, next) => {
     try {
         const { categoryName } = req.params;
-        await validateCategoryPathName(categoryName);
         const result = await quizdb.getRandomQuiz(categoryName);
         res.json(result);
     }
@@ -170,6 +161,20 @@ const checkValidQuizId = async (req, res, next, quizId) => {
     }
 };
 
+const checkValidCategory = async (req, res, next, categoryPathName) => {
+
+    try {
+        const isValidCategory = await quizdb.categoryExists(categoryPathName);
+        if (!isValidCategory) {
+            return next(createError(404, `Category with given name "${categoryPathName}" does not exist.`));
+        }
+        next();
+    }
+    catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     getAllQuizzes,
     getAllQuizzesByCategory,
@@ -182,5 +187,6 @@ module.exports = {
     getRandomQuiz,
     getRandomQuizWithCategory,
     getResultEvaluation,
-    checkValidQuizId
+    checkValidQuizId,
+    checkValidCategory
 };

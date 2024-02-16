@@ -16,7 +16,7 @@ router.use((req, res, next) => {
 
 router.route('/')
     .get(controller.getAllQuizzes)
-    .post(validate({ body: quizSchema }), userAuth, controller.createQuiz);
+    .post(userAuth, validate({ body: quizSchema }), controller.createQuiz);
 
 router.route('/random')
     .get(controller.getRandomQuiz);
@@ -27,12 +27,12 @@ router.route('/current')
 router.route('/:id(\\d+)')
     .get(controller.getQuizById)
     .post(validate({ body: evaluationSchema }), controller.getResultEvaluation)
-    .put(validate({ body: quizSchema }), userAuth, controller.updateQuiz)
+    .put(userAuth, validate({ body: quizSchema }), controller.updateQuiz)
     .delete(userAuth, controller.deleteQuiz);
-    
+
 router.route('/:id(\\d+)/full')
     .get(userAuth, controller.getFullQuizById);
-    
+
 router.route('/:categoryName')
     .get(controller.getAllQuizzesByCategory);
 
@@ -40,5 +40,7 @@ router.route('/:categoryName/random')
     .get(controller.getRandomQuizWithCategory);
 
 router.param('id', controller.checkValidQuizId);
+
+router.param('categoryName', controller.checkValidCategory);
 
 module.exports = router;
