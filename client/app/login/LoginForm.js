@@ -55,35 +55,35 @@ const LoginForm = () => {
     };
 
     return (
-        <form className="flex flex-col items-center justify-between">
+        <form className='flex flex-col items-center justify-between w-max-full'>
             {error && (
-                <p className="text-red-600 w-full text-center p-3 mb-4">{error}</p>
+                <p className='text-red-600 w-full text-center p-3 mb-4'>{error}</p>
             )}
-            <div className="pb-12 mb-12">
-                <div className="grid lg:mb-0 lg:grid-cols-2 lg:text-left">
-                    <p className="mb-3 text-2xl">Username:</p>
+            <div className='pb-12 mb-12'>
+                <div className='grid lg:mb-0 lg:grid-cols-2 lg:text-left'>
+                    <p className='mb-3 text-l sm:text-2xl'>Username:</p>
                     <input
-                        type="text"
-                        name="username"
+                        type='text'
+                        name='username'
                         value={state.username}
                         onChange={handleChange}
-                        className="mb-3 text-2xl px-2"
+                        className='mb-3 text-l sm:text-2xl px-2'
                         required
                     />
                 </div>
-                <div className="grid lg:mb-0 lg:grid-cols-2 lg:text-left">
-                    <p className="mb-3 text-2xl">Password:</p>
+                <div className='grid lg:mb-0 lg:grid-cols-2 lg:text-left'>
+                    <p className='mb-3 text-l sm:text-2xl'>Password:</p>
                     <input
-                        type="password"
-                        name="password"
+                        type='password'
+                        name='password'
                         value={state.password}
                         onChange={handleChange}
-                        className="mb-3 text-2xl px-2"
+                        className='mb-3 text-l sm:text-2xl px-2'
                         required
                     />
                 </div>
             </div>
-            <button onClick={handleSubmit} className="text-2xl font-semibold px-10 py-3">Login</button>
+            <button onClick={handleSubmit} className='text-2xl font-semibold py-3'>Login</button>
         </form>
 
     );
