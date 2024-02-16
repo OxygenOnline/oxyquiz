@@ -62,7 +62,7 @@ const Navbar = () => {
                         {isLoggedIn &&
                             (
                                 <li className='sm:p-4 p-2'>
-                                    <Link href='#' onClick={() => router.push('/quizzes/make')}>
+                                    <Link href='/quizzes/make'>
                                         <FontAwesomeIcon icon={faPlus} className='white-colored' />
                                     </Link>
                                 </li>
