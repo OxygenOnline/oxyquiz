@@ -24,15 +24,13 @@ var sessionSettings = {
     secret: SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: {
-        secure: false,
-        sameSite: 'None'
-    }
+    cookie: { secure: false }
 };
 
 if (ENV === 'production') {
     app.set('trust proxy', 1);
     sessionSettings.cookie.secure = true;
+    sessionSettings.cookie.sameSite = 'None';
 }
 
 app.use(session(sessionSettings));
