@@ -3,7 +3,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport');
 const cors = require('cors');
-const { PORT, CLIENT_URL, SECRET } = require('./config/config');
+const { PORT, CLIENT_URL, SECRET, ENV } = require('./config/config');
 const quizRouter = require('./routes/quiz');
 const userRouter = require('./routes/user');
 const categoryRouter = require('./routes/category');
@@ -20,11 +20,22 @@ app.use(cors({
     credentials: true
 }));
 
-app.use(session({
+var sessionSettings = {
     secret: SECRET,
     resave: false,
-    saveUninitialized: false
-}));
+    saveUninitialized: false,
+    cookie: {
+        secure: false,
+        sameSite: 'None'
+    }
+};
+
+if (ENV === 'production') {
+    app.set('trust proxy', 1);
+    sessionSettings.cookie.secure = true;
+}
+
+app.use(session(sessionSettings));
 
 app.use(passport.initialize());
 app.use(passport.session());
