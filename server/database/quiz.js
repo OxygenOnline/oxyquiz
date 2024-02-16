@@ -125,7 +125,7 @@ const getFullQuizById = async (quizId) => {
 const getQuizById = async (quizId) => {
 
   const quiz = await Quiz.findByPk(quizId, {
-    attributes: { exclude: ['categoryId', 'creatorId'] },
+    attributes: { exclude: ['categoryId', 'creatorId', 'deletedAt'] },
     include: [
       {
         model: Category,
