@@ -38,7 +38,7 @@ Browse the various categories or choose at random, explore all the possibilities
   Needed for dependency handling and application running.
   - `npm i` install dependencies
   - `node server.js` run backend in server folder
-  - `npm run dev` run frontend in client folder
+  - `next dev` run frontend in client folder
 
 - Enviroment variables
 
