@@ -52,50 +52,61 @@ const Navbar = () => {
     return (
         <>
             <nav className='flex flex-row justify-between'>
-                <div className='my-auto flex flex-row text-2xl focus:outline-none'>
-                    <button onClick={() => setIsOpen(!isOpen)}>
-                        <FontAwesomeIcon icon={faBars} className='white-colored' />
-                    </button>
-                    {isLoggedIn &&
-                        (<button onClick={() => router.push('/quizzes/make')} className='pl-4'>
-                            <FontAwesomeIcon icon={faPlus} className='white-colored' />
-                        </button>)}
+                <div className='my-auto flex text-lg sm:text-2xl'>
+                    <ul className='flex my-auto'>
+                        <li className='sm:p-4 p-2'>
+                            <Link href='#' onClick={() => setIsOpen(!isOpen)}>
+                                <FontAwesomeIcon icon={faBars} className='white-colored' />
+                            </Link>
+                        </li>
+                        {isLoggedIn &&
+                            (
+                                <li className='sm:p-4 p-2'>
+                                    <Link href='#' onClick={() => router.push('/quizzes/make')}>
+                                        <FontAwesomeIcon icon={faPlus} className='white-colored' />
+                                    </Link>
+                                </li>
+
+                            )
+                        }
+                    </ul>
                 </div>
 
-                <div className='my-auto font-semibold sm:tracking-widest text-2xl'>
+                <div className='my-auto font-semibold sm:tracking-widest text-xl sm:text-3xl'>
                     <Link href='/'>oxyquiz</Link>
                 </div>
 
-                <div className='flex text-lg my-auto'>
-                    <ul className='flex'>
+                <div className='flex text-lg sm:text-2xl my-auto'>
+                    <ul className='flex my-auto'>
                         {isLoggedIn ? (
                             <>
-                                <li className='p-4'>
+                                <li className='sm:p-4 p-2'>
                                     <Link href='/profile'>
-                                        <FontAwesomeIcon icon={faUser} className='md:hidden text-2xl' />
+                                        <FontAwesomeIcon icon={faUser} className='md:hidden sm:text-2xl' />
                                         <p className='hidden md:block'>profile</p>
                                     </Link>
                                 </li>
-                                <li className='p-4'>
+                                <li className='sm:p-4 p-2'>
                                     <Link href='#' onClick={handleLogout}>
-                                        <FontAwesomeIcon icon={faSignOutAlt} className='md:hidden text-2xl' />
+                                        <FontAwesomeIcon icon={faSignOutAlt} className='md:hidden sm:text-2xl' />
                                         <p className='hidden md:block'>logout</p>
                                     </Link>
                                 </li>
                             </>
                         ) : (
-                            <li className='p-4'>
+                            <li className='sm:p-4'>
                                 <Link href='/login'>
-                                    <FontAwesomeIcon icon={faSignInAlt} className='md:hidden text-2xl' />
+                                    <FontAwesomeIcon icon={faSignInAlt} className='md:hidden sm:text-2xl' />
                                     <p className='hidden md:block'>login</p>
                                 </Link>
                             </li>
                         )}
                     </ul>
                 </div>
-            </nav>
+            </nav >
 
-            {isOpen && (<SideMenu />)}
+            {isOpen && (<SideMenu />)
+            }
         </>
     );
 };
