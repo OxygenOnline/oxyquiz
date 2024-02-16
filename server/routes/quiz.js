@@ -23,6 +23,9 @@ router.route('/random')
 
 router.route('/current')
     .get(userAuth, controller.getAllQuizzesByUser);
+    
+router.route('/current/number')
+    .get(userAuth, controller.getQuizCountByUser);
 
 router.route('/:id(\\d+)')
     .get(controller.getQuizById)

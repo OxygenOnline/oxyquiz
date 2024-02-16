@@ -81,6 +81,16 @@ const getAllQuizzesByUser = async (userId, limit = 20, offset = 0) => {
   return result;
 };
 
+const getNumberOfQuizzesByUser = async (userId) => {
+  
+  const count = await Quiz.count({
+    where: {
+      creatorId: userId,
+    },
+  });
+  return count;
+};
+
 const getFullQuizById = async (quizId) => {
 
   let quizData = await Quiz.findByPk(quizId, {
@@ -581,6 +591,7 @@ module.exports = {
   getAllQuizzes,
   getAllQuizzesByCategory,
   getAllQuizzesByUser,
+  getNumberOfQuizzesByUser,
   getFullQuizById,
   getQuizById,
   getRandomQuiz,

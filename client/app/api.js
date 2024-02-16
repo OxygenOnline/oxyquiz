@@ -120,6 +120,14 @@ const getUserQuizzes = async (page, limit = 12) => {
     return response;
 };
 
+const getUserQuizNumber = async () => {
+    const response = await fetch(`${api}/quizzes/current/number`, {
+        method: 'GET',
+        credentials: 'include',
+    });
+    return response;
+};
+
 const createQuiz = async (quiz) => {
     const response = await fetch(`${api}/quizzes`, {
         method: 'POST',
@@ -168,6 +176,7 @@ module.exports = {
     getRandomQuizByCategory,
     getUserData,
     getUserQuizzes,
+    getUserQuizNumber,
     createQuiz,
     deleteQuiz,
     updateQuiz

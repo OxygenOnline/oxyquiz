@@ -4,7 +4,7 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import QuizRow from './QuizRow';
 
 
-const QuizTable = ({ quizzes }) => {
+const QuizTable = ({ quizzes, nextPage }) => {
 
     const router = useRouter();
     const pathname = usePathname();
@@ -49,7 +49,7 @@ const QuizTable = ({ quizzes }) => {
                             </button>
                             <button
                                 className='py-2 rounded-none rounded-r-lg'
-                                disabled={!quizzes || quizzes.length < 12}
+                                disabled={!quizzes || quizzes.length < 12 || !nextPage}
                                 onClick={next}
                             >
                                 &gt;

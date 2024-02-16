@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import ProfileData from './ProfileData';
-import { getUserData, getUserQuizzes } from '../api';
+import { getUserData, getUserQuizNumber, getUserQuizzes } from '../api';
 import QuizTable from './QuizTable';
 
 
@@ -15,6 +15,7 @@ const ProfilePage = ({ searchParams }) => {
 
     const [profileData, setProfileData] = useState(null);
     const [quizzes, setQuizzes] = useState(null);
+    const [nextPage, setNextPage] = useState(false);
 
     useEffect(() => {
 
@@ -52,8 +53,28 @@ const ProfilePage = ({ searchParams }) => {
             }
         };
 
+        const isNavigationAllowed = async () => {
+            try {
+                const response = await getUserQuizNumber();
+
+                if (response.status === 401) {
+                    router.push('/login');
+                    return;
+                }
+
+                const numberOfQuizzes = await response.json();
+                const totalPages = Math.ceil(numberOfQuizzes / 12);
+                const nextPageDisabled = page === totalPages || numberOfQuizzes % 12 === 0;
+                setNextPage(!nextPageDisabled);
+            }
+            catch (error) {
+                console.error(error);
+            }
+        };
+
         fetchUserData();
         fetchUserQuizzes();
+        isNavigationAllowed();
     }, [searchParams]);
 
     return (
@@ -64,7 +85,7 @@ const ProfilePage = ({ searchParams }) => {
                         <ProfileData profile={profileData} />
                     </div>
                     <div className='flex flex-col grow basis-2/3'>
-                        <QuizTable quizzes={quizzes} />
+                        <QuizTable quizzes={quizzes} nextPage={nextPage} />
                         <button
                             onClick={() => {
                                 router.push('/quizzes/make');

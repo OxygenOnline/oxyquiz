@@ -66,6 +66,17 @@ const getAllQuizzesByUser = async (req, res, next) => {
     }
 };
 
+const getQuizCountByUser = async (req, res, next) => {
+    try {
+        const userId = req.user.id;
+        const number = await quizdb.getNumberOfQuizzesByUser(userId);
+        res.json(number);
+    }
+    catch (error) {
+        next(error);
+    }
+};
+
 const createQuiz = async (req, res, next) => {
     try {
         const { quiz } = req.body;
@@ -179,6 +190,7 @@ module.exports = {
     getAllQuizzes,
     getAllQuizzesByCategory,
     getAllQuizzesByUser,
+    getQuizCountByUser,
     getFullQuizById,
     getQuizById,
     createQuiz,
