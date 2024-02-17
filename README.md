@@ -12,7 +12,7 @@ Browse the various categories or choose at random, explore all the possibilities
 
 ## Used Technologies 💻
 
-### Database : [Postgresql](https://www.postgresql.org)
+### Database : [Postgresql](https://www.postgresql.org) + [Redis](https://redis.io)
 
 ### Backend : [Node.js](https://nodejs.org) + [Express.js](https://expressjs.com)
 
@@ -33,6 +33,8 @@ Browse the various categories or choose at random, explore all the possibilities
 
 - Postgresql database
 
+- Redis database
+
 - Node.js + npm
 
   Needed for dependency handling and application running.
@@ -42,4 +44,4 @@ Browse the various categories or choose at random, explore all the possibilities
 
 - Enviroment variables
 
-  Needed for database connection and cors setup between backend and frontend.
+  Needed for database connections and cors setup between backend and frontend.

@@ -1,9 +1,11 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const RedisStore = require('connect-redis').default;
 const session = require('express-session');
+const { createClient } = require('redis');
 const passport = require('passport');
 const cors = require('cors');
-const { PORT, CLIENT_URL, SECRET, ENV } = require('./config/config');
+const { ENV, PORT, CLIENT_URL, SECRET, REDIS } = require('./config/config');
 const quizRouter = require('./routes/quiz');
 const userRouter = require('./routes/user');
 const categoryRouter = require('./routes/category');
@@ -20,7 +22,15 @@ app.use(cors({
     credentials: true
 }));
 
+const redisClient = createClient(REDIS);
+redisClient.connect().catch(console.error);
+
+const redisStore = new RedisStore({
+    client: redisClient,
+});
+
 var sessionSettings = {
+    store: redisStore,
     secret: SECRET,
     resave: false,
     saveUninitialized: false,
