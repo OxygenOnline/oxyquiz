@@ -69,10 +69,31 @@ const getAllQuizzes = async (limit = 20, offset = 0) => {
   return result;
 };
 
+const getNumberOfQuizzes = async () => {
+
+  const count = await Quiz.count();
+  return count;
+};
+
 const getAllQuizzesByCategory = async (categoryPathName, limit = 20, offset = 0) => {
 
   const result = await getQuizzes(limit, offset, categoryPathName);
   return result;
+};
+
+const getNumberOfQuizzesByCategory = async (categoryPathName) => {
+
+  const category = await Category.findOne({
+    where: { pathName: categoryPathName },
+    attributes: ['id'],
+  });
+
+  const count = await Quiz.count({
+    where: {
+      categoryId: category.id,
+    },
+  });
+  return count;
 };
 
 const getAllQuizzesByUser = async (userId, limit = 20, offset = 0) => {
@@ -82,7 +103,7 @@ const getAllQuizzesByUser = async (userId, limit = 20, offset = 0) => {
 };
 
 const getNumberOfQuizzesByUser = async (userId) => {
-  
+
   const count = await Quiz.count({
     where: {
       creatorId: userId,
@@ -589,7 +610,9 @@ const evaluateResult = async (quizId, answers) => {
 
 module.exports = {
   getAllQuizzes,
+  getNumberOfQuizzes,
   getAllQuizzesByCategory,
+  getNumberOfQuizzesByCategory,
   getAllQuizzesByUser,
   getNumberOfQuizzesByUser,
   getFullQuizById,

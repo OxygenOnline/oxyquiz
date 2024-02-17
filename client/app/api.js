@@ -55,6 +55,12 @@ const getQuizzes = async (page = 0, limit = 6) => {
     return response;
 };
 
+const getQuizNumber = async () => {
+    const response = await fetch(`${api}/quizzes/number`,
+        { method: 'GET' });
+    return response;
+};
+
 const getFullQuizById = async (quizId) => {
     const response = await fetch(`${api}/quizzes/${quizId}/full`, {
         method: 'GET',
@@ -94,6 +100,12 @@ const getCategoryQuizzes = async (categoryName, page, limit = 6) => {
         method: 'GET',
         cache: 'no-store'
     });
+    return response;
+};
+
+const getCategoryQuizNumber = async (categoryName) => {
+    const response = await fetch(`${api}/quizzes/${categoryName}/number`,
+        { method: 'GET' });
     return response;
 };
 
@@ -168,11 +180,13 @@ module.exports = {
     checkAuth,
     getCategories,
     getQuizzes,
+    getQuizNumber,
     getFullQuizById,
     getQuizById,
     getQuizResult,
     getRandomQuiz,
     getCategoryQuizzes,
+    getCategoryQuizNumber,
     getRandomQuizByCategory,
     getUserData,
     getUserQuizzes,

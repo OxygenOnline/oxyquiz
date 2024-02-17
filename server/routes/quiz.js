@@ -17,6 +17,9 @@ router.use((req, res, next) => {
 router.route('/')
     .get(controller.getAllQuizzes)
     .post(userAuth, validate({ body: quizSchema }), controller.createQuiz);
+    
+router.route('/number')
+    .get(controller.getQuizCount);
 
 router.route('/random')
     .get(controller.getRandomQuiz);
@@ -38,6 +41,9 @@ router.route('/:id(\\d+)/full')
 
 router.route('/:categoryName')
     .get(controller.getAllQuizzesByCategory);
+    
+router.route('/:categoryName/number')
+    .get(controller.getQuizCountByCategory);
 
 router.route('/:categoryName/random')
     .get(controller.getRandomQuizWithCategory);

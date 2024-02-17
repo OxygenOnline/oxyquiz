@@ -14,6 +14,16 @@ const getAllQuizzes = async (req, res, next) => {
     }
 };
 
+const getQuizCount = async (req, res, next) => {
+    try {
+        const number = await quizdb.getNumberOfQuizzes();
+        res.json(number);
+    }
+    catch (error) {
+        next(error);
+    }
+};
+
 const getFullQuizById = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -48,6 +58,17 @@ const getAllQuizzesByCategory = async (req, res, next) => {
         const { limit, offset } = req.query;
         const result = await quizdb.getAllQuizzesByCategory(categoryName, limit, offset);
         res.json(result);
+    }
+    catch (error) {
+        next(error);
+    }
+};
+
+const getQuizCountByCategory = async (req, res, next) => {
+    try {
+        const { categoryName } = req.params;
+        const number = await quizdb.getNumberOfQuizzesByCategory(categoryName);
+        res.json(number);
     }
     catch (error) {
         next(error);
@@ -188,7 +209,9 @@ const checkValidCategory = async (req, res, next, categoryPathName) => {
 
 module.exports = {
     getAllQuizzes,
+    getQuizCount,
     getAllQuizzesByCategory,
+    getQuizCountByCategory,
     getAllQuizzesByUser,
     getQuizCountByUser,
     getFullQuizById,

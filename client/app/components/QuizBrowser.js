@@ -5,7 +5,7 @@ import QuizGrid from './QuizGrid';
 import { getRandomQuiz, getRandomQuizByCategory } from '../api';
 
 
-const QuizBrowser = ({ quizzes }) => {
+const QuizBrowser = ({ quizzes, nextPage }) => {
 
     const router = useRouter();
     const pathname = usePathname();
@@ -36,7 +36,6 @@ const QuizBrowser = ({ quizzes }) => {
 
     return (
         <>
-
             {quizzes && quizzes.length !== 0 ? (<>
 
                 <QuizGrid quizzes={quizzes} />
@@ -59,7 +58,7 @@ const QuizBrowser = ({ quizzes }) => {
                         </button>
                         <button
                             className='py-3 rounded-none rounded-r-lg'
-                            disabled={!quizzes || quizzes.length < 6}
+                            disabled={!quizzes || quizzes.length < 6 || !nextPage}
                             onClick={next}
                         >
                             &gt;
