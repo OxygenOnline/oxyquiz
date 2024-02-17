@@ -64,7 +64,7 @@ const ProfilePage = ({ searchParams }) => {
 
                 const numberOfQuizzes = await response.json();
                 const totalPages = Math.ceil(numberOfQuizzes / 12);
-                const nextPageDisabled = page === totalPages || numberOfQuizzes % 12 === 0;
+                const nextPageDisabled = (Number(page) + 1) === totalPages;
                 setNextPage(!nextPageDisabled);
             }
             catch (error) {
