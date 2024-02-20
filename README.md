@@ -42,6 +42,6 @@ Browse the various categories or choose at random, explore all the possibilities
   - `node server.js` run backend in server folder
   - `npm run dev` run frontend in client folder
 
-- Enviroment variables
+- Environment variables
 
   Needed for database connections and cors setup between backend and frontend.
