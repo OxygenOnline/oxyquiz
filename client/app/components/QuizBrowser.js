@@ -82,7 +82,7 @@ const QuizBrowser = ({ quizzes, nextPage }) => {
                     </p>
                     <button
                         className='main-btn text-2xl font-semibold py-3 max-w-lg mt-6'
-                        onClick={() => router.push('/')}
+                        onClick={() => router.push('/quizzes/make')}
                     >
                         create a quiz
                     </button>
