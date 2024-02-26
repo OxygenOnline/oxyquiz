@@ -94,7 +94,7 @@ const Navbar = () => {
                                 </li>
                             </>
                         ) : (
-                            <li className='sm:p-4'>
+                            <li className='sm:p-4 p-2'>
                                 <Link href='/login'>
                                     <FontAwesomeIcon icon={faSignInAlt} className='md:hidden sm:text-2xl' />
                                     <p className='hidden md:block'>login</p>
