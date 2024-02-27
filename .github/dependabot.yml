@@ -11,6 +11,8 @@ updates:
       server-dependencies:
         patterns:
           - "*"
+    allow:
+      - dependency-type: "production"
 
   - package-ecosystem: "npm"
     directory: "/client"
@@ -20,3 +22,5 @@ updates:
       client-dependencies:
         patterns:
           - "*"
+    allow:
+      - dependency-type: "production"
