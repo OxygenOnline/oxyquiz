@@ -5,7 +5,7 @@ import getCategoryList from '../../data/categories';
 const CategorySection = async () => {
 
     const categories = await getCategoryList();
-    
+
     return (
         <section className='py-16 mt-16'>
             <div className='container py-12 mx-auto text-center'>
@@ -15,17 +15,20 @@ const CategorySection = async () => {
                 <div
                     className='flex flex-wrap justify-center w-5/6 sm:w-4/5 md:w-2/3 lg:w-1/2 mx-auto'
                 >
-                    <p className='text-lg m-2 hover:font-semibold'>
-                        <Link href={'/quizzes/all'}>
+                    <p className='text-lg m-2'>
+                        <Link href={'/quizzes/all'} className='hover:font-semibold'>
                             All
                         </Link>
                     </p>
                     {categories?.map((category) => (
                         <p
                             key={category.id}
-                            className='text-lg m-2 hover:font-semibold'
+                            className='text-lg m-2'
                         >
-                            <Link href={`/categories/${category.pathName}`}>
+                            <Link
+                                href={`/categories/${category.pathName}`}
+                                className='hover:font-semibold'
+                            >
                                 {category.name}
                             </Link>
                         </p>
