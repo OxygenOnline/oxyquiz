@@ -24,13 +24,21 @@ const SideMenu = () => {
     return (
         <div className='sidebar px-2 md:fixed md:w-fit md:h-full z-50 w-auto h-auto relative static'>
             <ul className='p-2 flex flex-col items-start text-lg'>
-                <li key={0} className='p-2'>
-                    <Link href='/quizzes/all' className='category'>All</Link>
-                </li>
-                {categories?.map((category) => (
-                    <li key={category.id} className='p-2'>
-                        <Link href={`/categories/${category.pathName}`} className='category'>{category.name}</Link>
+                <Link href='/quizzes/all' className='category w-full'>
+                    <li key={0} className='p-2 w-full'>
+                        All
                     </li>
+                </Link>
+                {categories?.map((category) => (
+                    <Link
+                        href={`/categories/${category.pathName}`}
+                        className='category w-full'
+                    >
+                        <li key={category.id} className='p-2 w-full'>
+                            {category.name}
+                        </li>
+                    </Link>
+
                 ))}
             </ul>
         </div>
