@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { getRandomQuiz } from '../../api';
+import { getRandomQuiz } from '../api';
 
 
 const RandomSection = () => {

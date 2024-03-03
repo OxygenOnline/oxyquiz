@@ -1,9 +1,9 @@
 import { getQuizzes } from './api';
 import QuizGrid from './components/QuizGrid';
-import WelcomeSection from './components/LandingPage/WelcomeSection';
-import RandomSection from './components/LandingPage/RandomSection';
-import CategorySection from './components/LandingPage/CategorySection';
-import RegisterSection from './components/LandingPage/RegisterSection';
+import WelcomeSection from './_home/WelcomeSection';
+import RandomSection from './_home/RandomSection';
+import CategorySection from './_home/CategorySection';
+import RegisterSection from './_home/RegisterSection';
 
 
 const fetchQuizzes = async () => {

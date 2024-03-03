@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import getCategoryList from '../../data/categories';
+import getCategoryList from '../data/categories';
 
 
 const CategorySection = async () => {
