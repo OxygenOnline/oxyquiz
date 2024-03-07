@@ -10,7 +10,7 @@ const RegisterPage = () => {
             <h1 className='mb-3 text-4xl sm:text-6xl font-bold py-12'>Register</h1>
             <RegisterForm />
             <div className='text-center mb-12'>
-                <p className='mt-12 mb-6'>Already a user? Login <Link href='/login' className='hover:font-semibold'>here</Link></p>
+                <p className='mt-12 mb-2'>Already a user? Login <Link href='/login' className='hover:font-semibold'>here</Link></p>
                 <p>Back to the <Link href='/' className='hover:font-semibold'>homepage</Link></p>
             </div>
         </main>
