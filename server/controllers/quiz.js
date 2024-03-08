@@ -104,7 +104,8 @@ const createQuiz = async (req, res, next) => {
         const quizId = await quizdb.createQuiz(quiz, req.user.id);
         logger.verbose(`Created quiz [${quizId}]`);
         res.status(201).json(quizId);
-    } catch (error) {
+    }
+    catch (error) {
         next(error);
     }
 };
